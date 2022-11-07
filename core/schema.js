@@ -25,19 +25,9 @@ class Schema {
         endpoint: config.host,
         key: config.authKey
     })
-    const crudService = new CrudService(cosmosClient, config.databaseId, config.containerId)
     
-    
-
-    this.types.filter(t=>t.api==="CRUD").forEach(t => {
-        console.log('/'+t.name);
-        app.get('/'+t.name, (req, res, next) => crudService.getAll(t.name, req, res).catch(next));
-        app.post('/'+t.name, (req, res, next) => crudService.post(t.name, req, res).catch(next));
-        app.put('/'+t.name+'/:id', (req, res, next) => crudService.put(t.name, req, res).catch(next));
-        app.get('/'+t.name+'/:id', (req, res, next) => crudService.get(t.name, req, res).catch(next));
-        app.delete('/'+t.name+'/:id', (req, res, next) => crudService.delete(t.name, req, res).catch(next));
-    });
-    await crudService.init()
+    this.crudService = new CrudService(cosmosClient, config.databaseId, config.containerId, app, this.types);
+    await this.crudService.init()
   }
 
   getSwaggerUIDocs() {
@@ -73,136 +63,7 @@ class Schema {
         };
 
         if(t.api==="CRUD"){
-            tags.push({
-                name: t.name
-            });
-
-            paths['/' + t.name] = {
-                get: {
-                    tags: [t.name], // operation's tag.
-                    description: "Get a list of " + pluralize(t.name),
-                    operationId: "getAll"+ t.name,
-                    parameters: [],
-                    responses: {
-                      // response code
-                      200: {
-                        description: pluralize(t.name) + " list successfully returned",
-                        content: {
-                            "application/json": {
-                              schema: {
-                                type: "array",
-                                items: {
-                                    $ref: "#/components/schemas/" + t.name,
-                                }                                
-                              },
-                            },
-                          },
-                      },
-                    },
-                  },
-                post: {
-                    tags: [t.name], // operation's tag.
-                    description: "Creates " + t.name,
-                    operationId: "create"+ t.name,
-                    parameters: [],
-                    requestBody: {
-                        content: {
-                            "application/json": {
-                                schema: {
-                                    $ref: "#/components/schemas/"+ t.name,
-                                }
-                            }
-                        }
-                    },
-                    responses: {
-                      // response code
-                      200: {
-                        description: t.name + " created successfully",
-                      },
-                    },
-                  },
-            };
-            paths['/' + t.name + '/{id}'] = {
-                get: {
-                    tags: [t.name],
-                    description: "Get a single " + t.name + " by id",
-                    operationId: "get"+ t.name,
-                    parameters: [
-                        {
-                            name: "id",
-                            in: "path",
-                            schema: {
-                                type: "string"
-                            },
-                            required: true,
-                            description: t.name+" id",
-                          },
-                    ],
-                    responses: {
-                      200: {
-                        description: t.name + " returned",
-                        content: {
-                          "application/json": {
-                            schema: {
-                              $ref: "#/components/schemas/" + t.name,
-                            },
-                          },
-                        },
-                      },
-                    },
-                  },
-                  put: {
-                    tags: [t.name],
-                    description: "Update " + t.name,
-                    operationId: "update"+ t.name,
-                    parameters: [
-                        {
-                            name: "id",
-                            in: "path",
-                            schema: {
-                                type: "string"
-                            },
-                            required: true,
-                            description: "id of " + t.name + " to be updated",
-                          },
-                    ],
-                    requestBody: {
-                        content: {
-                            "application/json": {
-                                schema: {
-                                    $ref: "#/components/schemas/"+ t.name,
-                                }
-                            }
-                        }
-                    },
-                    responses: {
-                      200: {
-                        description: t.name + " updated successfully"
-                      },
-                    },
-                  },
-                  delete: {
-                    tags: [t.name],
-                    description: "Delete " + t.name,
-                    operationId: "delete"+ t.name,
-                    parameters: [
-                        {
-                            name: "id",
-                            in: "path",
-                            schema: {
-                                type: "string"
-                            },
-                            required: true,
-                            description: "id of "+ t.name +" to be deleted",
-                          },
-                    ],
-                    responses: {
-                      200: {
-                        description: t.name + " deleted successfully"
-                      },
-                    },
-                  },
-            };
+          this.crudService?.setupSwagger(t, tags, paths);
         }
       });
     

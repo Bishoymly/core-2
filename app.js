@@ -25,11 +25,11 @@ const { response } = require('express')
  app.use(cookieParser())
  app.use(express.static(path.join(__dirname, 'public')))
 
- //swagger
- const s = new schema();
- app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(s.getSwaggerUIDocs()));
+ 
 
+ const s = new schema();
  s.addRoutes(app);
+ app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(s.getSwaggerUIDocs()));
 
  //app.set('view engine', 'jade')
 
