@@ -1,11 +1,10 @@
 // @ts-check
 const fs = require('fs');
 const path = require('path')
-const pluralize = require('pluralize')
 const CosmosClient = require('@azure/cosmos').CosmosClient
 const config = require('../config')
 const debug = require('debug')
-const CrudService = require('./crud-service')
+const CrudService = require('./crud-service');
 
 class Schema {
 
@@ -48,18 +47,8 @@ class Schema {
         const properties = {};
         if(t.properties){
             t.properties.forEach(p => {
-                properties[p.name]={
-                    type: p.type,
-                    description: p.display,
-                    example: p.example??'',
-                };
+                properties[p.name]=this.toSwaggerProperty(t, p);
             });
-
-            properties['id']={
-              type: 'String',
-              description: 'ID',
-              example: 'ee711c38-c31b-40a0-b73d-9ee7e8c27d60'
-            };
         }
         components[t.name] = {
           type: "object",
@@ -84,6 +73,49 @@ class Schema {
         paths: paths
       };
       return docs;
+  }
+
+  toSwaggerProperty(t, p){
+    
+    const result = {
+      type: p.type,
+      example: '',
+    };
+
+    // find if this property is of a another core type
+    const t2 = this.types.find(type=>type.name===p.type);
+    if(t2){
+      if(t2.type === "Object"){
+        result['$ref'] = '#/components/schemas/' + t2.name;
+      }
+      else if(t2.type === "Lookup"){
+        result.type = 'String';
+        if(t2.values){
+          result.enum = t2.values.map(v=>v.code);
+        }
+      }
+      else{
+        result.type = t2.type;
+      }      
+      
+      if(t2.example){
+        result.example = t2.example;
+      }
+
+      if(t2.display){
+        result.display = t2.display;
+      }
+    }
+
+    if(p.display){
+      result.display = p.display;
+    }
+
+    if(p.example){
+      result.example = p.example;
+    }
+
+    return result;
   }
 }
 
