@@ -10,7 +10,7 @@
 			"type":"String",
 			"default": "",
 			"example": "123 Main Street",
-			"isRequired": true
+			"required": true
 		},
 		{
 			"name":"street2",
@@ -23,7 +23,7 @@
 			"type":"String",
 			"default": "",
 			"example": "New York",
-			"isRequired": true
+			"required": true
 		},
 		{
 			"name":"state",
@@ -31,7 +31,7 @@
 			"type":"state",
 			"default": "",
 			"example": "NY",
-			"isRequired": true,
+			"required": true,
 			"allowMultiSelect": false
 		},
 		{
@@ -40,7 +40,7 @@
 			"type":"Number",
 			"default": "",
 			"example": "10030",
-			"isRequired": true
+			"required": true
 		}
 	],
 	"displayAs":"{street1}{street2}, {city}, {state.code} {zipCode}"

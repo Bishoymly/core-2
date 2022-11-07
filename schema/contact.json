@@ -9,32 +9,32 @@
 			"display":"First Name",
 			"type":"String",
 			"example": "John",
-			"isRequired": true
+			"required": true
 		},
 		{
 			"name":"lastName",
 			"display":"Last Name",
 			"type":"String",
 			"example": "Smith",
-			"isRequired": true
+			"required": true
 		},
 		{
 			"name":"phone",
 			"display":"Phone",
 			"type":"phone",
-			"isRequired": true
+			"required": true
 		},
 		{
 			"name":"homeAddress",
 			"display":"Home Address",
 			"type":"address",
-			"isRequired": true
+			"required": true
 		},
 		{
 			"name":"workAddress",
 			"display":"Work Address",
 			"type":"address",
-			"isRequired": false
+			"required": false
 		}
 	]
 }

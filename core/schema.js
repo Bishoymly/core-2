@@ -79,7 +79,7 @@ class Schema {
     
     const result = {
       type: p.type,
-      example: '',
+      example: ''
     };
 
     // find if this property is of a another core type
@@ -113,6 +113,10 @@ class Schema {
 
     if(p.example){
       result.example = p.example;
+    }
+
+    if(p.required){
+      result.required = p.required;
     }
 
     return result;

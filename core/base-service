@@ -5,16 +5,18 @@ class BaseService {
     }
     
     hideFields(item){
-        delete item.type;
-        delete item._rid;
-        delete item._self;
-        delete item._etag;
-        delete item._attachments;
-        delete item._ts;
-
-        if (Array.isArray(item)){
-            item.forEach(i=> this.hideFields(i));
-        }
+        if(item){
+            delete item.type;
+            delete item._rid;
+            delete item._self;
+            delete item._etag;
+            delete item._attachments;
+            delete item._ts;
+    
+            if (Array.isArray(item)){
+                item.forEach(i=> this.hideFields(i));
+            }
+        }        
     }
 }
 
