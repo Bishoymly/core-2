@@ -1,9 +1,11 @@
 const CosmosClient = require('@azure/cosmos').CosmosClient
 const debug = require('debug')
 const pluralize = require('pluralize')
+const BaseService = require('./base-service')
 
-class CrudService {
+class CrudService extends BaseService {
     constructor(cosmosClient, databaseId, containerId, app, types) {
+        super()
         this.client = cosmosClient
         this.databaseId = databaseId
         this.collectionId = containerId
@@ -184,20 +186,20 @@ class CrudService {
         };
         
         const { resources } = await this.container.items.query(querySpec).fetchAll();
-        res.json(resources);
+        this.json(type, req, res, resources);
     }
 
     async get(type, req, res){
         const itemId = req.params.id;
         const { resource } = await this.container.item(itemId, undefined).read()
-        res.json(resource);
+        this.json(type, req, res, resource);
     }
 
     async post(type, req, res) {
         const item = req.body;
-        item.type = type;
+        item.type = type; 
         const { resource: doc } = await this.container.items.create(item)
-        res.json(doc);
+        this.json(type, req, res, doc);
     }
 
     async put(type, req, res) {
@@ -207,15 +209,16 @@ class CrudService {
         item.type = type;
         const { resource: replaced } = await this.container
             .item(itemId, undefined)
-            .replace(item)
+            .replace(item);
 
-        res.json(replaced);
+        this.json(type, req, res, replaced);
     }
 
     async delete(type, req, res){
         const id = req.params.id;
         const { body } = await this.container.item(id).delete();
-        res.status(200).json(body);
+        
+        this.json(type, req, res, body);
     }
 }
 

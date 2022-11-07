@@ -5,7 +5,7 @@ const pluralize = require('pluralize')
 const CosmosClient = require('@azure/cosmos').CosmosClient
 const config = require('../config')
 const debug = require('debug')
-const CrudService = require('./crud')
+const CrudService = require('./crud-service')
 
 class Schema {
 
@@ -54,6 +54,12 @@ class Schema {
                     example: p.example??'',
                 };
             });
+
+            properties['id']={
+              type: 'String',
+              description: 'ID',
+              example: 'ee711c38-c31b-40a0-b73d-9ee7e8c27d60'
+            };
         }
         components[t.name] = {
           type: "object",

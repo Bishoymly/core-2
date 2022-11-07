@@ -1,0 +1,21 @@
+class BaseService {
+    json(type, req, res, item){
+        this.hideFields(item);
+        res.json(item);
+    }
+    
+    hideFields(item){
+        delete item.type;
+        delete item._rid;
+        delete item._self;
+        delete item._etag;
+        delete item._attachments;
+        delete item._ts;
+
+        if (Array.isArray(item)){
+            item.forEach(i=> this.hideFields(i));
+        }
+    }
+}
+
+module.exports = BaseService;
