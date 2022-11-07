@@ -1,0 +1,40 @@
+{
+	"name":"contact",
+	"display":"Contact",
+	"type":"Object",
+    "api":"CRUD",
+	"properties":[
+		{
+			"name":"firstName",
+			"display":"First Name",
+			"type":"String",
+			"example": "John",
+			"isRequired": true
+		},
+		{
+			"name":"lastName",
+			"display":"Last Name",
+			"type":"String",
+			"example": "Smith",
+			"isRequired": true
+		},
+		{
+			"name":"phone",
+			"display":"Phone",
+			"type":"phone",
+			"isRequired": true
+		},
+		{
+			"name":"homeAddress",
+			"display":"Home Address",
+			"type":"address",
+			"isRequired": true
+		},
+		{
+			"name":"workAddress",
+			"display":"Work Address",
+			"type":"address",
+			"isRequired": false
+		}
+	]
+}

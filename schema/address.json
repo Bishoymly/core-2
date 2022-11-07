@@ -1,0 +1,47 @@
+{
+	"name":"address",
+	"display":"Address",
+	"type":"Object",
+    "api":"CRUD",
+	"properties":[
+		{
+			"name":"street",
+			"display":"Street Line 1",
+			"type":"String",
+			"default": "",
+			"example": "123 Main Street",
+			"isRequired": true
+		},
+		{
+			"name":"street2",
+			"display":"Street Line 2",
+			"type":"String"
+		},
+		{
+			"name":"city",
+			"display":"City",
+			"type":"String",
+			"default": "",
+			"example": "New York",
+			"isRequired": true
+		},
+		{
+			"name":"state",
+			"display":"State",
+			"type":"state",
+			"default": "",
+			"example": "NY",
+			"isRequired": true,
+			"allowMultiSelect": false
+		},
+		{
+			"name":"zipCode",
+			"display":"Zip Code",
+			"type":"Number",
+			"default": "",
+			"example": "10030",
+			"isRequired": true
+		}
+	],
+	"displayAs":"{street1}{street2}, {city}, {state.code} {zipCode}"
+}

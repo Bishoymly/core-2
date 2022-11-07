@@ -1,0 +1,13 @@
+{
+	"name":"state",
+	"display":"State",
+	"type":"Lookup",
+	"example":"NY",
+	"values":[
+		{ "code":"NY", "description":"New York" },
+		{ "code":"CA", "description":"California" }
+	],
+	"id":"{code}",
+	"displayAs":"{code}",
+	"listAs":"{description}"
+}
