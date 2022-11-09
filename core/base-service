@@ -1,7 +1,34 @@
 class BaseService {
+    constructor(types) {
+        this.types = types;
+    }
+
     json(type, req, res, item){
         this.hideFields(item);
         res.json(item);
+    }
+
+    validate(type, item, prefix){
+        const t = this.types.find(t=>t.name===type);
+        let errors = [];
+        if(t && t.properties){
+            t.properties.filter(p=>p.required===true).forEach(p=>{
+                if(item[p.name] == undefined){
+                    errors.push({
+                        field: prefix + p.name,
+                        error: (p.display?? p.name) + ' is required'
+                    });
+                }
+            });
+
+            t.properties.forEach(p=>{
+                if(item[p.name]){
+                    errors = errors.concat(this.validate(p.type, item[p.name], p.name + '.'));
+                }
+            });
+        }
+
+        return errors;
     }
     
     hideFields(item){

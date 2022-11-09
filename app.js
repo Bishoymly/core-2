@@ -1,21 +1,21 @@
 const CosmosClient = require('@azure/cosmos').CosmosClient
- const config = require('./config')
+const config = require('./config')
 
- const express = require('express')
- const path = require('path')
- const logger = require('morgan')
- const cookieParser = require('cookie-parser')
- const bodyParser = require('body-parser')
- const swaggerUI = require("swagger-ui-express");
- const schema = require("./core/schema");
+const express = require('express')
+const path = require('path')
+const logger = require('morgan')
+const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+const swaggerUI = require("swagger-ui-express");
+const Schema = require("./core/schema");
 const { response } = require('express')
- 
- const app = express()
- 
+
+const app = express()
+
 
  // view engine setup
- app.set('views', path.join(__dirname, 'views'))
- app.set('view engine', 'jade')
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'jade')
 
  // uncomment after placing your favicon in /public
  //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -27,9 +27,8 @@ const { response } = require('express')
 
  
 
- const s = new schema();
- s.addRoutes(app);
- app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(s.getSwaggerUIDocs()));
+ Schema.addRoutes(app);
+ app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(Schema.getSwaggerUIDocs()));
 
  //app.set('view engine', 'jade')
 

@@ -83,7 +83,7 @@ class Schema {
     };
 
     // find if this property is of a another core type
-    const t2 = this.types.find(type=>type.name===p.type);
+    const t2 = this.findType(p.type);
     if(t2){
       if(t2.type === "Object"){
         result['$ref'] = '#/components/schemas/' + t2.name;
@@ -121,6 +121,10 @@ class Schema {
 
     return result;
   }
+
+  findType(name){
+    return this.types.find(type=>type.name===name);
+  }
 }
 
-module.exports = Schema
+module.exports = new Schema();

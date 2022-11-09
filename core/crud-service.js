@@ -5,7 +5,7 @@ const BaseService = require('./base-service')
 
 class CrudService extends BaseService {
     constructor(cosmosClient, databaseId, containerId, app, types) {
-        super()
+        super(types)
         this.client = cosmosClient
         this.databaseId = databaseId
         this.collectionId = containerId
@@ -198,8 +198,15 @@ class CrudService extends BaseService {
     async post(type, req, res) {
         const item = req.body;
         item.type = type; 
-        const { resource: doc } = await this.container.items.create(item)
-        this.json(type, req, res, doc);
+
+        var errors = this.validate(type, item);
+        if(errors.length === 0){
+            const { resource: doc } = await this.container.items.create(item)
+            this.json(type, req, res, doc);    
+        }
+        else{
+            res.status(400).json({validationErrors: errors});
+        }
     }
 
     async put(type, req, res) {
@@ -207,11 +214,18 @@ class CrudService extends BaseService {
         const itemId = req.params.id;
         item.id = itemId;
         item.type = type;
-        const { resource: replaced } = await this.container
+
+        var errors = this.validate(type, item);
+        if(errors.length === 0){
+            const { resource: replaced } = await this.container
             .item(itemId, undefined)
             .replace(item);
 
-        this.json(type, req, res, replaced);
+            this.json(type, req, res, replaced);
+        }
+        else{
+            res.status(400).json({validationErrors: errors});
+        }        
     }
 
     async delete(type, req, res){
