@@ -1,5 +1,4 @@
 class BaseService {
-  types: any;
   constructor(types) {
     this.types = types;
   }

@@ -1,49 +1,32 @@
 import React, { Component } from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import StringField from "./stringField";
+import NumberField from "./numberField";
+import DateField from "./dateField";
+import AutoCompleteField from "./autoCompleteField";
 
 class CoreForm extends Component {
   state = {
     type: this.props.type,
+    prefix: this.props.prefix ?? "",
   };
 
   renderProperty(p) {
-    if (p.type === "String" || p.type === "Number")
-      return (
-        <Grid key={p.name} item xs={12}>
-          <TextField
-            name={p.name}
-            required={p.required}
-            fullWidth
-            id={p.name}
-            label={p.display ?? ""}
-            placeholder={p.example}
-          />
-        </Grid>
-      );
+    if (p.type === "String")
+      return <StringField key={this.state.prefix + p.name} property={p} />;
+
+    if (p.type === "Number")
+      return <NumberField key={this.state.prefix + p.name} property={p} />;
+
+    if (p.type === "Date")
+      return <DateField key={this.state.prefix + p.name} property={p} />;
 
     if (p.type === "state")
       return (
-        <Grid key={p.name} item xs={12}>
-          <Autocomplete
-            disablePortal
-            required
-            fullWidth
-            id={p.name}
-            name={p.name}
-            options={[
-              { label: "California", id: "CA" },
-              { label: "New York", id: "NY" },
-            ]}
-            renderInput={(params) => (
-              <TextField {...params} required label={p.display ?? ""} />
-            )}
-          />
-        </Grid>
+        <AutoCompleteField key={this.state.prefix + p.name} property={p} />
       );
   }
 
@@ -51,9 +34,18 @@ class CoreForm extends Component {
     const handleSubmit = (event) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      console.log({
-        street: data.get("street"),
+      const body = {};
+      this.state.type.properties.forEach((p) => {
+        body[p.name] = data.get(p.name);
       });
+      fetch("http://localhost:3000/address", {
+        method: "POST",
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(body);
     };
 
     return (
@@ -75,6 +67,7 @@ class CoreForm extends Component {
           <Button
             type="submit"
             fullWidth
+            size="large"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >

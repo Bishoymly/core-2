@@ -49,6 +49,13 @@ const type = {
       example: "10030",
       required: true,
     },
+    {
+      name: "dateCreated",
+      display: "Date Created",
+      type: "Date",
+      default: "",
+      required: true,
+    },
   ],
   displayAs: "{street1}{street2}, {city}, {state.code} {zipCode}",
 };
