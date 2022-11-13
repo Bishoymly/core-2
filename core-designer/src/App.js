@@ -1,25 +1,65 @@
-import logo from "./logo.svg";
-import "./App.css";
+import * as React from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import CoreForm from "./components/coreForm";
 
-function App() {
+const theme = createTheme();
+const type = {
+  name: "address",
+  display: "Address",
+  type: "Object",
+  api: "CRUD",
+  properties: [
+    {
+      name: "street",
+      display: "Street Line 1",
+      type: "String",
+      default: "",
+      example: "123 Main Street",
+      required: true,
+    },
+    {
+      name: "street2",
+      display: "Street Line 2",
+      type: "String",
+    },
+    {
+      name: "city",
+      display: "City",
+      type: "String",
+      default: "",
+      example: "New York",
+      required: true,
+    },
+    {
+      name: "state",
+      display: "State",
+      type: "state",
+      default: "",
+      example: "NY",
+      required: true,
+      allowMultiSelect: false,
+    },
+    {
+      name: "zipCode",
+      display: "Zip Code",
+      type: "Number",
+      default: "",
+      example: "10030",
+      required: true,
+    },
+  ],
+  displayAs: "{street1}{street2}, {city}, {state.code} {zipCode}",
+};
+
+export default function Main() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hi, Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <CoreForm type={type}></CoreForm>
+      </Container>
+    </ThemeProvider>
   );
 }
-
-export default App;
