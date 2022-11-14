@@ -10,6 +10,7 @@ const swaggerUI = require("swagger-ui-express");
 const Schema = require("./core/schema");
 const { response } = require("express");
 const designerRouter = require("./routes/designer");
+const cors = require("cors");
 
 const app = express();
 
@@ -25,6 +26,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use("/designer", designerRouter);
 app.use(express.static(path.join(__dirname, "build")));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 Schema.addRoutes(app);
 app.use(
