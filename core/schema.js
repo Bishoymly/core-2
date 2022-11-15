@@ -1,26 +1,15 @@
 // @ts-check
-const fs = require("fs");
-const path = require("path");
 const CosmosClient = require("@azure/cosmos").CosmosClient;
 const config = require("../config");
-const debug = require("debug");
+const swaggerUI = require("swagger-ui-express");
 const CrudService = require("./crud-service");
 
 class Schema {
   types = [];
 
-  constructor() {
-    const jsonsInDir = fs
-      .readdirSync("./schema")
-      .filter((file) => path.extname(file) === ".json");
-    jsonsInDir.forEach((file) => {
-      const fileData = fs.readFileSync(path.join("./schema", file));
-      const json = JSON.parse(fileData.toString());
-      this.types.push(json);
-    });
-  }
+  constructor() {}
 
-  async addRoutes(app) {
+  async init(app) {
     const cosmosClient = new CosmosClient({
       endpoint: config.host,
       key: config.authKey,
@@ -33,7 +22,14 @@ class Schema {
       app,
       this.types
     );
-    await this.crudService.init();
+    await this.crudService.init(app, this.types);
+
+    // setup swagger
+    app.use(
+      "/api-docs",
+      swaggerUI.serve,
+      swaggerUI.setup(this.getSwaggerUIDocs())
+    );
   }
 
   getSwaggerUIDocs() {

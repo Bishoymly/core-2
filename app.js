@@ -6,7 +6,6 @@ const path = require("path");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-const swaggerUI = require("swagger-ui-express");
 const Schema = require("./core/schema");
 const { response } = require("express");
 const designerRouter = require("./routes/designer");
@@ -32,32 +31,28 @@ app.use(
   })
 );
 
-Schema.addRoutes(app);
-app.use(
-  "/api-docs",
-  swaggerUI.serve,
-  swaggerUI.setup(Schema.getSwaggerUIDocs())
-);
+app.init = async function () {
+  // init the master schema service
+  await Schema.init(app);
 
-//app.set('view engine', 'jade')
+  // catch 404 and forward to error handler
+  app.use(function (req, res, next) {
+    const err = new Error("Not Found");
+    err.status = 404;
+    next(err);
+  });
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  const err = new Error("Not Found");
-  err.status = 404;
-  next(err);
-});
+  // error handler
+  app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    // only providing error in development
+    const response = {
+      error: req.app.get("env") === "development" ? err.stack : err.message,
+    };
 
-// error handler
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  // only providing error in development
-  const response = {
-    error: req.app.get("env") === "development" ? err.stack : err.message,
-  };
-
-  res.status(err.status || 500);
-  res.json(response);
-});
+    res.status(err.status || 500);
+    res.json(response);
+  });
+};
 
 module.exports = app;

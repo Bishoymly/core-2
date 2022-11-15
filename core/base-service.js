@@ -44,6 +44,11 @@ class BaseService {
       delete item._attachments;
       delete item._ts;
 
+      if (item.coretype) {
+        item.type = item.coretype;
+        delete item.coretype;
+      }
+
       if (Array.isArray(item)) {
         item.forEach((i) => this.hideFields(i));
       }
