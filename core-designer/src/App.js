@@ -3,6 +3,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CoreEntity from "./components/coreEntity";
+import DashboardContent from "./components/dashboard";
 
 const theme = createTheme();
 const type = {
@@ -61,12 +62,5 @@ const type = {
 };
 
 export default function Main() {
-  return (
-    <ThemeProvider theme={theme}>
-      <Container component="main">
-        <CssBaseline />
-        <CoreEntity type={type}></CoreEntity>
-      </Container>
-    </ThemeProvider>
-  );
+  return <DashboardContent type={type}></DashboardContent>;
 }

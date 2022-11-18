@@ -10,7 +10,7 @@ class CoreEntity extends Component {
   render() {
     return (
       <Box>
-        <Typography component="h4" variant="h4">
+        <Typography component="h2" variant="h6" color="primary" gutterBottom>
           {this.state.type?.display ?? this.state.type?.name}
         </Typography>
         <SimpleGrid type={this.state.type}></SimpleGrid>
