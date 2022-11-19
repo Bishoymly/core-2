@@ -17,6 +17,7 @@ class SimpleGrid extends Component {
 
   async componentDidMount() {
     try {
+      this.setState({ loading: true });
       const response = await fetch(
         "http://localhost:3000/" + this.state.type.name
       );
@@ -27,8 +28,30 @@ class SimpleGrid extends Component {
       this.setState({ data: json, loading: false });
     } catch (error) {
       console.log(error);
+    } finally {
+      this.setState({ loading: false });
     }
   }
+
+  handleDelete = async (id) => {
+    try {
+      console.log(id);
+      this.setState({ loading: true });
+      const response = await fetch(
+        "http://localhost:3000/" + this.state.type.name + "/" + id,
+        { method: "DELETE" }
+      );
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.setState({ loading: false });
+    }
+
+    this.componentDidMount();
+  };
 
   render() {
     return (
@@ -49,7 +72,11 @@ class SimpleGrid extends Component {
                 <IconButton aria-label="edit" fontSize="small">
                   <EditIcon fontSize="small" />
                 </IconButton>
-                <IconButton aria-label="delete" fontSize="small">
+                <IconButton
+                  aria-label="delete"
+                  fontSize="small"
+                  onClick={async () => await this.handleDelete(item.id)}
+                >
                   <DeleteIcon fontSize="small" />
                 </IconButton>
               </Stack>

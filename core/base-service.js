@@ -15,7 +15,11 @@ class BaseService {
       t.properties
         .filter((p) => p.required === true)
         .forEach((p) => {
-          if (item[p.name] == undefined) {
+          if (
+            item[p.name] === undefined ||
+            item[p.name] === null ||
+            item[p.name] === ""
+          ) {
             errors.push({
               field: (prefix ?? "") + p.name,
               error: (p.display ?? p.name) + " is required",
