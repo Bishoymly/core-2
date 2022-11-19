@@ -1,0 +1,39 @@
+{
+    "name": "property",
+    "display": "Property",
+    "type": "Object",
+    "properties": [
+        {
+            "name": "name",
+            "display": "Name",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "display",
+            "display": "Display",
+            "type": "String"
+        },
+        {
+            "name": "type",
+            "display": "Type",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "example",
+            "display": "Example Value",
+            "type": "String"
+        },
+        {
+            "name": "required",
+            "display": "Is Required?",
+            "type": "Boolean"
+        },
+        {
+            "name": "isArray",
+            "display": "Accept Multiple Values",
+            "type": "Boolean"
+        }
+    ]
+}

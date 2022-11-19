@@ -9,6 +9,30 @@
 			"display": "Name",
 			"type": "String",
 			"required": true
+		},
+		{
+			"name": "display",
+			"display": "Display",
+			"type": "String"
+		},
+		{
+			"name": "type",
+			"display": "Type",
+			"type": "String",
+			"example": "Object",
+			"required": true
+		},
+		{
+			"name": "api",
+			"display": "Backend API",
+			"type": "String",
+			"example": "CRUD"
+		},
+		{
+			"name": "properties",
+			"display": "Properties",
+			"type": "property",
+			"isArray": true
 		}
 	]
 }

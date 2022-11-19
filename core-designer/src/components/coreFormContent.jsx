@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Grid from "@mui/material/Grid";
 import StringField from "./stringField";
+import BooleanField from "./booleanField";
 import NumberField from "./numberField";
 import DateField from "./dateField";
 import AutoCompleteField from "./autoCompleteField";
@@ -21,6 +22,17 @@ class CoreFormContent extends Component {
     if (p.type === "String")
       return (
         <StringField
+          key={this.props.prefix + p.name}
+          value={this.props.value[p.name]}
+          error={this.props.validationErrors[this.props.prefix + p.name]}
+          property={p}
+          onChange={(e) => this.handleValueChange(p.name, e)}
+        />
+      );
+
+    if (p.type === "Boolean")
+      return (
+        <BooleanField
           key={this.props.prefix + p.name}
           value={this.props.value[p.name]}
           error={this.props.validationErrors[this.props.prefix + p.name]}
