@@ -6,6 +6,8 @@ import NumberField from "./numberField";
 import DateField from "./dateField";
 import AutoCompleteField from "./autoCompleteField";
 import { Typography } from "@mui/material";
+import SimpleGrid from "./simpleGrid";
+import { Box, Stack } from "@mui/system";
 
 class CoreFormContent extends Component {
   state = {
@@ -79,18 +81,28 @@ class CoreFormContent extends Component {
       if (t.type === "Object") {
         return (
           <Grid container item key={this.props.prefix + p.name}>
-            <Typography component="h2" variant="h6" gutterBottom>
-              {p.display}
-            </Typography>
-            <CoreFormContent
-              type={t}
-              types={this.props.types}
-              mode={this.props.mode}
-              value={this.props.value[p.name] ?? {}}
-              prefix={this.props.prefix + p.name + "."}
-              validationErrors={this.props.validationErrors}
-              onChange={(e) => this.handleValueChange(p.name, e)}
-            ></CoreFormContent>
+            <Stack width={"100%"}>
+              <Typography component="h2" variant="h6" gutterBottom>
+                {p.display}
+              </Typography>
+              {p.isArray ? (
+                <SimpleGrid
+                  type={t}
+                  backend={false}
+                  data={this.props.value[p.name] ?? []}
+                ></SimpleGrid>
+              ) : (
+                <CoreFormContent
+                  type={t}
+                  types={this.props.types}
+                  mode={this.props.mode}
+                  value={this.props.value[p.name] ?? {}}
+                  prefix={this.props.prefix + p.name + "."}
+                  validationErrors={this.props.validationErrors}
+                  onChange={(e) => this.handleValueChange(p.name, e)}
+                ></CoreFormContent>
+              )}
+            </Stack>
           </Grid>
         );
       } else {

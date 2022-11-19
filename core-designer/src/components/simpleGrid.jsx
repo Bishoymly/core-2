@@ -10,26 +10,29 @@ const { Column, HeaderCell, Cell } = Table;
 
 class SimpleGrid extends Component {
   state = {
-    loading: true,
+    loading: false,
     type: this.props.type,
-    data: [],
+    data: this.props.data ?? [],
+    backend: this.props.backend ?? true,
   };
 
   async componentDidMount() {
-    try {
-      this.setState({ loading: true });
-      const response = await fetch(
-        "http://localhost:3000/" + this.state.type.name
-      );
-      if (!response.ok) {
-        throw Error(response.statusText);
+    if (this.state.backend === true) {
+      try {
+        this.setState({ loading: true });
+        const response = await fetch(
+          "http://localhost:3000/" + this.state.type.name
+        );
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        const json = await response.json();
+        this.setState({ data: json, loading: false });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.setState({ loading: false });
       }
-      const json = await response.json();
-      this.setState({ data: json, loading: false });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.setState({ loading: false });
     }
   }
 
@@ -59,9 +62,16 @@ class SimpleGrid extends Component {
 
   render() {
     return (
-      <Table height={400} data={this.state.data} loading={this.state.loading}>
+      <Table
+        autoHeight={true}
+        data={this.state.data}
+        loading={this.state.loading}
+      >
         {this.state.type.properties
-          ?.filter((p) => p.type === "String" || p.type === "Number")
+          ?.filter(
+            (p) =>
+              p.type === "String" || p.type === "Number" || p.type === "Boolean"
+          )
           .map((p) => {
             return (
               <Column key={p.name} flexGrow={1}>
