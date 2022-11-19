@@ -21,17 +21,21 @@ class CoreForm extends Component {
   handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const body = this.state.value;
-      const response = await fetch(
-        "http://localhost:3000/" + this.props.type.name,
-        {
-          method: "POST",
-          body: JSON.stringify(body),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      let body = this.state.value;
+      let url = "http://localhost:3000/" + this.props.type.name;
+      let method = "POST";
+      if (this.props.mode === "edit") {
+        url += "/" + body.id;
+        method = "PUT";
+      }
+
+      const response = await fetch(url, {
+        method: method,
+        body: JSON.stringify(body),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (!response.ok) {
         const body = await response.json();
         let errors = {};
@@ -65,7 +69,8 @@ class CoreForm extends Component {
         }}
       >
         <Typography component="h2" variant="h6" color="primary" gutterBottom>
-          Create {this.props.type?.display ?? ""}
+          {this.props.mode === "add" ? "Create" : "Edit"}{" "}
+          {this.props.type?.display ?? ""}
         </Typography>
         <Box
           component="form"
@@ -86,7 +91,7 @@ class CoreForm extends Component {
           </Grid>
           <Stack direction="row" spacing={2} size="large" sx={{ mt: 3, mb: 2 }}>
             <Button type="submit" size="large" variant="contained">
-              Create
+              {this.props.mode === "add" ? "Create" : "Save"}
             </Button>
             <Button variant="outlined" onClick={this.handleCancel}>
               Cancel
