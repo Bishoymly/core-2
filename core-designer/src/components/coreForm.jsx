@@ -21,6 +21,8 @@ class CoreForm extends Component {
   handleSubmit = async (event) => {
     try {
       event.preventDefault();
+      this.setState({ validationErrors: {} });
+
       let body = this.state.value;
       let url = "http://localhost:3000/" + this.props.type.name;
       let method = "POST";
@@ -46,7 +48,7 @@ class CoreForm extends Component {
         console.log(errors);
         throw Error(response.statusText);
       }
-      this.setState({ validationErrors: {} });
+
       console.log(body);
       this.props.onModeChange("list");
     } catch (error) {
