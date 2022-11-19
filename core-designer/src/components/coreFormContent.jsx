@@ -7,7 +7,7 @@ import DateField from "./dateField";
 import AutoCompleteField from "./autoCompleteField";
 import { Typography } from "@mui/material";
 import SimpleGrid from "./simpleGrid";
-import { Box, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 
 class CoreFormContent extends Component {
   state = {

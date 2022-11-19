@@ -41,23 +41,25 @@ class SimpleGrid extends Component {
   };
 
   handleDelete = async (id) => {
-    try {
-      console.log(id);
-      this.setState({ loading: true });
-      const response = await fetch(
-        "http://localhost:3000/" + this.state.type.name + "/" + id,
-        { method: "DELETE" }
-      );
-      if (!response.ok) {
-        throw Error(response.statusText);
+    if (this.state.backend === true) {
+      try {
+        console.log(id);
+        this.setState({ loading: true });
+        const response = await fetch(
+          "http://localhost:3000/" + this.state.type.name + "/" + id,
+          { method: "DELETE" }
+        );
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.setState({ loading: false });
       }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      this.setState({ loading: false });
-    }
 
-    this.componentDidMount();
+      this.componentDidMount();
+    }
   };
 
   render() {
