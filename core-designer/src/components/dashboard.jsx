@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Component } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -13,29 +13,14 @@ import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import ListSubheader from "@mui/material/ListSubheader";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PeopleIcon from "@mui/icons-material/People";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
-import AssignmentIcon from "@mui/icons-material/Assignment";
+import DataObject from "@mui/icons-material/DataObject";
 import CoreEntity from "./coreEntity";
-
-const secondaryListItems = (
-  <React.Fragment>
-    <ListSubheader component="div" inset>
-      Create Entity
-    </ListSubheader>
-  </React.Fragment>
-);
 
 const drawerWidth = 240;
 
@@ -84,193 +69,133 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const mdTheme = createTheme();
-function renderMenuItem(type) {
-  return (
-    <ListItemButton>
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary={type.display ?? type.name} />
-    </ListItemButton>
-  );
-}
 
-function DashboardContent() {
-  const [type, setType] = React.useState({
-    name: "address",
-    display: "Address",
-    type: "Object",
-    api: "CRUD",
-    properties: [
-      {
-        name: "street",
-        display: "Street Line 1",
-        type: "String",
-        default: "",
-        example: "123 Main Street",
-        required: true,
-      },
-      {
-        name: "street2",
-        display: "Street Line 2",
-        type: "String",
-      },
-      {
-        name: "city",
-        display: "City",
-        type: "String",
-        default: "",
-        example: "New York",
-        required: true,
-      },
-      {
-        name: "state",
-        display: "State",
-        type: "state",
-        default: "",
-        example: "NY",
-        required: true,
-        allowMultiSelect: false,
-      },
-      {
-        name: "zipCode",
-        display: "Zip Code",
-        type: "Number",
-        default: "",
-        example: "10030",
-        required: true,
-      },
-      {
-        name: "dateCreated",
-        display: "Date Created",
-        type: "Date",
-        default: "",
-        required: true,
-      },
-    ],
-    displayAs: "{street1}{street2}, {city}, {state.code} {zipCode}",
-  });
-  const [types, setTypes] = React.useState([]);
-  const [open, setOpen] = React.useState(true);
-  const toggleDrawer = () => {
-    setOpen(!open);
+class DashboardContent extends Component {
+  state = { type: undefined, types: [], open: true };
+  toggleDrawer = () => {
+    this.setState({ open: !this.open });
   };
 
-  React.useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch(`http://localhost:3000/type`);
-        if (!response.ok) {
-          throw new Error(
-            `This is an HTTP error: The status is ${response.status}`
-          );
-        }
-        let result = await response.json();
-        console.log(result);
-        setTypes(result);
-        //setError(null);
-      } catch (err) {
-        //setError(err.message);
-        setTypes([]);
-      } finally {
-        //setLoading(false);
+  async componentDidMount() {
+    try {
+      const response = await fetch("http://localhost:3000/type");
+      if (!response.ok) {
+        throw Error(response.statusText);
       }
-    };
-    getData();
-  }, []);
+      const json = await response.json();
+      this.setState({ types: json });
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-  return (
-    <ThemeProvider theme={mdTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: "24px", // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
+  render() {
+    return (
+      <ThemeProvider theme={mdTheme}>
+        <Box sx={{ display: "flex" }}>
+          <CssBaseline />
+          <AppBar position="absolute" open={this.state.open}>
+            <Toolbar
               sx={{
-                marginRight: "36px",
-                ...(open && { display: "none" }),
+                pr: "24px", // keep right padding when drawer closed
               }}
             >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="open drawer"
+                onClick={this.toggleDrawer}
+                sx={{
+                  marginRight: "36px",
+                  ...(this.state.open && { display: "none" }),
+                }}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                sx={{ flexGrow: 1 }}
+              >
+                Core 2
+              </Typography>
+              <IconButton color="inherit">
+                <Badge badgeContent={4} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          <Drawer variant="permanent" open={this.state.open}>
+            <Toolbar
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end",
+                px: [1],
+              }}
             >
-              Core 2
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            {types.map((t) => renderMenuItem(t))}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
-          sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
-          }}
-        >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
+              <IconButton onClick={this.toggleDrawer}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </Toolbar>
+            <Divider />
+            <List component="nav">
+              {this.state.types.map((t) => (
+                <ListItemButton
+                  key={t.name}
+                  onClick={() => {
+                    console.log(t.name);
+                    this.setState({ type: t });
                   }}
                 >
-                  <CoreEntity type={type}></CoreEntity>
-                </Paper>
+                  <ListItemIcon>
+                    <DataObject />
+                  </ListItemIcon>
+                  <ListItemText primary={t.display ?? t.name} />
+                </ListItemButton>
+              ))}
+              <Divider sx={{ my: 1 }} />
+            </List>
+          </Drawer>
+          <Box
+            component="main"
+            sx={{
+              backgroundColor: (theme) =>
+                theme.palette.mode === "light"
+                  ? theme.palette.grey[100]
+                  : theme.palette.grey[900],
+              flexGrow: 1,
+              height: "100vh",
+              overflow: "auto",
+            }}
+          >
+            <Toolbar />
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Paper
+                    sx={{
+                      p: 2,
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <CoreEntity
+                      key={this.state.type?.name}
+                      type={this.state.type}
+                    ></CoreEntity>
+                  </Paper>
+                </Grid>
               </Grid>
-            </Grid>
-          </Container>
+            </Container>
+          </Box>
         </Box>
-      </Box>
-    </ThemeProvider>
-  );
+      </ThemeProvider>
+    );
+  }
 }
 
-export default function Dashboard() {
-  return <DashboardContent />;
-}
+export default DashboardContent;

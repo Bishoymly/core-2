@@ -2,5 +2,13 @@
 	"name": "type",
 	"display": "Type",
 	"type": "type",
-	"api": "CRUD"
+	"api": "CRUD",
+	"properties": [
+		{
+			"name": "name",
+			"display": "Name",
+			"type": "String",
+			"required": true
+		}
+	]
 }

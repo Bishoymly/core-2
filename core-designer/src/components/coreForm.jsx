@@ -7,6 +7,7 @@ import StringField from "./stringField";
 import NumberField from "./numberField";
 import DateField from "./dateField";
 import AutoCompleteField from "./autoCompleteField";
+import { Stack } from "@mui/material";
 
 class CoreForm extends Component {
   state = {
@@ -38,7 +39,7 @@ class CoreForm extends Component {
       this.state.type.properties.forEach((p) => {
         body[p.name] = data.get(p.name);
       });
-      fetch("http://localhost:3000/address", {
+      fetch("http://localhost:3000/" + this.state.type.name, {
         method: "POST",
         body: JSON.stringify(body),
         headers: {
@@ -51,28 +52,23 @@ class CoreForm extends Component {
     return (
       <Box
         sx={{
-          marginTop: 8,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h3">
+        <Typography component="h2" variant="h6" color="primary" gutterBottom>
           Create {this.state.type?.display ?? ""}
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             {this.state.type.properties.map((p) => this.renderProperty(p))}
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            size="large"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Create
-          </Button>
+          <Stack direction="row" spacing={2} size="large" sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" size="large" variant="contained">
+              Create
+            </Button>
+            <Button variant="outlined">Cancel</Button>
+          </Stack>
         </Box>
       </Box>
     );
