@@ -8,6 +8,11 @@ class NumberField extends Component {
     prefix: this.props.prefix ?? "",
   };
 
+  setValue(e) {
+    this.setState({ value: e.target.value });
+    if (this.props.onChange) this.props.onChange(e.target.value);
+  }
+
   render() {
     return (
       <Grid item xs={12}>
@@ -20,7 +25,10 @@ class NumberField extends Component {
           placeholder={this.state.property.example ?? ""}
           helperText={this.props.error}
           error={this.props.error ? true : false}
-          value={this.props.value}
+          value={this.state.value}
+          onChange={(e) => {
+            this.setValue(e);
+          }}
         />
       </Grid>
     );

@@ -13,6 +13,7 @@ class DateField extends Component {
 
   setValue(value) {
     this.setState({ value: value });
+    if (this.props.onChange) this.props.onChange(value);
   }
 
   render() {

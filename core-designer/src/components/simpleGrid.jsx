@@ -60,14 +60,16 @@ class SimpleGrid extends Component {
   render() {
     return (
       <Table height={400} data={this.state.data} loading={this.state.loading}>
-        {this.state.type.properties?.map((p) => {
-          return (
-            <Column key={p.name} flexGrow={1}>
-              <HeaderCell>{p.display ?? p.name}</HeaderCell>
-              <Cell dataKey={p.name} />
-            </Column>
-          );
-        })}
+        {this.state.type.properties
+          ?.filter((p) => p.type === "String" || p.type === "Number")
+          .map((p) => {
+            return (
+              <Column key={p.name} flexGrow={1}>
+                <HeaderCell>{p.display ?? p.name}</HeaderCell>
+                <Cell dataKey={p.name} />
+              </Column>
+            );
+          })}
         <Column fixed="right" flexGrow={1}>
           <HeaderCell></HeaderCell>
           <Cell>

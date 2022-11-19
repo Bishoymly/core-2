@@ -1,69 +1,27 @@
 import React, { Component } from "react";
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import StringField from "./stringField";
-import NumberField from "./numberField";
-import DateField from "./dateField";
-import AutoCompleteField from "./autoCompleteField";
-import { Stack } from "@mui/material";
+
+import { Grid, Stack } from "@mui/material";
+import CoreFormContent from "./coreFormContent";
 
 class CoreForm extends Component {
   state = {
+    value: this.props.value ?? {},
     validationErrors: {},
   };
 
-  renderProperty(p) {
-    if (p.type === "String")
-      return (
-        <StringField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.state.validationErrors[this.props.prefix + p.name]}
-          property={p}
-        />
-      );
-
-    if (p.type === "Number")
-      return (
-        <NumberField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.state.validationErrors[this.props.prefix + p.name]}
-          property={p}
-        />
-      );
-
-    if (p.type === "Date")
-      return (
-        <DateField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.state.validationErrors[this.props.prefix + p.name]}
-          property={p}
-        />
-      );
-
-    if (p.type === "state")
-      return (
-        <AutoCompleteField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.state.validationErrors[this.props.prefix + p.name]}
-          property={p}
-        />
-      );
-  }
+  handleValueChange = (value) => {
+    this.state.value = value;
+    this.setState({ value: this.state.value });
+    if (this.props.onChange) this.props.onChange(this.state.value);
+  };
 
   handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      const body = {};
-      this.props.type.properties.forEach((p) => {
-        body[p.name] = data.get(p.name);
-      });
+      const body = this.state.value;
       const response = await fetch(
         "http://localhost:3000/" + this.props.type.name,
         {
@@ -116,7 +74,15 @@ class CoreForm extends Component {
           sx={{ mt: 3 }}
         >
           <Grid container spacing={2}>
-            {this.props.type.properties.map((p) => this.renderProperty(p))}
+            <CoreFormContent
+              type={this.props.type}
+              types={this.props.types}
+              mode={this.props.mode}
+              value={this.props.value}
+              validationErrors={this.state.validationErrors}
+              prefix=""
+              onChange={this.handleValueChange}
+            ></CoreFormContent>
           </Grid>
           <Stack direction="row" spacing={2} size="large" sx={{ mt: 3, mb: 2 }}>
             <Button type="submit" size="large" variant="contained">

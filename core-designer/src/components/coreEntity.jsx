@@ -14,6 +14,11 @@ class CoreEntity extends Component {
   };
 
   handleValueChange = (e) => {
+    console.log(e);
+    this.setState({ value: e });
+  };
+
+  handleEdit = (e) => {
     this.setState({ mode: "edit", value: e });
   };
 
@@ -43,7 +48,7 @@ class CoreEntity extends Component {
 
             <SimpleGrid
               type={this.props.type}
-              onValueChange={this.handleValueChange}
+              onValueChange={this.handleEdit}
             ></SimpleGrid>
           </Box>
         );
@@ -51,10 +56,12 @@ class CoreEntity extends Component {
         return (
           <CoreForm
             type={this.props.type}
+            types={this.props.types}
             mode={this.state.mode}
             value={this.state.value}
             prefix=""
             onModeChange={this.handleModeChange}
+            onChange={this.handleValueChange}
           ></CoreForm>
         );
       }

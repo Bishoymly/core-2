@@ -71,9 +71,14 @@ const Drawer = styled(MuiDrawer, {
 const mdTheme = createTheme();
 
 class DashboardContent extends Component {
-  state = { type: undefined, types: [], open: true };
+  state = {
+    type: undefined,
+    types: [],
+    open: true,
+  };
+
   toggleDrawer = () => {
-    this.setState({ open: !this.open });
+    this.setState({ open: !this.state.open });
   };
 
   async componentDidMount() {
@@ -143,20 +148,22 @@ class DashboardContent extends Component {
             </Toolbar>
             <Divider />
             <List component="nav">
-              {this.state.types.map((t) => (
-                <ListItemButton
-                  key={t.name}
-                  onClick={() => {
-                    console.log(t.name);
-                    this.setState({ type: t });
-                  }}
-                >
-                  <ListItemIcon>
-                    <DataObject />
-                  </ListItemIcon>
-                  <ListItemText primary={t.display ?? t.name} />
-                </ListItemButton>
-              ))}
+              {this.state.types
+                .filter((t) => t.api === "CRUD")
+                .map((t) => (
+                  <ListItemButton
+                    key={t.name}
+                    onClick={() => {
+                      console.log(t.name);
+                      this.setState({ type: t });
+                    }}
+                  >
+                    <ListItemIcon>
+                      <DataObject />
+                    </ListItemIcon>
+                    <ListItemText primary={t.display ?? t.name} />
+                  </ListItemButton>
+                ))}
               <Divider sx={{ my: 1 }} />
             </List>
           </Drawer>
@@ -186,6 +193,7 @@ class DashboardContent extends Component {
                     <CoreEntity
                       key={this.state.type?.name}
                       type={this.state.type}
+                      types={this.state.types}
                     ></CoreEntity>
                   </Paper>
                 </Grid>
