@@ -3,7 +3,6 @@ import React, { Component } from "react";
 
 class StringField extends Component {
   state = {
-    value: this.props.value ?? "",
     property: this.props.property,
     prefix: this.props.prefix ?? "",
   };
@@ -20,6 +19,7 @@ class StringField extends Component {
           placeholder={this.state.property.example ?? ""}
           helperText={this.props.error}
           error={this.props.error ? true : false}
+          value={this.props.value}
         />
       </Grid>
     );

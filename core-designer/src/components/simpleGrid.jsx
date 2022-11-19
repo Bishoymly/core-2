@@ -33,6 +33,10 @@ class SimpleGrid extends Component {
     }
   }
 
+  handleEdit = async (item) => {
+    this.props.onValueChange(item);
+  };
+
   handleDelete = async (id) => {
     try {
       console.log(id);
@@ -69,7 +73,11 @@ class SimpleGrid extends Component {
           <Cell>
             {(item) => (
               <Stack direction="row" spacing={2} fontSize="small">
-                <IconButton aria-label="edit" fontSize="small">
+                <IconButton
+                  aria-label="edit"
+                  fontSize="small"
+                  onClick={async () => await this.handleEdit(item)}
+                >
                   <EditIcon fontSize="small" />
                 </IconButton>
                 <IconButton

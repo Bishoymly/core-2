@@ -19,6 +19,7 @@ class CoreForm extends Component {
       return (
         <StringField
           key={this.props.prefix + p.name}
+          value={this.props.value[p.name]}
           error={this.state.validationErrors[this.props.prefix + p.name]}
           property={p}
         />
@@ -28,6 +29,7 @@ class CoreForm extends Component {
       return (
         <NumberField
           key={this.props.prefix + p.name}
+          value={this.props.value[p.name]}
           error={this.state.validationErrors[this.props.prefix + p.name]}
           property={p}
         />
@@ -37,6 +39,7 @@ class CoreForm extends Component {
       return (
         <DateField
           key={this.props.prefix + p.name}
+          value={this.props.value[p.name]}
           error={this.state.validationErrors[this.props.prefix + p.name]}
           property={p}
         />
@@ -46,6 +49,7 @@ class CoreForm extends Component {
       return (
         <AutoCompleteField
           key={this.props.prefix + p.name}
+          value={this.props.value[p.name]}
           error={this.state.validationErrors[this.props.prefix + p.name]}
           property={p}
         />

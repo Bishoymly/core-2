@@ -12,8 +12,7 @@ class DateField extends Component {
   };
 
   setValue(value) {
-    this.state.value = value;
-    this.setState(this.state);
+    this.setState({ value: value });
   }
 
   render() {

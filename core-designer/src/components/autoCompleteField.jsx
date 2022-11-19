@@ -9,9 +9,7 @@ class AutoCompleteField extends Component {
   };
 
   setValue(value) {
-    console.log(value);
-    this.state.value = value;
-    this.setState(this.state);
+    this.setState({ value: value });
   }
 
   render() {

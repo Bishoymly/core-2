@@ -20,6 +20,7 @@ class NumberField extends Component {
           placeholder={this.state.property.example ?? ""}
           helperText={this.props.error}
           error={this.props.error ? true : false}
+          value={this.props.value}
         />
       </Grid>
     );

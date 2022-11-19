@@ -6,10 +6,15 @@ import AddIcon from "@mui/icons-material/Add";
 class CoreEntity extends Component {
   state = {
     mode: "list",
+    value: {},
   };
 
   handleModeChange = (e) => {
     this.setState({ mode: e });
+  };
+
+  handleValueChange = (e) => {
+    this.setState({ mode: "edit", value: e });
   };
 
   render() {
@@ -30,13 +35,16 @@ class CoreEntity extends Component {
               startIcon={<AddIcon />}
               sx={{ mb: 2 }}
               onClick={() => {
-                this.setState({ mode: "add" });
+                this.setState({ mode: "add", value: {} });
               }}
             >
               Add
             </Button>
 
-            <SimpleGrid type={this.props.type}></SimpleGrid>
+            <SimpleGrid
+              type={this.props.type}
+              onValueChange={this.handleValueChange}
+            ></SimpleGrid>
           </Box>
         );
       } else {
@@ -44,6 +52,7 @@ class CoreEntity extends Component {
           <CoreForm
             type={this.props.type}
             mode={this.state.mode}
+            value={this.state.value}
             prefix=""
             onModeChange={this.handleModeChange}
           ></CoreForm>
