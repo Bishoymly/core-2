@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
-import "rsuite-table/dist/css/rsuite-table.min.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, Stack } from "@mui/material";
@@ -40,13 +39,13 @@ class SimpleGrid extends Component {
     this.props.onValueChange(item);
   };
 
-  handleDelete = async (id) => {
+  handleDelete = async (item) => {
     if (this.state.backend === true) {
       try {
-        console.log(id);
+        console.log(item.id);
         this.setState({ loading: true });
         const response = await fetch(
-          "http://localhost:3000/" + this.state.type.name + "/" + id,
+          "http://localhost:3000/" + this.state.type.name + "/" + item.id,
           { method: "DELETE" }
         );
         if (!response.ok) {
@@ -59,6 +58,11 @@ class SimpleGrid extends Component {
       }
 
       this.componentDidMount();
+    } else {
+      const i = this.state.data.indexOf(item);
+      this.state.data.splice(i, 1);
+      this.setState({ data: this.state.data });
+      if (this.props.onChange) this.props.onChange(this.state.data);
     }
   };
 
@@ -86,7 +90,7 @@ class SimpleGrid extends Component {
           <HeaderCell></HeaderCell>
           <Cell>
             {(item) => (
-              <Stack direction="row" spacing={2} fontSize="small">
+              <Stack direction="row" spacing={2} sx={{ mt: -1 }}>
                 <IconButton
                   aria-label="edit"
                   fontSize="small"
@@ -97,7 +101,7 @@ class SimpleGrid extends Component {
                 <IconButton
                   aria-label="delete"
                   fontSize="small"
-                  onClick={async () => await this.handleDelete(item.id)}
+                  onClick={async () => await this.handleDelete(item)}
                 >
                   <DeleteIcon fontSize="small" />
                 </IconButton>

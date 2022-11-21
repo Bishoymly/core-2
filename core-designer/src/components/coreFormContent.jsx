@@ -6,8 +6,8 @@ import NumberField from "./numberField";
 import DateField from "./dateField";
 import AutoCompleteField from "./autoCompleteField";
 import { Typography } from "@mui/material";
-import SimpleGrid from "./simpleGrid";
 import { Stack } from "@mui/system";
+import InlineGrid from "./inlineGrid";
 
 class CoreFormContent extends Component {
   state = {
@@ -86,11 +86,13 @@ class CoreFormContent extends Component {
                 {p.display}
               </Typography>
               {p.isArray ? (
-                <SimpleGrid
+                <InlineGrid
                   type={t}
-                  backend={false}
+                  types={this.props.types}
+                  property={p}
                   data={this.props.value[p.name] ?? []}
-                ></SimpleGrid>
+                  onChange={(e) => this.handleValueChange(p.name, e)}
+                ></InlineGrid>
               ) : (
                 <CoreFormContent
                   type={t}

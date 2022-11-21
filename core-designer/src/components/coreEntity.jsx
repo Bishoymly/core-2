@@ -49,7 +49,6 @@ class CoreEntity extends Component {
             <SimpleGrid
               type={this.props.type}
               onValueChange={this.handleEdit}
-              backend={true}
             ></SimpleGrid>
           </Box>
         );

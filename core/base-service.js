@@ -27,13 +27,15 @@ class BaseService {
           }
         });
 
-      t.properties.forEach((p) => {
-        if (item[p.name]) {
-          errors = errors.concat(
-            this.validate(p.type, item[p.name], p.name + ".")
-          );
-        }
-      });
+      t.properties
+        .filter((p) => p.isArray !== true)
+        .forEach((p) => {
+          if (item[p.name]) {
+            errors = errors.concat(
+              this.validate(p.type, item[p.name], p.name + ".")
+            );
+          }
+        });
     }
 
     return errors;
