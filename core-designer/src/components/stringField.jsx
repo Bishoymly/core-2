@@ -20,6 +20,7 @@ class StringField extends Component {
           name={this.state.prefix + this.state.property.name}
           required={this.state.property.required}
           fullWidth
+          multiline
           id={this.state.prefix + this.state.property.name}
           label={this.state.property.display ?? this.state.property.name}
           placeholder={this.state.property.example ?? ""}
