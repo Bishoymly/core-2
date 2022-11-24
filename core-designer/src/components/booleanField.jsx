@@ -9,8 +9,15 @@ class BooleanField extends Component {
   };
 
   setValue(e) {
-    this.setState({ value: e.target.value });
-    if (this.props.onChange) this.props.onChange(e.target.value);
+    let v = null;
+    console.log(e.target.value);
+    if (e.target.value === "on") {
+      v = true;
+    } else if (e.target.value === "off") {
+      v = false;
+    }
+    this.setState({ value: v });
+    if (this.props.onChange) this.props.onChange(v);
   }
 
   render() {
@@ -29,9 +36,6 @@ class BooleanField extends Component {
           }
           label={this.state.property.display ?? this.state.property.name}
           required={this.state.property.required}
-          fullWidth
-          helperText={this.props.error}
-          error={this.props.error ? true : false}
         />
       </Grid>
     );
