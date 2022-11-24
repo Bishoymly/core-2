@@ -249,6 +249,9 @@ class CrudService extends BaseService {
 
   async post(type, req, res) {
     const item = req.body;
+    if (type === "type" && item.type !== "type") {
+      item.coretype = item.type;
+    }
     item.type = type;
 
     var errors = this.validate(type, item);
@@ -264,6 +267,9 @@ class CrudService extends BaseService {
     const item = req.body;
     const itemId = req.params.id;
     item.id = itemId;
+    if (type === "type" && item.type !== "type") {
+      item.coretype = item.type;
+    }
     item.type = type;
 
     var errors = this.validate(type, item);
