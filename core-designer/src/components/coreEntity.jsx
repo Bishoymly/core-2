@@ -14,7 +14,6 @@ class CoreEntity extends Component {
   };
 
   handleValueChange = (e) => {
-    console.log(e);
     this.setState({ value: e });
   };
 
