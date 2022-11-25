@@ -37,12 +37,21 @@
 			"name": "api",
 			"display": "Backend API",
 			"type": "String",
+			"helpText": "Should this appear editable in admin menu?",
 			"example": "CRUD"
 		},
 		{
 			"name": "properties",
 			"display": "Properties",
+			"helpText": "The fields for this type",
 			"type": "property",
+			"isArray": true
+		},
+		{
+			"name": "values",
+			"display": "Values",
+			"type": "String",
+			"helpText": "Possible values for a lookup type",
 			"isArray": true
 		}
 	]

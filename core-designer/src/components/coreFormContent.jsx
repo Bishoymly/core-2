@@ -4,6 +4,7 @@ import { FormHelperText, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import InlineGrid from "./inlineGrid";
 import Components from "./Components";
+import InlineFormList from "./inlineFormList";
 
 class CoreFormContent extends Component {
   state = {
@@ -22,7 +23,7 @@ class CoreFormContent extends Component {
     if (t) {
       p = this.calculatePropertyFromType(property, t);
 
-      if (p.type === "Object") {
+      if (p.type === "Object" || p.isArray) {
         return (
           <Grid container item key={this.props.prefix + p.name}>
             <Stack width={"100%"}>
@@ -31,19 +32,33 @@ class CoreFormContent extends Component {
               </Typography>
               <FormHelperText>{p.helpText}</FormHelperText>
               {p.isArray ? (
-                <InlineGrid
-                  type={t}
-                  types={this.props.types}
-                  property={p}
-                  data={this.props.value[p.name] ?? []}
-                  onChange={(e) => this.handleValueChange(p.name, e)}
-                ></InlineGrid>
+                p.type === "Object" ? (
+                  <InlineGrid
+                    type={t}
+                    types={this.props.types}
+                    property={p}
+                    data={this.props.value[p.name] ?? []}
+                    onChange={(e) => this.handleValueChange(p.name, e)}
+                  ></InlineGrid>
+                ) : (
+                  <InlineFormList
+                    type={t}
+                    types={this.props.types}
+                    property={p}
+                    data={this.props.value[p.name] ?? []}
+                    onChange={(e) => this.handleValueChange(p.name, e)}
+                  ></InlineFormList>
+                )
               ) : (
                 <CoreFormContent
                   type={t}
                   types={this.props.types}
                   mode={this.props.mode}
-                  value={this.props.value[p.name] ?? {}}
+                  value={
+                    p.name === ""
+                      ? this.state.value
+                      : this.state.value[p.name] ?? {}
+                  }
                   prefix={this.props.prefix + p.name + "."}
                   validationErrors={this.props.validationErrors}
                   onChange={(e) => this.handleValueChange(p.name, e)}
@@ -58,7 +73,7 @@ class CoreFormContent extends Component {
     const control = this.calculateUIControl(p);
     return React.createElement(Components[control], {
       key: this.props.prefix + p.name,
-      value: this.props.value[p.name],
+      value: p.name === "" ? this.state.value : this.state.value[p.name] ?? {},
       error: this.props.validationErrors[this.props.prefix + p.name],
       property: p,
       onChange: (e) => this.handleValueChange(p.name, e),
@@ -99,7 +114,13 @@ class CoreFormContent extends Component {
   render() {
     return (
       <Grid container item spacing={2}>
-        {this.props.type.properties.map((p) => this.renderProperty(p))}
+        {this.props.type.properties && this.props.type.properties.length > 0
+          ? this.props.type.properties.map((p) => this.renderProperty(p))
+          : this.renderProperty({
+              name: "",
+              display: "",
+              type: this.props.type,
+            })}
       </Grid>
     );
   }
