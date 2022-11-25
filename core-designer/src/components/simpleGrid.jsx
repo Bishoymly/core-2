@@ -42,7 +42,6 @@ class SimpleGrid extends Component {
   handleDelete = async (item) => {
     if (this.state.backend === true) {
       try {
-        console.log(item.id);
         this.setState({ loading: true });
         const response = await fetch(
           "http://localhost:3000/" + this.state.type.name + "/" + item.id,

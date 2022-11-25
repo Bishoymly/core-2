@@ -1,13 +1,9 @@
 import React, { Component } from "react";
 import Grid from "@mui/material/Grid";
-import StringField from "./stringField";
-import BooleanField from "./booleanField";
-import NumberField from "./numberField";
-import DateField from "./dateField";
-import AutoCompleteField from "./autoCompleteField";
-import { Typography } from "@mui/material";
+import { FormHelperText, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import InlineGrid from "./inlineGrid";
+import Components from "./Components";
 
 class CoreFormContent extends Component {
   state = {
@@ -20,71 +16,20 @@ class CoreFormContent extends Component {
     if (this.props.onChange) this.props.onChange(this.state.value);
   };
 
-  renderProperty(p) {
-    if (p.type === "String")
-      return (
-        <StringField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.props.validationErrors[this.props.prefix + p.name]}
-          property={p}
-          onChange={(e) => this.handleValueChange(p.name, e)}
-        />
-      );
-
-    if (p.type === "Boolean")
-      return (
-        <BooleanField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.props.validationErrors[this.props.prefix + p.name]}
-          property={p}
-          onChange={(e) => this.handleValueChange(p.name, e)}
-        />
-      );
-
-    if (p.type === "Number")
-      return (
-        <NumberField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.props.validationErrors[this.props.prefix + p.name]}
-          property={p}
-          onChange={(e) => this.handleValueChange(p.name, e)}
-        />
-      );
-
-    if (p.type === "Date")
-      return (
-        <DateField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.props.validationErrors[this.props.prefix + p.name]}
-          property={p}
-          onChange={(e) => this.handleValueChange(p.name, e)}
-        />
-      );
-
-    if (p.type === "state")
-      return (
-        <AutoCompleteField
-          key={this.props.prefix + p.name}
-          value={this.props.value[p.name]}
-          error={this.props.validationErrors[this.props.prefix + p.name]}
-          property={p}
-          onChange={(e) => this.handleValueChange(p.name, e)}
-        />
-      );
-
-    const t = this.props.types.find((t) => t.name === p.type);
+  renderProperty(property) {
+    const t = this.props.types.find((t) => t.name === property.type);
+    let p = property;
     if (t) {
-      if (t.type === "Object") {
+      p = this.calculatePropertyFromType(property, t);
+
+      if (p.type === "Object") {
         return (
           <Grid container item key={this.props.prefix + p.name}>
             <Stack width={"100%"}>
               <Typography component="h2" variant="h6" gutterBottom>
                 {p.display}
               </Typography>
+              <FormHelperText>{p.helpText}</FormHelperText>
               {p.isArray ? (
                 <InlineGrid
                   type={t}
@@ -107,9 +52,35 @@ class CoreFormContent extends Component {
             </Stack>
           </Grid>
         );
-      } else {
-        return this.renderProperty(this.calculatePropertyFromType(p, t));
       }
+    }
+
+    const control = this.calculateUIControl(p);
+    return React.createElement(Components[control], {
+      key: this.props.prefix + p.name,
+      value: this.props.value[p.name],
+      error: this.props.validationErrors[this.props.prefix + p.name],
+      property: p,
+      onChange: (e) => this.handleValueChange(p.name, e),
+    });
+  }
+
+  calculateUIControl(property) {
+    if (property.uiControl && property.uiControl !== "") {
+      return property.uiControl;
+    }
+
+    switch (property.type) {
+      case "String":
+        return "Text";
+      case "Number":
+        return "Number";
+      case "Date":
+        return "DatePicker";
+      case "Boolean":
+        return "Checkbox";
+      default:
+        return "Text";
     }
   }
 

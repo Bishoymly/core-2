@@ -23,7 +23,9 @@ class NumberField extends Component {
           id={this.state.prefix + this.state.property.name}
           label={this.state.property.display ?? this.state.property.name}
           placeholder={this.state.property.example ?? ""}
-          helperText={this.props.error}
+          helperText={
+            this.props.error ? this.props.error : this.props.property.helpText
+          }
           error={this.props.error ? true : false}
           value={this.state.value}
           onChange={(e) => {

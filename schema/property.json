@@ -6,33 +6,61 @@
         {
             "name": "name",
             "display": "Name",
+            "helpText": "The name that is used to store the value of this field",
             "type": "String",
             "required": true
         },
         {
             "name": "display",
             "display": "Display",
+            "helpText": "The label that will be displayed for that field",
             "type": "String"
         },
         {
             "name": "type",
             "display": "Type",
+            "helpText": "The data type of this field",
             "type": "String",
-            "required": true
+            "uiControl": "Select",
+            "required": true,
+            "values": [
+                "String",
+                "Number",
+                "Boolean",
+                "Date"
+            ]
+        },
+        {
+            "name": "uiControl",
+            "display": "UI Control",
+            "helpText": "The UI Control that will be used to edit this field",
+            "uiControl": "Select",
+            "type": "String",
+            "values": [
+                "Text",
+                "Number",
+                "DatePicker",
+                "Checkbox",
+                "Select",
+                "AutoComplete"
+            ]
         },
         {
             "name": "example",
             "display": "Example Value",
+            "helpText": "Just an example value",
             "type": "String"
         },
         {
             "name": "required",
-            "display": "Is Required?",
+            "display": "Required?",
+            "helpText": "Is it required?",
             "type": "Boolean"
         },
         {
             "name": "isArray",
-            "display": "Accept Multiple Values",
+            "display": "Is Array?",
+            "helpText": "Is it a list or accepts multiple values?",
             "type": "Boolean"
         }
     ]

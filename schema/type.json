@@ -7,20 +7,31 @@
 		{
 			"name": "name",
 			"display": "Name",
+			"helpText": "The name that is used to identify this type",
 			"type": "String",
 			"required": true
 		},
 		{
 			"name": "display",
 			"display": "Display",
+			"helpText": "The name that will be displayed for this type",
 			"type": "String"
 		},
 		{
 			"name": "type",
 			"display": "Type",
-			"type": "String",
 			"example": "Object",
-			"required": true
+			"helpText": "The data type of this field",
+			"type": "String",
+			"uiControl": "Select",
+			"required": true,
+			"values": [
+				"Object",
+				"String",
+				"Number",
+				"Boolean",
+				"Date"
+			]
 		},
 		{
 			"name": "api",

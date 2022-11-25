@@ -33,7 +33,11 @@ class DateField extends Component {
                 fullWidth
                 name={this.state.prefix + this.state.property.name}
                 required={this.state.property.required}
-                helperText={this.props.error}
+                helperText={
+                  this.props.error
+                    ? this.props.error
+                    : this.props.property.helpText
+                }
                 error={this.props.error ? true : false}
                 {...params}
               />

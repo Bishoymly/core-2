@@ -30,7 +30,11 @@ class AutoCompleteField extends Component {
               label={this.state.property.display ?? this.state.property.name}
               placeholder={this.state.property.example ?? ""}
               required={this.state.property.required}
-              helperText={this.props.error}
+              helperText={
+                this.props.error
+                  ? this.props.error
+                  : this.props.property.helpText
+              }
               error={this.props.error ? true : false}
               {...params}
             />

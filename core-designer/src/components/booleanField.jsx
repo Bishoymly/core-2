@@ -1,4 +1,9 @@
-import { Checkbox, FormControlLabel, Grid } from "@mui/material";
+import {
+  Checkbox,
+  FormControlLabel,
+  FormHelperText,
+  Grid,
+} from "@mui/material";
 import React, { Component } from "react";
 
 class BooleanField extends Component {
@@ -9,15 +14,8 @@ class BooleanField extends Component {
   };
 
   setValue(e) {
-    let v = null;
-    console.log(e.target.value);
-    if (e.target.value === "on") {
-      v = true;
-    } else if (e.target.value === "off") {
-      v = false;
-    }
-    this.setState({ value: v });
-    if (this.props.onChange) this.props.onChange(v);
+    this.setState({ value: this.target.checked });
+    if (this.props.onChange) this.props.onChange(this.target.checked);
   }
 
   render() {
@@ -28,7 +26,7 @@ class BooleanField extends Component {
             <Checkbox
               name={this.state.prefix + this.state.property.name}
               id={this.state.prefix + this.state.property.name}
-              value={this.state.value}
+              checked={this.state.value}
               onChange={(e) => {
                 this.setValue(e);
               }}
@@ -36,7 +34,10 @@ class BooleanField extends Component {
           }
           label={this.state.property.display ?? this.state.property.name}
           required={this.state.property.required}
-        />
+        ></FormControlLabel>
+        <FormHelperText>
+          {this.props.error ? this.props.error : this.props.property.helpText}
+        </FormHelperText>
       </Grid>
     );
   }

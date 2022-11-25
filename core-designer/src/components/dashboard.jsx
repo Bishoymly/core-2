@@ -154,7 +154,6 @@ class DashboardContent extends Component {
                   <ListItemButton
                     key={t.name}
                     onClick={() => {
-                      console.log(t.name);
                       this.setState({ type: t });
                     }}
                   >
