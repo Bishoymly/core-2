@@ -42,7 +42,8 @@
                 "DatePicker",
                 "Checkbox",
                 "Select",
-                "AutoComplete"
+                "AutoComplete",
+                "CodeEditor"
             ]
         },
         {
