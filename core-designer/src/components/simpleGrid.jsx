@@ -20,7 +20,7 @@ class SimpleGrid extends Component {
       try {
         this.setState({ loading: true });
         const response = await fetch(
-          "http://localhost:3000/" + this.state.type.name
+          "http://localhost:3000/api/" + this.state.type.name
         );
         if (!response.ok) {
           throw Error(response.statusText);
@@ -44,7 +44,7 @@ class SimpleGrid extends Component {
       try {
         this.setState({ loading: true });
         const response = await fetch(
-          "http://localhost:3000/" + this.state.type.name + "/" + item.id,
+          "http://localhost:3000/api/" + this.state.type.name + "/" + item.id,
           { method: "DELETE" }
         );
         if (!response.ok) {

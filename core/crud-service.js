@@ -37,6 +37,8 @@ class CrudService extends BaseService {
   }
 
   async setupTypes(types) {
+    types.length = 0;
+
     // get types from db
     const { resources: dbTypes } = await this.container.items
       .query({
@@ -68,25 +70,25 @@ class CrudService extends BaseService {
   }
 
   setupRoutes(app, types) {
+    app.get("/api/:type", (req, res, next) =>
+      this.getAll(req.params.type, req, res).catch(next)
+    );
+    app.post("/api/:type", (req, res, next) =>
+      this.post(req.params.type, req, res).catch(next)
+    );
+    app.put("/api/:type/:id", (req, res, next) =>
+      this.put(req.params.type, req, res).catch(next)
+    );
+    app.get("/api/:type/:id", (req, res, next) =>
+      this.get(req.params.type, req, res).catch(next)
+    );
+    app.delete("/api/:type/:id", (req, res, next) =>
+      this.delete(req.params.type, req, res).catch(next)
+    );
     types
       .filter((t) => t.api === "CRUD")
       .forEach((t) => {
         console.log("/" + t.name);
-        app.get("/" + t.name, (req, res, next) =>
-          this.getAll(t.name, req, res).catch(next)
-        );
-        app.post("/" + t.name, (req, res, next) =>
-          this.post(t.name, req, res).catch(next)
-        );
-        app.put("/" + t.name + "/:id", (req, res, next) =>
-          this.put(t.name, req, res).catch(next)
-        );
-        app.get("/" + t.name + "/:id", (req, res, next) =>
-          this.get(t.name, req, res).catch(next)
-        );
-        app.delete("/" + t.name + "/:id", (req, res, next) =>
-          this.delete(t.name, req, res).catch(next)
-        );
       });
   }
 
@@ -96,7 +98,7 @@ class CrudService extends BaseService {
       name: t.name,
     });
 
-    paths["/" + t.name] = {
+    paths["/api/" + t.name] = {
       get: {
         tags: [t.name], // operation's tag.
         description: "Get a list of " + pluralize(t.name),
@@ -141,7 +143,7 @@ class CrudService extends BaseService {
         },
       },
     };
-    paths["/" + t.name + "/{id}"] = {
+    paths["/api/" + t.name + "/{id}"] = {
       get: {
         tags: [t.name],
         description: "Get a single " + t.name + " by id",

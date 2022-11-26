@@ -24,7 +24,7 @@ class CoreForm extends Component {
       this.setState({ validationErrors: {} });
 
       let body = this.state.value;
-      let url = "http://localhost:3000/" + this.props.type.name;
+      let url = "http://localhost:3000/api/" + this.props.type.name;
       let method = "POST";
       if (this.props.mode === "edit") {
         url += "/" + body.id;
