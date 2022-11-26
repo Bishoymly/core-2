@@ -65,6 +65,16 @@ class SimpleGrid extends Component {
     }
   };
 
+  display(obj) {
+    if (obj) {
+      if (typeof obj === "object") {
+        return JSON.stringify(obj);
+      } else {
+        return obj.toString();
+      }
+    }
+  }
+
   render() {
     return (
       <Table
@@ -72,19 +82,14 @@ class SimpleGrid extends Component {
         data={this.state.data}
         loading={this.state.loading}
       >
-        {this.state.type.properties
-          ?.filter(
-            (p) =>
-              p.type === "String" || p.type === "Number" || p.type === "Boolean"
-          )
-          .map((p) => {
-            return (
-              <Column key={p.name} flexGrow={1}>
-                <HeaderCell>{p.display ?? p.name}</HeaderCell>
-                <Cell dataKey={p.name} />
-              </Column>
-            );
-          })}
+        {this.state.type.properties?.map((p) => {
+          return (
+            <Column key={p.name} flexGrow={1}>
+              <HeaderCell>{p.display ?? p.name}</HeaderCell>
+              <Cell>{(row) => this.display(row[p.name])}</Cell>
+            </Column>
+          );
+        })}
         <Column fixed="right" flexGrow={1}>
           <HeaderCell></HeaderCell>
           <Cell>
