@@ -73,7 +73,7 @@ class CoreFormContent extends Component {
     const control = this.calculateUIControl(p);
     return React.createElement(Components[control], {
       key: this.props.prefix + p.name,
-      value: p.name === "" ? this.state.value : this.state.value[p.name] ?? {},
+      value: p.name === "" ? this.state.value : this.state.value[p.name],
       error: this.props.validationErrors[this.props.prefix + p.name],
       property: p,
       onChange: (e) => this.handleValueChange(p.name, e),

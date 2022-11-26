@@ -14,8 +14,8 @@ class BooleanField extends Component {
   };
 
   setValue(e) {
-    this.setState({ value: this.target.checked });
-    if (this.props.onChange) this.props.onChange(this.target.checked);
+    this.setState({ value: e.target.checked });
+    if (this.props.onChange) this.props.onChange(e.target.checked);
   }
 
   render() {
