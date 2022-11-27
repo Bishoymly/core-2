@@ -259,6 +259,9 @@ class CrudService extends BaseService {
     var errors = await this.validate(item, type);
     if (errors.length === 0) {
       const { resource: doc } = await this.container.items.create(item);
+      if (type === "type") {
+        this.types.push(doc);
+      }
       this.json(type, req, res, doc);
     } else {
       res.status(400).json({ validationErrors: errors });
@@ -279,6 +282,12 @@ class CrudService extends BaseService {
       const { resource: replaced } = await this.container
         .item(itemId, undefined)
         .replace(item);
+
+      if (type === "type") {
+        let old = this.types.find((t) => t.name === replaced.name);
+        this.types[this.types.indexOf(old)] = replaced;
+        console.log("replaced " + replaced.name);
+      }
 
       this.json(type, req, res, replaced);
     } else {
