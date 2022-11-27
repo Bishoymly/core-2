@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-import { Grid, Stack } from "@mui/material";
+import { Alert, Grid, Stack } from "@mui/material";
 import CoreFormContent from "./coreFormContent";
 
 class CoreForm extends Component {
@@ -21,7 +21,7 @@ class CoreForm extends Component {
   handleSubmit = async (event) => {
     try {
       event.preventDefault();
-      this.setState({ validationErrors: {} });
+      this.setState({ error: undefined, validationErrors: {} });
 
       let body = this.state.value;
       let url = "http://localhost:3000/api/" + this.props.type.name;
@@ -41,10 +41,16 @@ class CoreForm extends Component {
       if (!response.ok) {
         const body = await response.json();
         let errors = {};
-        body.validationErrors.forEach((error) => {
-          errors[error.field] = error.error;
+        let errorMessage = body.error;
+        body.validationErrors?.forEach((error) => {
+          if (error.field && error.field !== "") {
+            errors[error.field] = error.error;
+          } else {
+            if (errorMessage) errorMessage += "<br />" + error.error;
+            else errorMessage = error.error;
+          }
         });
-        this.setState({ validationErrors: errors });
+        this.setState({ error: errorMessage, validationErrors: errors });
         console.log(errors);
         throw Error(response.statusText);
       }
@@ -91,6 +97,11 @@ class CoreForm extends Component {
               onChange={this.handleValueChange}
             ></CoreFormContent>
           </Grid>
+          {this.state.error ? (
+            <Alert severity="error" sx={{ mt: 3 }}>
+              {this.state.error}
+            </Alert>
+          ) : null}
           <Stack direction="row" spacing={2} size="large" sx={{ mt: 3, mb: 2 }}>
             <Button type="submit" size="large" variant="contained">
               {this.props.mode === "add" ? "Create" : "Save"}

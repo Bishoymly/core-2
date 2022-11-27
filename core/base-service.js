@@ -8,7 +8,7 @@ class BaseService {
     res.json(item);
   }
 
-  validate(type, item, prefix) {
+  async validate(item, type, prefix) {
     const t = this.types.find((t) => t.name === type);
     let errors = [];
     if (t && t.properties) {
@@ -27,15 +27,34 @@ class BaseService {
           }
         });
 
-      t.properties
-        .filter((p) => p.isArray !== true)
-        .forEach((p) => {
-          if (item[p.name]) {
-            errors = errors.concat(
-              this.validate(p.type, item[p.name], p.name + ".")
-            );
-          }
-        });
+      const properties = t.properties.filter((p) => p.isArray !== true);
+      for (const i in properties) {
+        const p = properties[i];
+        if (item[p.name]) {
+          errors = errors.concat(
+            await this.validate(item[p.name], p.type, p.name + ".")
+          );
+        }
+      }
+    }
+
+    if (type === "type") {
+      if (item.methods?.length > 0) {
+        for (const i in item.methods) {
+          const methodObj = item.methods[i];
+          await import("data:text/javascript," + methodObj.code);
+        }
+      }
+    }
+
+    if (t && t.methods) {
+      if (t.methods?.length > 0) {
+        let methodObj = t.methods.find((m) => m.name === "validate");
+        if (methodObj) {
+          let module = await import("data:text/javascript," + methodObj.code);
+          errors = errors.concat(await module.validate(item, type, prefix));
+        }
+      }
     }
 
     return errors;

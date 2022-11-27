@@ -10,7 +10,7 @@ class CodeEditorField extends Component {
   };
 
   setValue(newValue) {
-    this.setState({ value: newValue });
+    //this.setState({ value: newValue });
     if (this.props.onChange) this.props.onChange(newValue);
   }
 
@@ -30,6 +30,7 @@ class CodeEditorField extends Component {
         >
           <MonacoEditor
             language="javascript"
+            theme="vs-dark"
             name={this.state.prefix + this.state.property.name}
             id={this.state.prefix + this.state.property.name}
             value={this.state.value}

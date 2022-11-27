@@ -256,7 +256,7 @@ class CrudService extends BaseService {
     }
     item.type = type;
 
-    var errors = this.validate(type, item);
+    var errors = await this.validate(item, type);
     if (errors.length === 0) {
       const { resource: doc } = await this.container.items.create(item);
       this.json(type, req, res, doc);
@@ -274,7 +274,7 @@ class CrudService extends BaseService {
     }
     item.type = type;
 
-    var errors = this.validate(type, item);
+    var errors = await this.validate(item, type);
     if (errors.length === 0) {
       const { resource: replaced } = await this.container
         .item(itemId, undefined)

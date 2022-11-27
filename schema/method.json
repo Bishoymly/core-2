@@ -1,0 +1,21 @@
+{
+    "name": "method",
+    "display": "Method",
+    "type": "Object",
+    "properties": [
+        {
+            "name": "name",
+            "display": "Name",
+            "helpText": "The name of the method",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "code",
+            "display": "Code",
+            "type": "String",
+            "uiControl": "CodeEditor",
+            "required": true
+        }
+    ]
+}

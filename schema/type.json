@@ -48,6 +48,13 @@
 			"isArray": true
 		},
 		{
+			"name": "methods",
+			"display": "Methods",
+			"helpText": "Custom logic for this type",
+			"type": "method",
+			"isArray": true
+		},
+		{
 			"name": "values",
 			"display": "Values",
 			"type": "String",
