@@ -70,7 +70,6 @@ class SimpleGrid extends Component {
       const t = this.props.types.find((t) => t.name === type);
       if (t && t.displayAsFunc) {
         try {
-          console.log("displaying " + t.name);
           return t.displayAsFunc.call(obj);
         } catch (error) {
           console.warn("Error calculating displayAs in ");

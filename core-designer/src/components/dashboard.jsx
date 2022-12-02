@@ -90,14 +90,8 @@ class DashboardContent extends Component {
         type.displayAs !== ""
       ) {
         try {
-          /*let module = await import(
-            "data:text/javascript, export function displayAs(){ return " +
-              type.displayAs +
-              "; }"
-          );*/
           let func = "(function calc(){ return " + type.displayAs + ";})";
           type.displayAsFunc = eval(func);
-          console.log(type.displayAsFunc);
         } catch (error) {
           console.warn("Error calculating displayAs in " + type.name);
           console.warn(error);
