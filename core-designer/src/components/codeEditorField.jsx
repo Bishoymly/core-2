@@ -30,7 +30,11 @@ class CodeEditorField extends Component {
         >
           <MonacoEditor
             language="javascript"
-            theme="vs-dark"
+            options={{
+              lineNumbers: "off",
+              scrollBeyondLastLine: false,
+              minimap: { enabled: false },
+            }}
             name={this.state.prefix + this.state.property.name}
             id={this.state.prefix + this.state.property.name}
             value={this.state.value}

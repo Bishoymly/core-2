@@ -1,0 +1,20 @@
+{
+  "name": "settings",
+  "display": "Settings",
+  "type": "Object",
+  "api": "EditOnly",
+  "properties": [
+    {
+      "name": "title",
+      "display": "Title",
+      "type": "String",
+      "default": "Core 2.0",
+      "required": true
+    },
+    {
+      "name": "compact",
+      "display": "Compact View",
+      "type": "Boolean"
+    }
+  ]
+}
