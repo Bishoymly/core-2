@@ -3,6 +3,7 @@
 	"display": "Type",
 	"type": "type",
 	"api": "CRUD",
+	"displayAs": "this.name",
 	"properties": [
 		{
 			"name": "name",
@@ -39,6 +40,12 @@
 			"type": "String",
 			"helpText": "Should this appear editable in admin menu?",
 			"example": "CRUD"
+		},
+		{
+			"name": "displayAs",
+			"display": "Display As Expression",
+			"helpText": "An expression to display object of this type",
+			"type": "String"
 		},
 		{
 			"name": "properties",

@@ -2,6 +2,7 @@
     "name": "property",
     "display": "Property",
     "type": "Object",
+    "displayAs": "this.name",
     "properties": [
         {
             "name": "name",
@@ -67,6 +68,11 @@
         {
             "name": "hideFromForm",
             "display": "Hide from Form?",
+            "type": "Boolean"
+        },
+        {
+            "name": "backendOnly",
+            "display": "For backend only?",
             "type": "Boolean"
         },
         {

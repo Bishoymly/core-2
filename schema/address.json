@@ -1,47 +1,47 @@
 {
-	"name":"address",
-	"display":"Address",
-	"type":"Object",
-    "api":"CRUD",
-	"properties":[
+	"name": "address",
+	"display": "Address",
+	"type": "Object",
+	"api": "CRUD",
+	"properties": [
 		{
-			"name":"street",
-			"display":"Street Line 1",
-			"type":"String",
+			"name": "street",
+			"display": "Street Line 1",
+			"type": "String",
 			"default": "",
 			"example": "123 Main Street",
 			"required": true
 		},
 		{
-			"name":"street2",
-			"display":"Street Line 2",
-			"type":"String"
+			"name": "street2",
+			"display": "Street Line 2",
+			"type": "String"
 		},
 		{
-			"name":"city",
-			"display":"City",
-			"type":"String",
+			"name": "city",
+			"display": "City",
+			"type": "String",
 			"default": "",
 			"example": "New York",
 			"required": true
 		},
 		{
-			"name":"state",
-			"display":"State",
-			"type":"state",
+			"name": "state",
+			"display": "State",
+			"type": "state",
 			"default": "",
 			"example": "NY",
 			"required": true,
 			"allowMultiSelect": false
 		},
 		{
-			"name":"zipCode",
-			"display":"Zip Code",
-			"type":"Number",
+			"name": "zipCode",
+			"display": "Zip Code",
+			"type": "Number",
 			"default": "",
 			"example": "10030",
 			"required": true
 		}
 	],
-	"displayAs":"{street1}{street2}, {city}, {state.code} {zipCode}"
+	"displayAs": "this.street + ' ' + this.street2 + ', ' + this.city + ', '+this.state+' '+this.zipCode"
 }

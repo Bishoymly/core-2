@@ -1,39 +1,49 @@
 {
-	"name":"contact",
-	"display":"Contact",
-	"type":"Object",
-    "api":"CRUD",
-	"properties":[
+	"name": "contact",
+	"display": "Contact",
+	"type": "Object",
+	"api": "CRUD",
+	"displayAs": "this.firstName + ' ' + this.lastName",
+	"properties": [
 		{
-			"name":"firstName",
-			"display":"First Name",
-			"type":"String",
+			"name": "firstName",
+			"display": "First Name",
+			"type": "String",
+			"hideFromGrid": true,
 			"example": "John",
 			"required": true
 		},
 		{
-			"name":"lastName",
-			"display":"Last Name",
-			"type":"String",
+			"name": "lastName",
+			"display": "Last Name",
+			"type": "String",
+			"hideFromGrid": true,
 			"example": "Smith",
 			"required": true
 		},
 		{
-			"name":"phone",
-			"display":"Phone",
-			"type":"phone",
+			"name": "fullName",
+			"display": "Full Name",
+			"type": "String",
+			"hideFromForm": true,
+			"expression": "this.firstName + ' ' + this.lastName"
+		},
+		{
+			"name": "phone",
+			"display": "Phone",
+			"type": "phone",
 			"required": true
 		},
 		{
-			"name":"homeAddress",
-			"display":"Home Address",
-			"type":"address",
+			"name": "homeAddress",
+			"display": "Home Address",
+			"type": "address",
 			"required": true
 		},
 		{
-			"name":"workAddress",
-			"display":"Work Address",
-			"type":"address",
+			"name": "workAddress",
+			"display": "Work Address",
+			"type": "address",
 			"required": false
 		}
 	]

@@ -38,6 +38,7 @@ class InlineGrid extends Component {
         {this.state.data.length > 0 ? (
           <SimpleGrid
             type={this.props.type}
+            types={this.props.types}
             backend={false}
             data={this.state.data}
             onValueChange={this.handleEdit}

@@ -115,7 +115,9 @@ class CoreFormContent extends Component {
     return (
       <Grid container item spacing={2}>
         {this.props.type.properties && this.props.type.properties.length > 0
-          ? this.props.type.properties.map((p) => this.renderProperty(p))
+          ? this.props.type.properties
+              .filter((p) => p.hideFromForm !== true)
+              .map((p) => this.renderProperty(p))
           : this.renderProperty({
               name: "",
               display: "",

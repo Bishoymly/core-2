@@ -65,9 +65,19 @@ class SimpleGrid extends Component {
     }
   };
 
-  display(obj) {
+  display(obj, type) {
     if (obj) {
-      if (typeof obj === "object") {
+      const t = this.props.types.find((t) => t.name === type);
+      if (t && t.displayAsFunc) {
+        try {
+          console.log("displaying " + t.name);
+          return t.displayAsFunc.call(obj);
+        } catch (error) {
+          console.warn("Error calculating displayAs in ");
+          console.warn(obj);
+          console.warn(error);
+        }
+      } else if (typeof obj === "object") {
         return JSON.stringify(obj);
       } else {
         return obj.toString();
@@ -82,14 +92,16 @@ class SimpleGrid extends Component {
         data={this.state.data}
         loading={this.state.loading}
       >
-        {this.state.type.properties?.map((p) => {
-          return (
-            <Column key={p.name} flexGrow={1}>
-              <HeaderCell>{p.display ?? p.name}</HeaderCell>
-              <Cell>{(row) => this.display(row[p.name])}</Cell>
-            </Column>
-          );
-        })}
+        {this.state.type.properties
+          ?.filter((p) => p.hideFromGrid !== true)
+          .map((p) => {
+            return (
+              <Column key={p.name} flexGrow={1}>
+                <HeaderCell>{p.display ?? p.name}</HeaderCell>
+                <Cell>{(row) => this.display(row[p.name], p.type)}</Cell>
+              </Column>
+            );
+          })}
         <Column fixed="right" flexGrow={1}>
           <HeaderCell></HeaderCell>
           <Cell>

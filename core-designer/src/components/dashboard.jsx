@@ -81,14 +81,40 @@ class DashboardContent extends Component {
     this.setState({ open: !this.state.open });
   };
 
+  async processTypes(types) {
+    for (let i = 0; i < types.length; i++) {
+      const type = types[i];
+      if (
+        type.displayAs !== undefined &&
+        type.displayAs !== null &&
+        type.displayAs !== ""
+      ) {
+        try {
+          /*let module = await import(
+            "data:text/javascript, export function displayAs(){ return " +
+              type.displayAs +
+              "; }"
+          );*/
+          let func = "(function calc(){ return " + type.displayAs + ";})";
+          type.displayAsFunc = eval(func);
+          console.log(type.displayAsFunc);
+        } catch (error) {
+          console.warn("Error calculating displayAs in " + type.name);
+          console.warn(error);
+        }
+      }
+    }
+  }
+
   async componentDidMount() {
     try {
       const response = await fetch("http://localhost:3000/api/type");
       if (!response.ok) {
         throw Error(response.statusText);
       }
-      const json = await response.json();
-      this.setState({ types: json });
+      const types = await response.json();
+      await this.processTypes(types);
+      this.setState({ types: types });
     } catch (error) {
       console.log(error);
     }
