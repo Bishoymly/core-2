@@ -43,7 +43,8 @@
                 "Checkbox",
                 "Select",
                 "AutoComplete",
-                "CodeEditor"
+                "CodeEditor",
+                "Label"
             ]
         },
         {
@@ -57,6 +58,22 @@
             "display": "Required?",
             "helpText": "Is it required?",
             "type": "Boolean"
+        },
+        {
+            "name": "hideFromGrid",
+            "display": "Hide from Grid?",
+            "type": "Boolean"
+        },
+        {
+            "name": "hideFromForm",
+            "display": "Hide from Form?",
+            "type": "Boolean"
+        },
+        {
+            "name": "expression",
+            "display": "Auto Calculate Expression",
+            "example": "this.x + this.y",
+            "type": "String"
         },
         {
             "name": "isArray",
