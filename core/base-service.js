@@ -1,3 +1,5 @@
+const typeSystem = require("./type-system");
+
 class BaseService {
   constructor(types) {
     this.types = types;
@@ -39,16 +41,22 @@ class BaseService {
       }
     }
 
-    if (type === "type") {
+    // validate method codes can be parsed
+    /*if (type === "type") {
       if (item.methods?.length > 0) {
         for (const i in item.methods) {
           const methodObj = item.methods[i];
           await import("data:text/javascript," + methodObj.code);
         }
       }
+    }*/
+    if (typeSystem.hasMethod("validate", type)) {
+      console.log("calling method validate in " + type);
+      errors = errors.concat(
+        await typeSystem.callMethod(item, "validate", type)
+      );
     }
-
-    if (t && t.methods) {
+    /*if (t && t.methods) {
       if (t.methods?.length > 0) {
         let methodObj = t.methods.find((m) => m.name === "validate");
         if (methodObj) {
@@ -56,7 +64,7 @@ class BaseService {
           errors = errors.concat(await module.validate(item, type, prefix));
         }
       }
-    }
+    }*/
 
     return errors;
   }
@@ -105,7 +113,7 @@ class BaseService {
 
   hideFields(item) {
     if (item) {
-      delete item.type;
+      //delete item.type;
       delete item._rid;
       delete item._self;
       delete item._etag;

@@ -4,6 +4,7 @@ const pluralize = require("pluralize");
 const BaseService = require("./base-service");
 const fs = require("fs");
 const path = require("path");
+const typeSystem = require("./type-system");
 
 class CrudService extends BaseService {
   constructor(cosmosClient, databaseId, containerId, app, types) {
@@ -67,6 +68,8 @@ class CrudService extends BaseService {
         types.push(doc);
       }
     }
+
+    typeSystem.init(types);
   }
 
   setupRoutes(app, types) {
@@ -261,6 +264,7 @@ class CrudService extends BaseService {
       const { resource: doc } = await this.container.items.create(item);
       if (type === "type") {
         this.types.push(doc);
+        typeSystem.init(this.types);
       }
       await this.json(type, req, res, doc);
     } else {
@@ -286,7 +290,7 @@ class CrudService extends BaseService {
       if (type === "type") {
         let old = this.types.find((t) => t.name === replaced.name);
         this.types[this.types.indexOf(old)] = replaced;
-        console.log("replaced " + replaced.name);
+        typeSystem.init(this.types);
       }
 
       await this.json(type, req, res, replaced);
