@@ -90,7 +90,12 @@ class DashboardContent extends Component {
         type.displayAs !== ""
       ) {
         try {
-          let func = "(function calc(){ return " + type.displayAs + ";})";
+          let func =
+            "(function calc(" +
+            String(type.properties?.map((p) => p.name)) +
+            "){ return " +
+            type.displayAs +
+            ";})";
           type.displayAsFunc = eval(func);
         } catch (error) {
           console.warn("Error calculating displayAs in " + type.name);

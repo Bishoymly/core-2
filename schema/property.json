@@ -2,7 +2,7 @@
     "name": "property",
     "display": "Property",
     "type": "Object",
-    "displayAs": "this.name",
+    "displayAs": "name",
     "properties": [
         {
             "name": "name",

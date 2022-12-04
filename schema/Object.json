@@ -1,0 +1,4 @@
+{
+	"name": "Object",
+	"idAs": "type + '/' + id"
+}

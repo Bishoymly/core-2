@@ -3,7 +3,7 @@
 	"display": "Contact",
 	"type": "Object",
 	"api": "CRUD",
-	"displayAs": "this.firstName + ' ' + this.lastName",
+	"displayAs": "firstName + ' ' + lastName",
 	"properties": [
 		{
 			"name": "firstName",
@@ -26,7 +26,7 @@
 			"display": "Full Name",
 			"type": "String",
 			"hideFromForm": true,
-			"expression": "this.firstName + ' ' + this.lastName"
+			"expression": "firstName + ' ' + lastName"
 		},
 		{
 			"name": "phone",

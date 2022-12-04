@@ -70,7 +70,10 @@ class SimpleGrid extends Component {
       const t = this.props.types.find((t) => t.name === type);
       if (t && t.displayAsFunc) {
         try {
-          return t.displayAsFunc.call(obj);
+          return t.displayAsFunc.call(
+            obj,
+            ...t.properties?.map((p) => obj[p.name])
+          );
         } catch (error) {
           console.warn("Error calculating displayAs in ");
           console.warn(obj);
@@ -95,7 +98,7 @@ class SimpleGrid extends Component {
           ?.filter((p) => p.hideFromGrid !== true)
           .map((p) => {
             return (
-              <Column key={p.name} flexGrow={1}>
+              <Column key={p.name} flexGrow={1} fullText>
                 <HeaderCell>{p.display ?? p.name}</HeaderCell>
                 <Cell>{(row) => this.display(row[p.name], p.type)}</Cell>
               </Column>

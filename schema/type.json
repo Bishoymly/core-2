@@ -3,7 +3,7 @@
 	"display": "Type",
 	"type": "type",
 	"api": "CRUD",
-	"displayAs": "this.name",
+	"displayAs": "name",
 	"properties": [
 		{
 			"name": "name",

@@ -43,5 +43,5 @@
 			"required": true
 		}
 	],
-	"displayAs": "this.street + ' ' + this.street2 + ', ' + this.city + ', '+this.state+' '+this.zipCode"
+	"displayAs": "street + ' ' + (street2??'') + ', ' + city + ', '+state+' '+zipCode"
 }
