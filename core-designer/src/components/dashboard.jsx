@@ -21,6 +21,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DataObject from "@mui/icons-material/DataObject";
 import CoreEntity from "./coreEntity";
+import typeSystem from "core/type-system";
 
 const drawerWidth = 240;
 
@@ -81,30 +82,6 @@ class DashboardContent extends Component {
     this.setState({ open: !this.state.open });
   };
 
-  async processTypes(types) {
-    for (let i = 0; i < types.length; i++) {
-      const type = types[i];
-      if (
-        type.displayAs !== undefined &&
-        type.displayAs !== null &&
-        type.displayAs !== ""
-      ) {
-        try {
-          let func =
-            "(function calc(" +
-            String(type.properties?.map((p) => p.name)) +
-            "){ return " +
-            type.displayAs +
-            ";})";
-          type.displayAsFunc = eval(func);
-        } catch (error) {
-          console.warn("Error calculating displayAs in " + type.name);
-          console.warn(error);
-        }
-      }
-    }
-  }
-
   async componentDidMount() {
     try {
       const response = await fetch("http://localhost:3000/api/type");
@@ -112,10 +89,10 @@ class DashboardContent extends Component {
         throw Error(response.statusText);
       }
       const types = await response.json();
-      await this.processTypes(types);
+      await typeSystem.init(types);
       this.setState({ types: types });
     } catch (error) {
-      console.log(error);
+      console.warn(error);
     }
   }
 

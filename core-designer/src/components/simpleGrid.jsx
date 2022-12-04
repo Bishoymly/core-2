@@ -4,6 +4,7 @@ import "rsuite/dist/rsuite.min.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, Stack } from "@mui/material";
+import typeSystem from "core/type-system";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -67,18 +68,8 @@ class SimpleGrid extends Component {
 
   display(obj, type) {
     if (obj) {
-      const t = this.props.types.find((t) => t.name === type);
-      if (t && t.displayAsFunc) {
-        try {
-          return t.displayAsFunc.call(
-            obj,
-            ...t.properties?.map((p) => obj[p.name])
-          );
-        } catch (error) {
-          console.warn("Error calculating displayAs in ");
-          console.warn(obj);
-          console.warn(error);
-        }
+      if (typeSystem.hasMethod("displayAs", type)) {
+        return typeSystem.callMethod(obj, "displayAs", type);
       } else if (typeof obj === "object") {
         return JSON.stringify(obj);
       } else {

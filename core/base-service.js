@@ -42,29 +42,21 @@ class BaseService {
     }
 
     // validate method codes can be parsed
-    /*if (type === "type") {
+    if (type === "type") {
       if (item.methods?.length > 0) {
         for (const i in item.methods) {
-          const methodObj = item.methods[i];
-          await import("data:text/javascript," + methodObj.code);
+          const method = item.methods[i];
+          typeSystem.parseMethod(method.name, method.code, type, false);
         }
       }
-    }*/
+    }
+
     if (typeSystem.hasMethod("validate", type)) {
       console.log("calling method validate in " + type);
       errors = errors.concat(
         await typeSystem.callMethod(item, "validate", type)
       );
     }
-    /*if (t && t.methods) {
-      if (t.methods?.length > 0) {
-        let methodObj = t.methods.find((m) => m.name === "validate");
-        if (methodObj) {
-          let module = await import("data:text/javascript," + methodObj.code);
-          errors = errors.concat(await module.validate(item, type, prefix));
-        }
-      }
-    }*/
 
     return errors;
   }
@@ -78,25 +70,20 @@ class BaseService {
     } else {
       const t = this.types.find((t) => t.name === type);
       if (t && t.properties) {
-        const props = t.properties.filter(
-          (p) =>
-            p.expression !== undefined &&
-            p.expression !== null &&
-            p.expression !== ""
-        );
-        for (const i in props) {
-          const p = props[i];
-          try {
-            let module = await import(
-              "data:text/javascript, export function calculate(){ return " +
-                p.expression +
-                "; }"
-            );
-            item[p.name] = module.calculate.call(item, type, prefix);
-          } catch (error) {
-            console.warn("Error calculating " + p.name + " in ");
-            console.warn(item);
-            console.warn(error);
+        for (const i in t.properties) {
+          const p = t.properties[i];
+          if (typeSystem.hasMethod(p.name + "Expression", t.name)) {
+            try {
+              item[p.name] = typeSystem.callMethod(
+                item,
+                p.name + "Expression",
+                t.name
+              );
+            } catch (error) {
+              console.warn("Error calculating " + p.name + " in ");
+              console.warn(item);
+              console.warn(error);
+            }
           }
         }
 

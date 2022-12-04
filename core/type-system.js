@@ -18,32 +18,72 @@ class TypeSystem {
 
     for (var i = 0; i < types.length; i++) {
       const type = types[i];
+      type.functions = {};
+
+      // properties Expressions
+      if (type.properties) {
+        const props = type.properties.filter(
+          (p) =>
+            p.expression !== undefined &&
+            p.expression !== null &&
+            p.expression !== ""
+        );
+        for (const i in props) {
+          const p = props[i];
+          this.createMethod(p.name + "Expression", p.expression, type, true);
+        }
+      }
+
+      // displayAs
+      if (
+        type.displayAs !== undefined &&
+        type.displayAs !== null &&
+        type.displayAs !== ""
+      ) {
+        this.createMethod("displayAs", type.displayAs, type, true);
+      }
 
       // process methods
       if (type.methods) {
         for (var m = 0; m < type.methods.length; m++) {
-          if (m === 0) {
-            type.functions = {};
-          }
           const method = type.methods[i];
-          try {
-            let func =
-              "(async function " +
-              method.name +
-              "(" +
-              String(type.properties?.map((p) => p.name)) +
-              "){ " +
-              method.code +
-              "})";
-            type.functions[method.name] = eval(func);
-          } catch (error) {
-            console.warn(
-              "Error processing method " + type.name + "." + method.name
-            );
-            console.warn(error);
-          }
+          this.createMethod(method.name, method.code, type, false);
         }
       }
+    }
+  }
+
+  parseMethod(methodName, code, type, isExpression) {
+    let func = isExpression
+      ? "(function " +
+        methodName +
+        "(" +
+        String(type.properties?.map((p) => p.name)) +
+        "){ return " +
+        code +
+        ";})"
+      : "(async function " +
+        methodName +
+        "(" +
+        String(type.properties?.map((p) => p.name)) +
+        "){ " +
+        code +
+        "})";
+
+    return eval(func);
+  }
+
+  createMethod(methodName, code, type, isExpression) {
+    try {
+      type.functions[methodName] = this.parseMethod(
+        methodName,
+        code,
+        type,
+        isExpression
+      );
+    } catch (error) {
+      console.warn("Error processing method " + type.name + "." + methodName);
+      console.warn(error);
     }
   }
 
