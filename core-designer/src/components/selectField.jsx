@@ -10,10 +10,38 @@ import React, { Component } from "react";
 
 class SelectField extends Component {
   state = {
+    loading: false,
     value: this.props.value ?? "",
     property: this.props.property,
     prefix: this.props.prefix ?? "",
   };
+
+  async componentDidMount() {
+    if (
+      this.props.property.lookupFromType !== undefined &&
+      this.props.property.lookupFromType !== null &&
+      this.props.property.lookupFromType !== ""
+    ) {
+      try {
+        this.setState({ loading: true });
+        console.log(
+          "getting lookup from " + this.props.property.lookupFromType
+        );
+        const response = await fetch(
+          "http://localhost:3000/api/" + this.props.property.lookupFromType
+        );
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        const json = await response.json();
+        this.setState({ lookup: json, loading: false });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.setState({ loading: false });
+      }
+    }
+  }
 
   setValue(e) {
     this.setState({ value: e.target.value });
@@ -41,9 +69,14 @@ class SelectField extends Component {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            {this.props.property.values.map((v) => (
+            {this.props.property.values?.map((v) => (
               <MenuItem key={v} value={v}>
                 {v}
+              </MenuItem>
+            ))}
+            {this.state.lookup?.map((v) => (
+              <MenuItem key={v.name} value={v.name}>
+                {v.name}
               </MenuItem>
             ))}
           </Select>

@@ -23,7 +23,7 @@ class CoreFormContent extends Component {
     if (t) {
       p = this.calculatePropertyFromType(property, t);
 
-      if (p.type === "Object" || p.isArray) {
+      if (p.inheritFrom === "Object" || p.isArray) {
         return (
           <Grid container item key={this.props.prefix + p.name}>
             <Stack width={"100%"}>
@@ -32,7 +32,7 @@ class CoreFormContent extends Component {
               </Typography>
               <FormHelperText>{p.helpText}</FormHelperText>
               {p.isArray ? (
-                p.type === "Object" ? (
+                p.inheritFrom === "Object" ? (
                   <InlineGrid
                     type={t}
                     types={this.props.types}
@@ -114,8 +114,9 @@ class CoreFormContent extends Component {
   render() {
     return (
       <Grid container item spacing={2}>
-        {this.props.type.properties && this.props.type.properties.length > 0
-          ? this.props.type.properties
+        {this.props.type.calculatedProperties &&
+        this.props.type.calculatedProperties.length > 0
+          ? this.props.type.calculatedProperties
               .filter((p) => p.hideFromForm !== true)
               .map((p) => this.renderProperty(p))
           : this.renderProperty({

@@ -85,7 +85,7 @@ class SimpleGrid extends Component {
         data={this.state.data}
         loading={this.state.loading}
       >
-        {this.state.type.properties
+        {this.state.type.calculatedProperties
           ?.filter((p) => p.hideFromGrid !== true)
           .map((p) => {
             return (

@@ -9,16 +9,15 @@ class TypeSystem {
       this.types[type.name] = type;
     }
 
-    // TODO: sort by inheritance dependencies
-
     // process properties
     for (var i = 0; i < types.length; i++) {
       const type = types[i];
+      type.calculatedProperties = this.getProperties(type.name);
     }
 
     for (var i = 0; i < types.length; i++) {
       const type = types[i];
-      type.functions = {};
+      type.calculatedMethods = {};
 
       // properties Expressions
       if (type.properties) {
@@ -75,7 +74,7 @@ class TypeSystem {
 
   createMethod(methodName, code, type, isExpression) {
     try {
-      type.functions[methodName] = this.parseMethod(
+      type.calculatedMethods[methodName] = this.parseMethod(
         methodName,
         code,
         type,
@@ -89,7 +88,7 @@ class TypeSystem {
 
   callMethod(obj, methodName, typeName) {
     const type = this.types[typeName];
-    return type.functions[methodName]?.call(
+    return type.calculatedMethods[methodName]?.call(
       obj,
       ...type.properties?.map((p) => obj[p.name])
     );
@@ -100,6 +99,23 @@ class TypeSystem {
       this.types[typeName]?.functions &&
       this.types[typeName]?.functions[methodName] !== undefined
     );
+  }
+
+  getProperties(typeName) {
+    if (this.types[typeName]?.inheritFrom) {
+      let props = this.getProperties(this.types[typeName].inheritFrom);
+      if (this.types[typeName].properties) {
+        return props.concat(this.types[typeName].properties);
+      } else {
+        return props;
+      }
+    } else {
+      if (this.types[typeName]?.properties) {
+        return this.types[typeName].properties;
+      } else {
+        return [];
+      }
+    }
   }
 }
 

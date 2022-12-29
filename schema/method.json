@@ -1,7 +1,7 @@
 {
     "name": "method",
     "display": "Method",
-    "type": "Object",
+    "inheritFrom": "Object",
     "properties": [
         {
             "name": "name",

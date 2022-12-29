@@ -1,7 +1,7 @@
 {
 	"name": "state",
 	"display": "State",
-	"type": "String",
+	"inheritFrom": "String",
 	"example": "NY",
 	"uiControl": "Select",
 	"values": [

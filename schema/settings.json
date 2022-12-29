@@ -1,7 +1,7 @@
 {
   "name": "settings",
   "display": "Settings",
-  "type": "Object",
+  "inheritFrom": "Object",
   "api": "EditOnly",
   "properties": [
     {

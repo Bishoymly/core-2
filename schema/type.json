@@ -1,7 +1,7 @@
 {
 	"name": "type",
 	"display": "Type",
-	"type": "type",
+	"inheritFrom": "Object",
 	"api": "CRUD",
 	"displayAs": "name",
 	"properties": [
@@ -19,20 +19,14 @@
 			"type": "String"
 		},
 		{
-			"name": "type",
-			"display": "Type",
+			"name": "inheritFrom",
+			"display": "Inherit from",
 			"example": "Object",
 			"helpText": "The data type of this field",
 			"type": "String",
 			"uiControl": "Select",
 			"required": true,
-			"values": [
-				"Object",
-				"String",
-				"Number",
-				"Boolean",
-				"Date"
-			]
+			"lookupFromType": "type"
 		},
 		{
 			"name": "api",

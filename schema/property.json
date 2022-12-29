@@ -1,7 +1,7 @@
 {
     "name": "property",
     "display": "Property",
-    "type": "Object",
+    "inheritFrom": "Object",
     "displayAs": "name",
     "properties": [
         {
@@ -24,12 +24,7 @@
             "type": "String",
             "uiControl": "Select",
             "required": true,
-            "values": [
-                "String",
-                "Number",
-                "Boolean",
-                "Date"
-            ]
+            "lookupFromType": "type"
         },
         {
             "name": "uiControl",
@@ -47,6 +42,15 @@
                 "CodeEditor",
                 "Label"
             ]
+        },
+        {
+            "name": "valuesFromType",
+            "display": "Lookup from",
+            "helpText": "The values that are possible to select from are from type",
+            "type": "String",
+            "uiControl": "Select",
+            "required": true,
+            "lookupFromType": "type"
         },
         {
             "name": "example",

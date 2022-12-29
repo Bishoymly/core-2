@@ -1,7 +1,7 @@
 {
 	"name": "address",
 	"display": "Address",
-	"type": "Object",
+	"inheritFrom": "Object",
 	"api": "CRUD",
 	"properties": [
 		{

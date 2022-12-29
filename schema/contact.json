@@ -1,7 +1,7 @@
 {
 	"name": "contact",
 	"display": "Contact",
-	"type": "Object",
+	"inheritFrom": "Object",
 	"api": "CRUD",
 	"displayAs": "firstName + ' ' + lastName",
 	"properties": [

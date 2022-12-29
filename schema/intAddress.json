@@ -1,0 +1,15 @@
+{
+	"name": "intAddress",
+	"display": "Int Address",
+	"inheritFrom": "address",
+	"api": "CRUD",
+	"properties": [
+		{
+			"name": "county",
+			"display": "Country",
+			"type": "String",
+			"required": true
+		}
+	],
+	"displayAs": "street + ' ' + (street2??'') + ', ' + city + ', '+state+' '+ zipCode + ', ' + country"
+}

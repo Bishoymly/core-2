@@ -49,7 +49,6 @@ class CrudService extends BaseService {
 
     if (dbTypes.length > 0) {
       dbTypes.forEach((t) => {
-        t.type = t.coretype;
         types.push(t);
       });
     } else {
@@ -61,10 +60,8 @@ class CrudService extends BaseService {
       for (const f in jsonsInDir) {
         const fileData = fs.readFileSync(path.join("./schema", jsonsInDir[f]));
         const item = JSON.parse(fileData.toString());
-        item.coretype = item.type;
         item.type = "type";
         const { resource: doc } = await this.container.items.create(item);
-        doc.type = doc.coretype;
         types.push(doc);
       }
     }
@@ -254,9 +251,6 @@ class CrudService extends BaseService {
 
   async post(type, req, res) {
     const item = req.body;
-    if (type === "type" && item.type !== "type") {
-      item.coretype = item.type;
-    }
     item.type = type;
 
     var errors = await this.validate(item, type);
@@ -276,9 +270,6 @@ class CrudService extends BaseService {
     const item = req.body;
     const itemId = req.params.id;
     item.id = itemId;
-    if (type === "type" && item.type !== "type") {
-      item.coretype = item.type;
-    }
     item.type = type;
 
     var errors = await this.validate(item, type);
