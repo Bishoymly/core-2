@@ -3,7 +3,8 @@
 	"display": "Type",
 	"inheritFrom": "Object",
 	"api": "CRUD",
-	"displayAs": "name",
+	"displayAs": "display",
+	"idAs": "name",
 	"properties": [
 		{
 			"name": "name",
@@ -39,6 +40,12 @@
 			"name": "displayAs",
 			"display": "Display As Expression",
 			"helpText": "An expression to display object of this type",
+			"type": "String"
+		},
+		{
+			"name": "idAs",
+			"display": "Id As Expression",
+			"helpText": "An expression for id of this object",
 			"type": "String"
 		},
 		{

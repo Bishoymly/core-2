@@ -66,18 +66,6 @@ class SimpleGrid extends Component {
     }
   };
 
-  display(obj, type) {
-    if (obj) {
-      if (typeSystem.hasMethod("displayAs", type)) {
-        return typeSystem.callMethod(obj, "displayAs", type);
-      } else if (typeof obj === "object") {
-        return JSON.stringify(obj);
-      } else {
-        return obj.toString();
-      }
-    }
-  }
-
   render() {
     return (
       <Table
@@ -91,7 +79,7 @@ class SimpleGrid extends Component {
             return (
               <Column key={p.name} flexGrow={1} fullText>
                 <HeaderCell>{p.display ?? p.name}</HeaderCell>
-                <Cell>{(row) => this.display(row[p.name], p.type)}</Cell>
+                <Cell>{(row) => typeSystem.display(row[p.name], p.type)}</Cell>
               </Column>
             );
           })}

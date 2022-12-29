@@ -44,7 +44,7 @@
             ]
         },
         {
-            "name": "valuesFromType",
+            "name": "lookupFromType",
             "display": "Lookup from",
             "helpText": "The values that are possible to select from are from type",
             "type": "String",

@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import typeSystem from "core/type-system";
 import React, { Component } from "react";
 
 class SelectField extends Component {
@@ -75,8 +76,8 @@ class SelectField extends Component {
               </MenuItem>
             ))}
             {this.state.lookup?.map((v) => (
-              <MenuItem key={v.name} value={v.name}>
-                {v.name}
+              <MenuItem key={v.id} value={v.id}>
+                {typeSystem.display(v, this.props.property.lookupFromType)}
               </MenuItem>
             ))}
           </Select>

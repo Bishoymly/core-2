@@ -255,6 +255,8 @@ class CrudService extends BaseService {
 
     var errors = await this.validate(item, type);
     if (errors.length === 0) {
+      this.prepareToSave(type, item);
+      console.log(item);
       const { resource: doc } = await this.container.items.create(item);
       if (type === "type") {
         this.types.push(doc);

@@ -11,6 +11,12 @@ class BaseService {
     res.json(item);
   }
 
+  prepareToSave(type, item) {
+    if(typeSystem.hasMethod("idAs", type)){
+      item.id = typeSystem.callMethod(item, "idAs", type);
+    }
+  }
+
   async validate(item, type, prefix) {
     const t = this.types.find((t) => t.name === type);
     let errors = [];

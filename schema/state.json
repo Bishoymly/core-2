@@ -1,14 +1,35 @@
 {
-	"name": "state",
-	"display": "State",
-	"inheritFrom": "String",
-	"example": "NY",
-	"uiControl": "Select",
-	"values": [
-		"New York",
-		"California"
-	],
-	"id": "{code}",
-	"displayAs": "{code}",
-	"listAs": "{description}"
-}
+    "name": "state",
+    "display": "State",
+    "inheritFrom": "Object",
+    "example": "NY",
+    "uiControl": "Select",
+    "values": [
+		{
+			"code":"CA",
+			"name":"California"
+		},
+		{
+			"code":"NY",
+			"name":"New York"
+		}
+    ],
+    "idAs": "code",
+    "displayAs": "code + ' - ' + name",
+    "type": "type",
+    "api": "CRUD",
+    "properties": [
+        {
+            "name": "code",
+            "display": "Code",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "name",
+            "display": "Name",
+            "type": "String",
+            "required": true
+        }
+    ]
+ }

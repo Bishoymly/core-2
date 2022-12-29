@@ -5,6 +5,7 @@ import { Stack } from "@mui/system";
 import InlineGrid from "./inlineGrid";
 import Components from "./Components";
 import InlineFormList from "./inlineFormList";
+import typeSystem from "core/type-system";
 
 class CoreFormContent extends Component {
   state = {
@@ -22,8 +23,7 @@ class CoreFormContent extends Component {
     let p = property;
     if (t) {
       p = this.calculatePropertyFromType(property, t);
-
-      if (p.inheritFrom === "Object" || p.isArray) {
+      if (typeSystem.isOfType(p.type, "Object") || p.isArray) {
         return (
           <Grid container item key={this.props.prefix + p.name}>
             <Stack width={"100%"}>
@@ -32,7 +32,7 @@ class CoreFormContent extends Component {
               </Typography>
               <FormHelperText>{p.helpText}</FormHelperText>
               {p.isArray ? (
-                p.inheritFrom === "Object" ? (
+                typeSystem.isOfType(p.type, "Object") ? (
                   <InlineGrid
                     type={t}
                     types={this.props.types}
@@ -105,7 +105,7 @@ class CoreFormContent extends Component {
       result[key] = t[key];
     }
     for (const key in p) {
-      if (key !== "type") result[key] = p[key];
+      result[key] = p[key];
     }
 
     return result;

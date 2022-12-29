@@ -3,6 +3,7 @@ const CosmosClient = require("@azure/cosmos").CosmosClient;
 const config = require("../config");
 const swaggerUI = require("swagger-ui-express");
 const CrudService = require("./crud-service");
+const typeSystem = require("./type-system");
 
 class Schema {
   types = [];
@@ -46,7 +47,7 @@ class Schema {
     const tags = [];
     const paths = {};
     this.types
-      .filter((t) => t.type === "Object")
+      .filter((t) => typeSystem.isOfType(t.name, "Object"))
       .forEach((t) => {
         const properties = {};
         if (t.properties) {
