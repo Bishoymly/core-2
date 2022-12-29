@@ -4,16 +4,6 @@
     "inheritFrom": "Object",
     "example": "NY",
     "uiControl": "Select",
-    "values": [
-		{
-			"code":"CA",
-			"name":"California"
-		},
-		{
-			"code":"NY",
-			"name":"New York"
-		}
-    ],
     "idAs": "code",
     "displayAs": "code + ' - ' + name",
     "type": "type",

@@ -60,7 +60,15 @@ class CrudService extends BaseService {
       for (const f in jsonsInDir) {
         const fileData = fs.readFileSync(path.join("./schema", jsonsInDir[f]));
         const item = JSON.parse(fileData.toString());
-        item.type = "type";
+        
+        if(!item.type){
+          item.type = "type";
+        }
+
+        if(!item.id){
+          item.id = "type-" + item.name;
+        } 
+
         const { resource: doc } = await this.container.items.create(item);
         types.push(doc);
       }

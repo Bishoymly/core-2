@@ -3,7 +3,7 @@
 	"display": "Type",
 	"inheritFrom": "Object",
 	"api": "CRUD",
-	"displayAs": "display",
+	"displayAs": "name",
 	"idAs": "name",
 	"properties": [
 		{

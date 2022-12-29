@@ -28,11 +28,12 @@
 		{
 			"name": "state",
 			"display": "State",
-			"type": "state",
+			"type": "String",
+			"uiControl": "Select",
 			"default": "",
 			"example": "NY",
 			"required": true,
-			"allowMultiSelect": false
+			"lookupFromType": "state"
 		},
 		{
 			"name": "zipCode",

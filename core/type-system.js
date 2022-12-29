@@ -25,15 +25,15 @@ class TypeSystem {
     let func = isExpression
       ? "(function " +
         methodName +
-        "(type,id," +
-        String(type.properties?.map((p) => p.name)) +
+        "(id," +
+        String(type.calculatedProperties?.map((p) => p.name)) +
         "){ return " +
         code +
         ";})"
       : "(async function " +
         methodName +
-        "(type,id," +
-        String(type.properties?.map((p) => p.name)) +
+        "(id," +
+        String(type.calculatedProperties?.map((p) => p.name)) +
         "){ " +
         code +
         "})";
@@ -59,7 +59,6 @@ class TypeSystem {
     const type = this.types[typeName];
     return type.calculatedMethods[methodName]?.call(
       obj,
-      typeName,
       obj.id,
       ...type.calculatedProperties?.map((p) => obj[p.name])
     );
@@ -90,6 +89,7 @@ class TypeSystem {
   }
 
   getMethods(typeName) {
+    console.log(typeName);
     let type = this.types[typeName];
     let calculatedMethods = {};
 

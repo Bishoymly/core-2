@@ -13,7 +13,7 @@ class BaseService {
 
   prepareToSave(type, item) {
     if(typeSystem.hasMethod("idAs", type)){
-      item.id = typeSystem.callMethod(item, "idAs", type);
+      item.id = "type-" + typeSystem.id(item, type);
     }
   }
 
