@@ -151,7 +151,7 @@ class DashboardContent extends Component {
             <Divider />
             <List component="nav">
               {this.state.types
-                .filter((t) => t.api === "CRUD")
+                .filter((t) => t.showInMenu === true)
                 .map((t) => (
                   <ListItemButton
                     key={t.name}
@@ -159,9 +159,6 @@ class DashboardContent extends Component {
                       this.setState({ type: t });
                     }}
                   >
-                    <ListItemIcon>
-                      <DataObject />
-                    </ListItemIcon>
                     <ListItemText primary={t.display ?? t.name} />
                   </ListItemButton>
                 ))}

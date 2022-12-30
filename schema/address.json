@@ -3,6 +3,7 @@
 	"display": "Address",
 	"inheritFrom": "Object",
 	"api": "CRUD",
+	"showInMenu": true,
 	"properties": [
 		{
 			"name": "street",

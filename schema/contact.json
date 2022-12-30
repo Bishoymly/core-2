@@ -3,6 +3,7 @@
 	"display": "Contact",
 	"inheritFrom": "Object",
 	"api": "CRUD",
+	"showInMenu": true,
 	"displayAs": "firstName + ' ' + lastName",
 	"properties": [
 		{

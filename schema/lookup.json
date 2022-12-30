@@ -1,0 +1,17 @@
+{
+    "name": "lookup",
+    "display": "Lookup",
+    "inheritFrom": "Object",
+    "api": "CRUD",
+    "displayAs": "name",
+    "idAs": "name",
+    "properties": [
+        {
+            "name": "name",
+            "display": "Name",
+            "type": "String",
+            "required": true
+        }
+    ],
+    "type": "type"
+}

@@ -1,0 +1,23 @@
+{
+    "name": "lookupWithCode",
+    "display": "Lookup With Code",
+    "inheritFrom": "Object",
+    "api": "CRUD",
+    "displayAs": "code + ' - ' + name",
+    "idAs": "code",
+    "properties": [
+        {
+            "name": "code",
+            "display": "Code",
+            "type": "String",
+            "required": true
+        },
+        {
+            "name": "name",
+            "display": "Name",
+            "type": "String",
+            "required": true
+        }
+    ],
+    "type": "type"
+}

@@ -5,6 +5,7 @@
 	"api": "CRUD",
 	"displayAs": "name",
 	"idAs": "name",
+	"showInMenu": true,
 	"properties": [
 		{
 			"name": "name",
@@ -47,6 +48,11 @@
 			"display": "Id As Expression",
 			"helpText": "An expression for id of this object",
 			"type": "String"
+		},
+		{
+			"name": "showInMenu",
+			"display": "Show in menu",
+			"type": "Boolean"
 		},
 		{
 			"name": "properties",
