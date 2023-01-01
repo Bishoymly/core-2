@@ -7,90 +7,77 @@ import {
   Select,
 } from "@mui/material";
 import typeSystem from "core/type-system";
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 
-class SelectField extends Component {
-  state = {
-    loading: false,
-    value: this.props.value ?? "",
-    property: this.props.property,
-    prefix: this.props.prefix ?? "",
-  };
+export default function SelectField({
+  prefix,
+  value,
+  property,
+  error,
+  onChange,
+}) {
+  const [loading, setLoading] = useState(false);
+  const [lookup, setLookup] = useState(null);
 
-  async componentDidMount() {
-    if (
-      this.props.property.lookupFromType !== undefined &&
-      this.props.property.lookupFromType !== null &&
-      this.props.property.lookupFromType !== ""
-    ) {
-      try {
-        this.setState({ loading: true });
-        console.log(
-          "getting lookup from " + this.props.property.lookupFromType
-        );
-        const response = await fetch(
-          "http://localhost:3000/api/" + this.props.property.lookupFromType
-        );
-        if (!response.ok) {
-          throw Error(response.statusText);
+  useEffect(() => {
+    async function fetchData() {
+      if (property.lookupFromType) {
+        try {
+          setLoading(true);
+          console.log("getting lookup from " + property.lookupFromType);
+          const response = await fetch(
+            "http://localhost:3000/api/" + property.lookupFromType
+          );
+          if (!response.ok) {
+            throw Error(response.statusText);
+          }
+          const json = await response.json();
+          setLoading(false);
+          setLookup(json);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-        const json = await response.json();
-        this.setState({ lookup: json, loading: false });
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.setState({ loading: false });
       }
     }
-  }
+    fetchData();
+  }, []);
 
-  setValue(e) {
-    this.setState({ value: e.target.value });
-    if (this.props.onChange) this.props.onChange(e.target.value);
-  }
-
-  render() {
-    return (
-      <Grid item xs={12}>
-        <FormControl fullWidth error={this.props.error ? true : false}>
-          <InputLabel
-            id={this.state.prefix + this.state.property.name + "-label"}
-          >
-            {this.state.property.display ?? this.state.property.name}
-          </InputLabel>
-          <Select
-            labelId={this.state.prefix + this.state.property.name + "-label"}
-            id={this.state.prefix + this.state.property.name}
-            value={this.state.value}
-            onChange={(e) => {
-              this.setValue(e);
-            }}
-            label={this.state.property.display ?? this.state.property.name}
-          >
-            <MenuItem value="">
-              <em>None</em>
+  return (
+    <Grid item xs={12}>
+      <FormControl fullWidth error={error ? true : false}>
+        <InputLabel id={prefix + property.name + "-label"}>
+          {property.display ?? property.name}
+        </InputLabel>
+        <Select
+          labelId={prefix + property.name + "-label"}
+          id={prefix + property.name}
+          value={value}
+          onChange={(e) => {
+            onChange(e.target.value);
+          }}
+          label={property.display ?? property.name}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          {property.values?.map((v) => (
+            <MenuItem key={v} value={v}>
+              {v}
             </MenuItem>
-            {this.props.property.values?.map((v) => (
-              <MenuItem key={v} value={v}>
-                {v}
-              </MenuItem>
-            ))}
-            {this.state.lookup?.map((v) => (
-              <MenuItem
-                key={typeSystem.id(v, this.props.property.lookupFromType)}
-                value={typeSystem.id(v, this.props.property.lookupFromType)}
-              >
-                {typeSystem.display(v, this.props.property.lookupFromType)}
-              </MenuItem>
-            ))}
-          </Select>
-          <FormHelperText>
-            {this.props.error ? this.props.error : this.props.property.helpText}
-          </FormHelperText>
-        </FormControl>
-      </Grid>
-    );
-  }
+          ))}
+          {lookup?.map((v) => (
+            <MenuItem
+              key={typeSystem.id(v, property.lookupFromType)}
+              value={typeSystem.id(v, property.lookupFromType)}
+            >
+              {typeSystem.display(v, property.lookupFromType)}
+            </MenuItem>
+          ))}
+        </Select>
+        <FormHelperText>{error ? error : property.helpText}</FormHelperText>
+      </FormControl>
+    </Grid>
+  );
 }
-
-export default SelectField;
