@@ -4,11 +4,8 @@ import AddIcon from "@mui/icons-material/Add";
 import CoreFormContent from "./coreFormContent";
 import { useState } from "react";
 
-export default function InlineFormList({ propertyType, defaultData }) {
-  const [type, setType] = useState(propertyType);
+export default function InlineFormList() {
   const [value, setValue] = useState({});
-  const [validationErrors, setValidationErrors] = useState({});
-  const [data, setData] = useState(defaultData ?? []);
   const [mode, setMode] = useState(undefined);
 
   return (
