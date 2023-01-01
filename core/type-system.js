@@ -43,12 +43,7 @@ class TypeSystem {
 
   createMethod(methodName, code, type, isExpression) {
     try {
-      return this.parseMethod(
-        methodName,
-        code,
-        type,
-        isExpression
-      );
+      return this.parseMethod(methodName, code, type, isExpression);
     } catch (error) {
       console.warn("Error processing method " + type.name + "." + methodName);
       console.warn(error);
@@ -89,7 +84,6 @@ class TypeSystem {
   }
 
   getMethods(typeName) {
-    console.log(typeName);
     let type = this.types[typeName];
     let calculatedMethods = {};
 
@@ -108,7 +102,12 @@ class TypeSystem {
       );
       for (const i in props) {
         const p = props[i];
-        calculatedMethods[p.name] = this.createMethod(p.name + "Expression", p.expression, type, true);
+        calculatedMethods[p.name] = this.createMethod(
+          p.name + "Expression",
+          p.expression,
+          type,
+          true
+        );
       }
     }
 
@@ -118,37 +117,50 @@ class TypeSystem {
       type.displayAs !== null &&
       type.displayAs !== ""
     ) {
-      calculatedMethods["displayAs"] = this.createMethod("displayAs", type.displayAs, type, true);
+      calculatedMethods["displayAs"] = this.createMethod(
+        "displayAs",
+        type.displayAs,
+        type,
+        true
+      );
     }
 
     // idAs
-    if (
-      type.idAs !== undefined &&
-      type.idAs !== null &&
-      type.idAs !== ""
-    ) {
-      calculatedMethods["idAs"] = this.createMethod("idAs", type.idAs, type, true);
+    if (type.idAs !== undefined && type.idAs !== null && type.idAs !== "") {
+      calculatedMethods["idAs"] = this.createMethod(
+        "idAs",
+        type.idAs,
+        type,
+        true
+      );
     }
 
     // process methods
     if (type.methods) {
       for (var m = 0; m < type.methods.length; m++) {
         const method = type.methods[i];
-        calculatedMethods[method.name] = this.createMethod(method.name, method.code, type, false);
+        calculatedMethods[method.name] = this.createMethod(
+          method.name,
+          method.code,
+          type,
+          false
+        );
       }
     }
 
     return calculatedMethods;
   }
 
-  isOfType(typeName, isOfType){
-    if(typeName == isOfType)
-    {
+  isOfType(typeName, isOfType) {
+    if (typeName == isOfType) {
       return true;
-    }
-    else{
+    } else {
       let parent = this.types[typeName]?.inheritFrom;
-      if(parent !== undefined && parent !== null && this.isOfType(parent, isOfType)){
+      if (
+        parent !== undefined &&
+        parent !== null &&
+        this.isOfType(parent, isOfType)
+      ) {
         return true;
       }
     }
@@ -168,8 +180,8 @@ class TypeSystem {
     }
   }
 
-  id(obj, typeName){
-    if(obj){
+  id(obj, typeName) {
+    if (obj) {
       if (this.hasMethod("idAs", typeName)) {
         return this.callMethod(obj, "idAs", typeName);
       } else {

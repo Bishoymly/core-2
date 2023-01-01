@@ -76,7 +76,10 @@ class SelectField extends Component {
               </MenuItem>
             ))}
             {this.state.lookup?.map((v) => (
-              <MenuItem key={typeSystem.id(v,this.props.property.lookupFromType)} value={typeSystem.id(v,this.props.property.lookupFromType) }>
+              <MenuItem
+                key={typeSystem.id(v, this.props.property.lookupFromType)}
+                value={typeSystem.id(v, this.props.property.lookupFromType)}
+              >
                 {typeSystem.display(v, this.props.property.lookupFromType)}
               </MenuItem>
             ))}

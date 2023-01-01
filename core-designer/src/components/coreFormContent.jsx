@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import { FormHelperText, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import InlineGrid from "./inlineGrid";
-import Components from "./Components";
+import Components from "../fields/Components";
 import InlineFormList from "./inlineFormList";
 import typeSystem from "core/type-system";
 
@@ -76,6 +76,7 @@ class CoreFormContent extends Component {
       value: p.name === "" ? this.state.value : this.state.value[p.name],
       error: this.props.validationErrors[this.props.prefix + p.name],
       property: p,
+      prefix: this.props.prefix ?? "",
       onChange: (e) => this.handleValueChange(p.name, e),
     });
   }
