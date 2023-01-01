@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import EditIcon from "@mui/icons-material/Edit";
@@ -8,44 +8,61 @@ import typeSystem from "core/type-system";
 
 const { Column, HeaderCell, Cell } = Table;
 
-class SimpleGrid extends Component {
-  state = {
-    loading: false,
-    type: this.props.type,
-    data: this.props.data ?? [],
-    backend: this.props.backend ?? true,
-  };
+export default function SimpleGrid({
+  type,
+  defaultData,
+  backend,
+  onValueChange,
+  onChange,
+}) {
+  const [data, setData] = useState(defaultData ?? []);
+  const [loading, setLoading] = useState(false);
 
-  async componentDidMount() {
-    if (this.state.backend === true) {
+  useEffect(() => {
+    async function loadData() {
       try {
-        this.setState({ loading: true });
-        const response = await fetch(
-          "http://localhost:3000/api/" + this.state.type.name
-        );
+        setLoading(true);
+        const response = await fetch("http://localhost:3000/api/" + type.name);
         if (!response.ok) {
           throw Error(response.statusText);
         }
         const json = await response.json();
-        this.setState({ data: json, loading: false });
+        setLoading(false);
+        setData(json);
       } catch (error) {
         console.log(error);
       } finally {
-        this.setState({ loading: false });
+        setLoading(false);
       }
     }
-  }
 
-  handleEdit = async (item) => {
-    this.props.onValueChange(item);
-  };
+    loadData();
+  }, [backend, type.name]);
 
-  handleDelete = async (item) => {
-    if (this.state.backend === true) {
+  const fetchData = async () => {
+    if (backend === true) {
       try {
-        this.setState({ loading: true });
+        setLoading(true);
+        const response = await fetch("http://localhost:3000/api/" + type.name);
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        const json = await response.json();
+        setLoading(false);
+        setData(json);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+  const handleDelete = async (item) => {
+    if (backend === true) {
+      try {
+        setLoading(true);
         const response = await fetch(
-          "http://localhost:3000/api/" + this.state.type.name + "/" + item.id,
+          "http://localhost:3000/api/" + type.name + "/" + item.id,
           { method: "DELETE" }
         );
         if (!response.ok) {
@@ -54,61 +71,55 @@ class SimpleGrid extends Component {
       } catch (error) {
         console.log(error);
       } finally {
-        this.setState({ loading: false });
+        setLoading(false);
       }
 
-      this.componentDidMount();
+      fetchData();
     } else {
-      const i = this.state.data.indexOf(item);
-      this.state.data.splice(i, 1);
-      this.setState({ data: this.state.data });
-      if (this.props.onChange) this.props.onChange(this.state.data);
+      const i = data.indexOf(item);
+      data.splice(i, 1);
+      setData(data);
+      if (onChange) onChange(data);
     }
   };
 
-  render() {
-    return (
-      <Table
-        autoHeight={true}
-        data={this.state.data}
-        loading={this.state.loading}
-      >
-        {this.state.type.calculatedProperties
-          ?.filter((p) => p.hideFromGrid !== true)
-          .map((p) => {
-            return (
-              <Column key={p.name} flexGrow={1} fullText>
-                <HeaderCell>{p.display ?? p.name}</HeaderCell>
-                <Cell>{(row) => typeSystem.display(row[p.name], p.type)}</Cell>
-              </Column>
-            );
-          })}
-        <Column fixed="right" flexGrow={1}>
-          <HeaderCell></HeaderCell>
-          <Cell>
-            {(item) => (
-              <Stack direction="row" spacing={2} sx={{ mt: -1 }}>
-                <IconButton
-                  aria-label="edit"
-                  fontSize="small"
-                  onClick={async () => await this.handleEdit(item)}
-                >
-                  <EditIcon fontSize="small" />
-                </IconButton>
-                <IconButton
-                  aria-label="delete"
-                  fontSize="small"
-                  onClick={async () => await this.handleDelete(item)}
-                >
-                  <DeleteIcon fontSize="small" />
-                </IconButton>
-              </Stack>
-            )}
-          </Cell>
-        </Column>
-      </Table>
-    );
-  }
+  return (
+    <Table autoHeight={true} data={data} loading={loading}>
+      {type.calculatedProperties
+        ?.filter((p) => p.hideFromGrid !== true)
+        .map((p) => {
+          return (
+            <Column key={p.name} flexGrow={1} fullText>
+              <HeaderCell>{p.display ?? p.name}</HeaderCell>
+              <Cell>{(row) => typeSystem.display(row[p.name], p.type)}</Cell>
+            </Column>
+          );
+        })}
+      <Column fixed="right" flexGrow={1}>
+        <HeaderCell></HeaderCell>
+        <Cell>
+          {(item) => (
+            <Stack direction="row" spacing={2} sx={{ mt: -1 }}>
+              <IconButton
+                aria-label="edit"
+                fontSize="small"
+                onClick={async (item) => {
+                  onValueChange(item);
+                }}
+              >
+                <EditIcon fontSize="small" />
+              </IconButton>
+              <IconButton
+                aria-label="delete"
+                fontSize="small"
+                onClick={async () => await handleDelete(item)}
+              >
+                <DeleteIcon fontSize="small" />
+              </IconButton>
+            </Stack>
+          )}
+        </Cell>
+      </Column>
+    </Table>
+  );
 }
-
-export default SimpleGrid;

@@ -19,6 +19,10 @@ export default function SelectField({
   const [loading, setLoading] = useState(false);
   const [lookup, setLookup] = useState(null);
 
+  if (!value) {
+    value = "";
+  }
+
   useEffect(() => {
     async function fetchData() {
       if (property.lookupFromType) {
@@ -42,7 +46,7 @@ export default function SelectField({
       }
     }
     fetchData();
-  }, []);
+  }, [property.lookupFromType]);
 
   return (
     <Grid item xs={12}>
@@ -58,6 +62,7 @@ export default function SelectField({
             onChange(e.target.value);
           }}
           label={property.display ?? property.name}
+          disabled={loading}
         >
           <MenuItem value="">
             <em>None</em>

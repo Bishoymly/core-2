@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -17,9 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import DataObject from "@mui/icons-material/DataObject";
 import CoreEntity from "./coreEntity";
 import typeSystem from "core/type-system";
 
@@ -71,137 +69,130 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-class DashboardContent extends Component {
-  state = {
-    type: undefined,
-    types: [],
-    open: true,
-  };
+export default function DashboardContent() {
+  const [type, setType] = useState(undefined);
+  const [types, setTypes] = useState([]);
+  const [open, setOpen] = useState(true);
 
-  toggleDrawer = () => {
-    this.setState({ open: !this.state.open });
-  };
-
-  async componentDidMount() {
-    try {
-      const response = await fetch("http://localhost:3000/api/type");
-      if (!response.ok) {
-        throw Error(response.statusText);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://localhost:3000/api/type");
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        const types = await response.json();
+        await typeSystem.init(types);
+        setTypes(types);
+      } catch (error) {
+        console.warn(error);
       }
-      const types = await response.json();
-      await typeSystem.init(types);
-      this.setState({ types: types });
-    } catch (error) {
-      console.warn(error);
     }
-  }
+    fetchData();
+  }, []);
 
-  render() {
-    return (
-      <ThemeProvider theme={mdTheme}>
-        <Box sx={{ display: "flex" }}>
-          <CssBaseline />
-          <AppBar position="absolute" open={this.state.open}>
-            <Toolbar
-              sx={{
-                pr: "24px", // keep right padding when drawer closed
-              }}
-            >
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="open drawer"
-                onClick={this.toggleDrawer}
-                sx={{
-                  marginRight: "36px",
-                  ...(this.state.open && { display: "none" }),
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography
-                component="h1"
-                variant="h6"
-                color="inherit"
-                noWrap
-                sx={{ flexGrow: 1 }}
-              >
-                Core 2
-              </Typography>
-              <IconButton color="inherit">
-                <Badge badgeContent={4} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton>
-            </Toolbar>
-          </AppBar>
-          <Drawer variant="permanent" open={this.state.open}>
-            <Toolbar
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-end",
-                px: [1],
-              }}
-            >
-              <IconButton onClick={this.toggleDrawer}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </Toolbar>
-            <Divider />
-            <List component="nav">
-              {this.state.types
-                .filter((t) => t.showInMenu === true)
-                .map((t) => (
-                  <ListItemButton
-                    key={t.name}
-                    onClick={() => {
-                      this.setState({ type: t });
-                    }}
-                  >
-                    <ListItemText primary={t.display ?? t.name} />
-                  </ListItemButton>
-                ))}
-              <Divider sx={{ my: 1 }} />
-            </List>
-          </Drawer>
-          <Box
-            component="main"
+  return (
+    <ThemeProvider theme={mdTheme}>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar position="absolute" open={open}>
+          <Toolbar
             sx={{
-              backgroundColor: (theme) =>
-                theme.palette.mode === "light"
-                  ? theme.palette.grey[100]
-                  : theme.palette.grey[900],
-              flexGrow: 1,
-              height: "100vh",
-              overflow: "auto",
+              pr: "24px", // keep right padding when drawer closed
             }}
           >
-            <Toolbar />
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Paper
-                    sx={{
-                      p: 2,
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <CoreEntity
-                      key={this.state.type?.name}
-                      type={this.state.type}
-                      types={this.state.types}
-                    ></CoreEntity>
-                  </Paper>
-                </Grid>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() => setOpen(!open)}
+              sx={{
+                marginRight: "36px",
+                ...(open && { display: "none" }),
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="inherit"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              Core 2
+            </Typography>
+            <IconButton color="inherit">
+              <Badge badgeContent={4} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              px: [1],
+            }}
+          >
+            <IconButton onClick={() => setOpen(!open)}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List component="nav">
+            {types
+              .filter((t) => t.showInMenu === true)
+              .map((t) => (
+                <ListItemButton
+                  key={t.name}
+                  onClick={() => {
+                    setType(t);
+                  }}
+                >
+                  <ListItemText primary={t.display ?? t.name} />
+                </ListItemButton>
+              ))}
+            <Divider sx={{ my: 1 }} />
+          </List>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
+          }}
+        >
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Paper
+                  sx={{
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <CoreEntity
+                    key={type?.name}
+                    type={type}
+                    types={types}
+                  ></CoreEntity>
+                </Paper>
               </Grid>
-            </Container>
-          </Box>
+            </Grid>
+          </Container>
         </Box>
-      </ThemeProvider>
-    );
-  }
+      </Box>
+    </ThemeProvider>
+  );
 }
-
-export default DashboardContent;

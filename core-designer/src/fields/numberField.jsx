@@ -8,6 +8,10 @@ export default function NumberField({
   error,
   onChange,
 }) {
+  if (!value) {
+    value = "";
+  }
+
   return (
     <Grid item xs={12}>
       <TextField
@@ -20,9 +24,7 @@ export default function NumberField({
         helperText={error ? error : property.helpText}
         error={error ? true : false}
         value={value}
-        onChange={(e) => {
-          onChange(e.target.value);
-        }}
+        onChange={(e) => onChange(e.target.value)}
       />
     </Grid>
   );
