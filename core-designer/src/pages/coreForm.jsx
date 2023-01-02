@@ -4,24 +4,34 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import { Alert, Grid, Stack } from "@mui/material";
-import CoreFormContent from "./coreFormContent";
+import CoreFormContent from "../components/coreFormContent";
+import typeSystem from "core/type-system";
+import { Link, redirect, useLoaderData, useParams } from "react-router-dom";
 
-export default function CoreForm({
-  mode,
-  type,
-  types,
-  onChange,
-  onModeChange,
-  defaultValue,
-}) {
-  const [value, setValue] = useState(defaultValue ?? {});
+export async function loader({ params }) {
+  if (!params.id) {
+    return {};
+  }
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/${params.type}/${params.id}`
+    );
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+    const item = await response.json();
+    return { item };
+  } catch (error) {
+    console.warn(error);
+  }
+}
+
+export default function CoreForm({ mode }) {
+  const type = typeSystem.types[useParams().type];
+  const [value, setValue] = useState(useLoaderData().item ?? {});
   const [error, setError] = useState(undefined);
   const [validationErrors, setValidationErrors] = useState({});
-
-  const handleValueChange = (v) => {
-    setValue(v);
-    if (onChange) onChange(v);
-  };
 
   const handleSubmit = async (event) => {
     try {
@@ -63,15 +73,10 @@ export default function CoreForm({
       }
 
       console.log(body);
-      onModeChange("list");
+      return redirect("/" + type.name);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleCancel = (event) => {
-    event.preventDefault();
-    onModeChange("list");
   };
 
   return (
@@ -88,12 +93,11 @@ export default function CoreForm({
         <Grid container spacing={2}>
           <CoreFormContent
             type={type}
-            types={types}
             mode={mode}
             defaultValue={value}
             validationErrors={validationErrors}
             prefix=""
-            onChange={handleValueChange}
+            onChange={(v) => setValue(v)}
           ></CoreFormContent>
         </Grid>
         {error ? (
@@ -105,7 +109,7 @@ export default function CoreForm({
           <Button type="submit" size="large" variant="contained">
             {mode === "add" ? "Create" : "Save"}
           </Button>
-          <Button variant="outlined" onClick={handleCancel}>
+          <Button variant="outlined" component={Link} to={`/${type.name}`}>
             Cancel
           </Button>
         </Stack>

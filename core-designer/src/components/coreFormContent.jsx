@@ -13,7 +13,6 @@ export default function CoreFormContent({
   validationErrors,
   defaultValue,
   type,
-  types,
   onChange,
 }) {
   const [value, setValue] = useState(defaultValue ?? {});
@@ -26,7 +25,7 @@ export default function CoreFormContent({
   };
 
   const renderProperty = (property) => {
-    const t = types.find((t) => t.name === property.type);
+    const t = typeSystem.types[property.type];
     let p = property;
     if (t) {
       p = calculatePropertyFromType(property, t);
@@ -42,7 +41,6 @@ export default function CoreFormContent({
                 typeSystem.isOfType(p.type, "Object") ? (
                   <InlineGrid
                     type={t}
-                    types={types}
                     property={p}
                     data={value[p.name] ?? []}
                     onChange={(e) => handleValueChange(p.name, e)}
@@ -50,7 +48,6 @@ export default function CoreFormContent({
                 ) : (
                   <InlineFormList
                     type={t}
-                    types={types}
                     property={p}
                     data={value[p.name] ?? []}
                     onChange={(e) => handleValueChange(p.name, e)}
@@ -59,7 +56,6 @@ export default function CoreFormContent({
               ) : (
                 <CoreFormContent
                   type={t}
-                  types={types}
                   mode={mode}
                   defaultValue={p.name === "" ? value : value[p.name] ?? {}}
                   prefix={prefix + p.name + "."}

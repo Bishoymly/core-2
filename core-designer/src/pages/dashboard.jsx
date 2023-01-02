@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import MuiDrawer from "@mui/material/Drawer";
@@ -18,8 +18,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import CoreEntity from "./coreEntity";
 import typeSystem from "core/type-system";
+import { Link, Outlet, useLoaderData } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -69,27 +69,23 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-export default function DashboardContent() {
-  const [type, setType] = useState(undefined);
-  const [types, setTypes] = useState([]);
-  const [open, setOpen] = useState(true);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("http://localhost:3000/api/type");
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        const types = await response.json();
-        await typeSystem.init(types);
-        setTypes(types);
-      } catch (error) {
-        console.warn(error);
-      }
+export async function loader() {
+  try {
+    const response = await fetch("http://localhost:3000/api/type");
+    if (!response.ok) {
+      throw Error(response.statusText);
     }
-    fetchData();
-  }, []);
+    const types = await response.json();
+    await typeSystem.init(types);
+    return { types };
+  } catch (error) {
+    console.warn(error);
+  }
+}
+
+export default function DashboardContent() {
+  const { types } = useLoaderData();
+  const [open, setOpen] = useState(true);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -147,12 +143,7 @@ export default function DashboardContent() {
             {types
               .filter((t) => t.showInMenu === true)
               .map((t) => (
-                <ListItemButton
-                  key={t.name}
-                  onClick={() => {
-                    setType(t);
-                  }}
-                >
+                <ListItemButton key={t.name} component={Link} to={t.name}>
                   <ListItemText primary={t.display ?? t.name} />
                 </ListItemButton>
               ))}
@@ -182,11 +173,7 @@ export default function DashboardContent() {
                     flexDirection: "column",
                   }}
                 >
-                  <CoreEntity
-                    key={type?.name}
-                    type={type}
-                    types={types}
-                  ></CoreEntity>
+                  <Outlet />
                 </Paper>
               </Grid>
             </Grid>

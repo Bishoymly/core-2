@@ -1,62 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, Stack } from "@mui/material";
 import typeSystem from "core/type-system";
+import { Link, useLoaderData, useParams } from "react-router-dom";
 
 const { Column, HeaderCell, Cell } = Table;
 
-export default function SimpleGrid({
-  type,
-  defaultData,
-  backend,
-  onValueChange,
-  onChange,
-}) {
-  const [data, setData] = useState(defaultData ?? []);
+export async function loader({ params }) {
+  try {
+    const response = await fetch("http://localhost:3000/api/" + params.type);
+    if (!response.ok) {
+      throw Error(response.statusText);
+    }
+    const data = await response.json();
+    return { data };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export default function SimpleGrid({ backend, onChange }) {
+  const type = typeSystem.types[useParams().type];
+  const data = useLoaderData().data ?? [];
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        setLoading(true);
-        const response = await fetch("http://localhost:3000/api/" + type.name);
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        const json = await response.json();
-        setLoading(false);
-        setData(json);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadData();
-  }, [backend, type.name]);
-
-  const fetchData = async () => {
-    if (backend === true) {
-      try {
-        setLoading(true);
-        const response = await fetch("http://localhost:3000/api/" + type.name);
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        const json = await response.json();
-        setLoading(false);
-        setData(json);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
   const handleDelete = async (item) => {
     if (backend === true) {
       try {
@@ -74,11 +44,11 @@ export default function SimpleGrid({
         setLoading(false);
       }
 
-      fetchData();
+      //fetchData();
     } else {
       const i = data.indexOf(item);
       data.splice(i, 1);
-      setData(data);
+      //setData(data);
       if (onChange) onChange(data);
     }
   };
@@ -103,9 +73,8 @@ export default function SimpleGrid({
               <IconButton
                 aria-label="edit"
                 fontSize="small"
-                onClick={async (item) => {
-                  onValueChange(item);
-                }}
+                component={Link}
+                to={`${item.id}`}
               >
                 <EditIcon fontSize="small" />
               </IconButton>
