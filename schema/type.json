@@ -12,14 +12,16 @@
       "display": "Name",
       "helpText": "The name that is used to identify this type",
       "type": "String",
-      "required": true
+      "required": true,
+      "tab": "Basic"
     },
     {
       "name": "display",
       "display": "Display",
       "helpText": "The name that will be displayed for this type",
       "type": "String",
-      "default": " "
+      "default": " ",
+      "tab": "Basic"
     },
     {
       "name": "inheritFrom",
@@ -30,45 +32,45 @@
       "uiControl": "Select",
       "required": true,
       "lookupFromType": "type",
-      "default": "Object"
+      "default": "Object",
+      "tab": "Basic"
     },
     {
-      "name": "api",
-      "display": "Backend API",
-      "type": "String",
-      "helpText": "Should this appear editable in admin menu?",
-      "example": "CRUD"
+      "name": "showInMenu",
+      "display": "Show in menu",
+      "type": "Boolean",
+      "default": true,
+      "tab": "Basic"
     },
     {
       "name": "properties",
       "display": "Properties",
       "helpText": "The fields for this type",
       "type": "property",
-      "isArray": true
+      "isArray": true,
+      "tab": "Properties"
     },
     {
       "name": "methods",
       "display": "Methods",
       "helpText": "Custom logic for this type",
       "type": "method",
-      "isArray": true
-    },
-    {
-      "name": "showInMenu",
-      "display": "Show in menu",
-      "type": "Boolean"
+      "isArray": true,
+      "tab": "Customize"
     },
     {
       "name": "displayAs",
       "display": "Display As Expression",
       "helpText": "An expression to display object of this type",
-      "type": "String"
+      "type": "String",
+      "tab": "Customize"
     },
     {
       "name": "idAs",
       "display": "Id As Expression",
       "helpText": "An expression for id of this object",
-      "type": "String"
+      "type": "String",
+      "tab": "Customize"
     }
   ],
   "methods": [

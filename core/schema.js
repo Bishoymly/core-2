@@ -62,7 +62,7 @@ class Schema {
           },
         };
 
-        if (t.api === "CRUD") {
+        if (t.showInMenu === true) {
           this.crudService?.setupSwagger(t, tags, paths);
         }
       });

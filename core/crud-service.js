@@ -60,14 +60,14 @@ class CrudService extends BaseService {
       for (const f in jsonsInDir) {
         const fileData = fs.readFileSync(path.join("./schema", jsonsInDir[f]));
         const item = JSON.parse(fileData.toString());
-        
-        if(!item.type){
+
+        if (!item.type) {
           item.type = "type";
         }
 
-        if(!item.id){
+        if (!item.id) {
           item.id = "type-" + item.name;
-        } 
+        }
 
         const { resource: doc } = await this.container.items.create(item);
         types.push(doc);
@@ -93,11 +93,6 @@ class CrudService extends BaseService {
     app.delete("/api/:type/:id", (req, res, next) =>
       this.delete(req.params.type, req, res).catch(next)
     );
-    types
-      .filter((t) => t.api === "CRUD")
-      .forEach((t) => {
-        console.log("/" + t.name);
-      });
   }
 
   setupSwagger(t, tags, paths) {

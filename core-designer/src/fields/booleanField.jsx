@@ -14,7 +14,11 @@ export default function BooleanField({
   onChange,
 }) {
   if (!value) {
-    value = false;
+    if (property.default) {
+      value = property.default;
+    } else {
+      value = false;
+    }
   }
 
   return (
