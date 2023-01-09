@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Alert, Grid, Stack } from "@mui/material";
 import CoreFormContent from "../components/coreFormContent";
 import typeSystem from "core/type-system";
-import { Link, redirect, useLoaderData, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 
 export async function loader({ params }) {
   if (!params.id) {
@@ -32,6 +32,7 @@ export default function CoreForm({ mode }) {
   const [value, setValue] = useState(useLoaderData().item ?? {});
   const [error, setError] = useState(undefined);
   const [validationErrors, setValidationErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     try {
@@ -73,7 +74,7 @@ export default function CoreForm({ mode }) {
       }
 
       console.log(body);
-      return redirect("/" + type.name);
+      return navigate(-1);
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +110,7 @@ export default function CoreForm({ mode }) {
           <Button type="submit" size="large" variant="contained">
             {mode === "add" ? "Create" : "Save"}
           </Button>
-          <Button variant="outlined" component={Link} to={`/${type.name}`}>
+          <Button variant="outlined" onClick={() => navigate(-1)}>
             Cancel
           </Button>
         </Stack>

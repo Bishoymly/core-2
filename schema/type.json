@@ -1,79 +1,72 @@
 {
-	"name": "type",
-	"display": "Type",
-	"inheritFrom": "Object",
-	"api": "CRUD",
-	"displayAs": "name",
-	"idAs": "name",
-	"showInMenu": true,
-	"properties": [
-		{
-			"name": "name",
-			"display": "Name",
-			"helpText": "The name that is used to identify this type",
-			"type": "String",
-			"required": true
-		},
-		{
-			"name": "display",
-			"display": "Display",
-			"helpText": "The name that will be displayed for this type",
-			"type": "String"
-		},
-		{
-			"name": "inheritFrom",
-			"display": "Inherit from",
-			"example": "Object",
-			"helpText": "The data type of this field",
-			"type": "String",
-			"uiControl": "Select",
-			"required": true,
-			"lookupFromType": "type"
-		},
-		{
-			"name": "api",
-			"display": "Backend API",
-			"type": "String",
-			"helpText": "Should this appear editable in admin menu?",
-			"example": "CRUD"
-		},
-		{
-			"name": "displayAs",
-			"display": "Display As Expression",
-			"helpText": "An expression to display object of this type",
-			"type": "String"
-		},
-		{
-			"name": "idAs",
-			"display": "Id As Expression",
-			"helpText": "An expression for id of this object",
-			"type": "String"
-		},
-		{
-			"name": "showInMenu",
-			"display": "Show in menu",
-			"type": "Boolean"
-		},
-		{
-			"name": "properties",
-			"display": "Properties",
-			"helpText": "The fields for this type",
-			"type": "property",
-			"isArray": true
-		},
-		{
-			"name": "methods",
-			"display": "Methods",
-			"helpText": "Custom logic for this type",
-			"type": "method",
-			"isArray": true
-		},
-		{
-			"name": "values",
-			"display": "Values",
-			"type": "String",
-			"helpText": "Possible values for a lookup type",
-			"isArray": true
-		}
-	]
+  "name": "type",
+  "display": "Type",
+  "inheritFrom": "Object",
+  "api": "CRUD",
+  "displayAs": "name",
+  "idAs": "name",
+  "showInMenu": true,
+  "properties": [
+    {
+      "name": "name",
+      "display": "Name",
+      "helpText": "The name that is used to identify this type",
+      "type": "String",
+      "required": true
+    },
+    {
+      "name": "display",
+      "display": "Display",
+      "helpText": "The name that will be displayed for this type",
+      "type": "String"
+    },
+    {
+      "name": "inheritFrom",
+      "display": "Inherit from",
+      "example": "Object",
+      "helpText": "The data type of this field",
+      "type": "String",
+      "uiControl": "Select",
+      "required": true,
+      "lookupFromType": "type"
+    },
+    {
+      "name": "api",
+      "display": "Backend API",
+      "type": "String",
+      "helpText": "Should this appear editable in admin menu?",
+      "example": "CRUD"
+    },
+    {
+      "name": "displayAs",
+      "display": "Display As Expression",
+      "helpText": "An expression to display object of this type",
+      "type": "String"
+    },
+    {
+      "name": "idAs",
+      "display": "Id As Expression",
+      "helpText": "An expression for id of this object",
+      "type": "String"
+    },
+    {
+      "name": "showInMenu",
+      "display": "Show in menu",
+      "type": "Boolean"
+    },
+    {
+      "name": "properties",
+      "display": "Properties",
+      "helpText": "The fields for this type",
+      "type": "property",
+      "isArray": true
+    },
+    {
+      "name": "methods",
+      "display": "Methods",
+      "helpText": "Custom logic for this type",
+      "type": "method",
+      "isArray": true
+    }
+  ]
 }

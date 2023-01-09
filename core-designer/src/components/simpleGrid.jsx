@@ -5,7 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, Stack } from "@mui/material";
 import typeSystem from "core/type-system";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData, useNavigate, useParams } from "react-router-dom";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -22,10 +22,17 @@ export async function loader({ params }) {
   }
 }
 
-export default function SimpleGrid({ backend, onChange }) {
+export default function SimpleGrid({
+  backend,
+  onChange,
+  onEdit,
+  onDelete,
+  defaultData,
+}) {
   const type = typeSystem.types[useParams().type];
-  const data = useLoaderData().data ?? [];
+  const data = useLoaderData().data ?? defaultData ?? [];
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleDelete = async (item) => {
     if (backend === true) {
@@ -44,12 +51,10 @@ export default function SimpleGrid({ backend, onChange }) {
         setLoading(false);
       }
 
-      //fetchData();
+      navigate("/" + type.name, { replace: true });
     } else {
       const i = data.indexOf(item);
-      data.splice(i, 1);
-      //setData(data);
-      if (onChange) onChange(data);
+      onDelete(i);
     }
   };
 
@@ -70,14 +75,24 @@ export default function SimpleGrid({ backend, onChange }) {
         <Cell>
           {(item) => (
             <Stack direction="row" spacing={2} sx={{ mt: -1 }}>
-              <IconButton
-                aria-label="edit"
-                fontSize="small"
-                component={Link}
-                to={`${item.id}`}
-              >
-                <EditIcon fontSize="small" />
-              </IconButton>
+              {backend ? (
+                <IconButton
+                  aria-label="edit"
+                  fontSize="small"
+                  component={Link}
+                  to={`${item.id}`}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              ) : (
+                <IconButton
+                  aria-label="edit"
+                  fontSize="small"
+                  onClick={() => onEdit(item)}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              )}
               <IconButton
                 aria-label="delete"
                 fontSize="small"

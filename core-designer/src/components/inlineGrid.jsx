@@ -6,7 +6,6 @@ import CoreFormContent from "./coreFormContent";
 
 export default function InlineGrid({
   type,
-  types,
   validationErrors,
   onChange,
   defaultData,
@@ -14,15 +13,25 @@ export default function InlineGrid({
   const [mode, setMode] = useState("list");
   const [value, setValue] = useState({});
   const [data, setData] = useState(defaultData ?? []);
+  const [index, setIndex] = useState(1);
 
   const handleSave = (event) => {
     if (mode === "add") {
-      data.push(value);
+      setData([...data, value]);
+    } else {
+      data[index] = value;
+      setData([...data]);
     }
 
     setMode("list");
-    setData(data);
     if (onChange) onChange(data);
+  };
+
+  const handleDelete = (i) => {
+    setMode("list");
+    let newData = [...data];
+    newData.splice(i, 1);
+    setData(newData);
   };
 
   return (
@@ -30,13 +39,14 @@ export default function InlineGrid({
       {data.length > 0 ? (
         <SimpleGrid
           type={type}
-          types={types}
           backend={false}
-          data={data}
-          onValueChange={(e) => {
+          defaultData={data}
+          onEdit={(e) => {
             setMode("edit");
             setValue(e);
+            setIndex(data.indexOf(e));
           }}
+          onDelete={handleDelete}
         ></SimpleGrid>
       ) : null}
 
@@ -70,12 +80,11 @@ export default function InlineGrid({
             <Grid container spacing={2} sx={{ mt: 2 }}>
               <CoreFormContent
                 type={type}
-                types={types}
                 mode={mode}
-                value={value}
+                defaultValue={value}
                 validationErrors={validationErrors}
                 prefix=""
-                onChange={() => {}}
+                onChange={(value) => setValue(value)}
               ></CoreFormContent>
             </Grid>
             <Stack

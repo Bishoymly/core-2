@@ -18,6 +18,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+import AddIcon from "@mui/icons-material/Add";
 import typeSystem from "core/type-system";
 import { Link, Outlet, useLoaderData } from "react-router-dom";
 
@@ -148,6 +149,15 @@ export default function DashboardContent() {
                 </ListItemButton>
               ))}
             <Divider sx={{ my: 1 }} />
+            <IconButton
+              aria-label="Add"
+              component={Link}
+              to="/type/add"
+              fontSize="small"
+              sx={{ ml: 1 }}
+            >
+              <AddIcon fontSize="small" />
+            </IconButton>
           </List>
         </Drawer>
         <Box

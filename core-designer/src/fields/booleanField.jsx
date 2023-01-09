@@ -13,6 +13,10 @@ export default function BooleanField({
   error,
   onChange,
 }) {
+  if (!value) {
+    value = false;
+  }
+
   return (
     <Grid item xs={12}>
       <FormControlLabel

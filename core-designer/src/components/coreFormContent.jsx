@@ -4,7 +4,6 @@ import { FormHelperText, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import InlineGrid from "./inlineGrid";
 import Components from "../fields/Components";
-import InlineFormList from "./inlineFormList";
 import typeSystem from "core/type-system";
 
 export default function CoreFormContent({
@@ -26,6 +25,7 @@ export default function CoreFormContent({
 
   const renderProperty = (property) => {
     const t = typeSystem.types[property.type];
+
     let p = property;
     if (t) {
       p = calculatePropertyFromType(property, t);
@@ -38,21 +38,13 @@ export default function CoreFormContent({
               </Typography>
               <FormHelperText>{p.helpText}</FormHelperText>
               {p.isArray ? (
-                typeSystem.isOfType(p.type, "Object") ? (
-                  <InlineGrid
-                    type={t}
-                    property={p}
-                    data={value[p.name] ?? []}
-                    onChange={(e) => handleValueChange(p.name, e)}
-                  ></InlineGrid>
-                ) : (
-                  <InlineFormList
-                    type={t}
-                    property={p}
-                    data={value[p.name] ?? []}
-                    onChange={(e) => handleValueChange(p.name, e)}
-                  ></InlineFormList>
-                )
+                <InlineGrid
+                  type={t}
+                  property={p}
+                  validationErrors={validationErrors}
+                  defaultData={value[p.name] ?? []}
+                  onChange={(e) => handleValueChange(p.name, e)}
+                ></InlineGrid>
               ) : (
                 <CoreFormContent
                   type={t}
