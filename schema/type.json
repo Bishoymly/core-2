@@ -5,7 +5,7 @@
   "api": "CRUD",
   "displayAs": "name",
   "idAs": "name",
-  "showInMenu": true,
+  "showInMenu": false,
   "properties": [
     {
       "name": "name",
