@@ -1,95 +1,108 @@
 {
-    "name": "property",
-    "display": "Property",
-    "inheritFrom": "Object",
-    "displayAs": "name",
-    "properties": [
-        {
-            "name": "name",
-            "display": "Name",
-            "helpText": "The name that is used to store the value of this field",
-            "type": "String",
-            "required": true
-        },
-        {
-            "name": "display",
-            "display": "Display",
-            "helpText": "The label that will be displayed for that field",
-            "type": "String"
-        },
-        {
-            "name": "type",
-            "display": "Type",
-            "helpText": "The data type of this field",
-            "type": "String",
-            "uiControl": "Select",
-            "required": true,
-            "lookupFromType": "type"
-        },
-        {
-            "name": "uiControl",
-            "display": "UI Control",
-            "helpText": "The UI Control that will be used to edit this field",
-            "uiControl": "Select",
-            "type": "String",
-            "values": [
-                "Text",
-                "Number",
-                "DatePicker",
-                "Checkbox",
-                "Select",
-                "AutoComplete",
-                "CodeEditor",
-                "Label"
-            ]
-        },
-        {
-            "name": "lookupFromType",
-            "display": "Lookup from",
-            "helpText": "The values that are possible to select from are from type",
-            "type": "String",
-            "uiControl": "Select",
-            "required": true,
-            "lookupFromType": "type"
-        },
-        {
-            "name": "example",
-            "display": "Example Value",
-            "helpText": "Just an example value",
-            "type": "String"
-        },
-        {
-            "name": "required",
-            "display": "Required?",
-            "helpText": "Is it required?",
-            "type": "Boolean"
-        },
-        {
-            "name": "hideFromGrid",
-            "display": "Hide from Grid?",
-            "type": "Boolean"
-        },
-        {
-            "name": "hideFromForm",
-            "display": "Hide from Form?",
-            "type": "Boolean"
-        },
-        {
-            "name": "backendOnly",
-            "display": "For backend only?",
-            "type": "Boolean"
-        },
-        {
-            "name": "expression",
-            "display": "Auto Calculate Expression",
-            "example": "this.x + this.y",
-            "type": "String"
-        },
-        {
-            "name": "isArray",
-            "display": "Is Array?",
-            "helpText": "Is it a list or accepts multiple values?",
-            "type": "Boolean"
-        }
-    ]
+  "name": "property",
+  "display": "Property",
+  "inheritFrom": "Object",
+  "displayAs": "name",
+  "properties": [
+    {
+      "name": "name",
+      "display": "Name",
+      "helpText": "The name that is used to store the value of this field",
+      "type": "String",
+      "required": true
+    },
+    {
+      "name": "display",
+      "display": "Display",
+      "helpText": "The label that will be displayed for that field",
+      "type": "String",
+      "default": " "
+    },
+    {
+      "name": "type",
+      "display": "Type",
+      "helpText": "The data type of this field",
+      "type": "String",
+      "default": "String",
+      "uiControl": "Select",
+      "required": true,
+      "lookupFromType": "type"
+    },
+    {
+      "name": "uiControl",
+      "display": "UI Control",
+      "helpText": "The UI Control that will be used to edit this field",
+      "uiControl": "Select",
+      "type": "String",
+      "values": [
+        "Text",
+        "Number",
+        "DatePicker",
+        "Checkbox",
+        "Select",
+        "AutoComplete",
+        "CodeEditor",
+        "Label"
+      ]
+    },
+    {
+      "name": "lookupFromType",
+      "display": "Lookup from",
+      "helpText": "The values that are possible to select from are from type",
+      "type": "String",
+      "uiControl": "Select",
+      "required": true,
+      "lookupFromType": "type"
+    },
+    {
+      "name": "default",
+      "display": "Default Value",
+      "type": "String"
+    },
+    {
+      "name": "example",
+      "display": "Example Value",
+      "helpText": "Just an example value",
+      "type": "String"
+    },
+    {
+      "name": "required",
+      "display": "Required?",
+      "helpText": "Is it required?",
+      "type": "Boolean"
+    },
+    {
+      "name": "hideFromGrid",
+      "display": "Hide from Grid?",
+      "type": "Boolean"
+    },
+    {
+      "name": "hideFromForm",
+      "display": "Hide from Form?",
+      "type": "Boolean"
+    },
+    {
+      "name": "backendOnly",
+      "display": "For backend only?",
+      "type": "Boolean"
+    },
+    {
+      "name": "expression",
+      "display": "Auto Calculate Expression",
+      "example": "this.x + this.y",
+      "type": "String"
+    },
+    {
+      "name": "isArray",
+      "display": "Is Array?",
+      "helpText": "Is it a list or accepts multiple values?",
+      "type": "Boolean"
+    }
+  ],
+  "methods": [
+    {
+      "name": "onChange",
+      "code": "if(this.name !== this.display){\r\n    if(!this.display || !this.name || this.display.toLowerCase().replace(/ /g, \"\") === this.name.toLowerCase().replace(/ /g, \"\") || this.display.toLowerCase().replace(/ /g, \"\") === this.name.toLowerCase().replace(/ /g, \"\").slice(0, -1)){\r\n        const words = this.name.replace(/([A-Z])/g, \" $1\");\r\n        const upperWords = words.charAt(0).toUpperCase() + words.slice(1);\r\n        this.display = upperWords;\r\n    }\r\n}"
+    }
+  ]
 }

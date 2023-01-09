@@ -34,6 +34,10 @@ export default function CoreForm({ mode }) {
   const [validationErrors, setValidationErrors] = useState({});
   const navigate = useNavigate();
 
+  const onChange = (v) => {
+    setValue(v);
+  };
+
   const handleSubmit = async (event) => {
     try {
       event.preventDefault();
@@ -98,7 +102,7 @@ export default function CoreForm({ mode }) {
             defaultValue={value}
             validationErrors={validationErrors}
             prefix=""
-            onChange={(v) => setValue(v)}
+            onChange={onChange}
           ></CoreFormContent>
         </Grid>
         {error ? (

@@ -16,11 +16,15 @@ export default function CoreFormContent({
 }) {
   const [value, setValue] = useState(defaultValue ?? {});
 
-  const handleValueChange = (p, v) => {
+  const handleValueChange = async (p, v) => {
     let newValue = { ...value };
     newValue[p] = v;
+    if (typeSystem.hasMethod("onChange", type.name)) {
+      await typeSystem.callMethod(newValue, "onChange", type.name);
+    }
+
     setValue(newValue);
-    if (onChange) onChange(newValue);
+    onChange(newValue);
   };
 
   const renderProperty = (property) => {

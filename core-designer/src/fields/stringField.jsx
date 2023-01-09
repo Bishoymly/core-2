@@ -8,6 +8,10 @@ export default function StringField({
   value,
   onChange,
 }) {
+  if (!value && property.default) {
+    value = property.default;
+  }
+
   return (
     <Grid item xs={12}>
       <TextField

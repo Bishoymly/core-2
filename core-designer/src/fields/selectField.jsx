@@ -16,6 +16,10 @@ export default function SelectField({
   error,
   onChange,
 }) {
+  if (!value && property.default) {
+    value = property.default;
+  }
+
   const [loading, setLoading] = useState(false);
   const [lookup, setLookup] = useState(null);
 

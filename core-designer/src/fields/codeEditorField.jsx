@@ -1,8 +1,12 @@
 import { Grid, Paper, Typography } from "@mui/material";
 import React from "react";
-import MonacoEditor from "@uiw/react-monacoeditor";
+import Editor from "@monaco-editor/react";
 
 export default function CodeEditorField({ prefix, value, property, onChange }) {
+  if (!value) {
+    value = "";
+  }
+
   return (
     <Grid item xs={12}>
       <Typography component="h2" variant="h6" gutterBottom>
@@ -16,7 +20,7 @@ export default function CodeEditorField({ prefix, value, property, onChange }) {
           height: 400,
         }}
       >
-        <MonacoEditor
+        <Editor
           language="javascript"
           options={{
             lineNumbers: "off",

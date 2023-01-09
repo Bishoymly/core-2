@@ -22,13 +22,7 @@ export async function loader({ params }) {
   }
 }
 
-export default function SimpleGrid({
-  backend,
-  onChange,
-  onEdit,
-  onDelete,
-  defaultData,
-}) {
+export default function SimpleGrid({ backend, onEdit, onDelete, defaultData }) {
   const type = typeSystem.types[useParams().type];
   const data = useLoaderData().data ?? defaultData ?? [];
   const [loading, setLoading] = useState(false);

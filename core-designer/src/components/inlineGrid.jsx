@@ -16,15 +16,16 @@ export default function InlineGrid({
   const [index, setIndex] = useState(1);
 
   const handleSave = (event) => {
+    let newData;
     if (mode === "add") {
-      setData([...data, value]);
+      newData = [...data, value];
     } else {
       data[index] = value;
-      setData([...data]);
+      newData = [...data];
     }
-
+    setData(newData);
     setMode("list");
-    if (onChange) onChange(data);
+    if (onChange) onChange(newData);
   };
 
   const handleDelete = (i) => {

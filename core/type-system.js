@@ -26,14 +26,22 @@ class TypeSystem {
       ? "(function " +
         methodName +
         "(id," +
-        String(type.calculatedProperties?.map((p) => p.name)) +
+        String(
+          type.calculatedProperties
+            ?.filter((p) => p.name !== "default")
+            .map((p) => p.name)
+        ) +
         "){ return " +
         code +
         ";})"
       : "(async function " +
         methodName +
         "(id," +
-        String(type.calculatedProperties?.map((p) => p.name)) +
+        String(
+          type.calculatedProperties
+            ?.filter((p) => p.name !== "default")
+            .map((p) => p.name)
+        ) +
         "){ " +
         code +
         "})";
@@ -138,7 +146,7 @@ class TypeSystem {
     // process methods
     if (type.methods) {
       for (var m = 0; m < type.methods.length; m++) {
-        const method = type.methods[i];
+        const method = type.methods[m];
         calculatedMethods[method.name] = this.createMethod(
           method.name,
           method.code,
