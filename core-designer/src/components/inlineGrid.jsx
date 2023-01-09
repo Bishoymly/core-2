@@ -32,6 +32,7 @@ export default function InlineGrid({
     let newData = [...data];
     newData.splice(i, 1);
     setData(newData);
+    if (onChange) onChange(newData);
   };
 
   return (
