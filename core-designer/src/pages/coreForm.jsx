@@ -78,7 +78,11 @@ export default function CoreForm({ mode }) {
       }
 
       console.log(body);
-      return navigate(-1);
+      if (type.name === "type") {
+        return navigate(0);
+      } else {
+        return navigate(-1);
+      }
     } catch (error) {
       console.log(error);
     }
