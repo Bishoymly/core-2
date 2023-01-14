@@ -9,7 +9,8 @@ export default function NumberField({
   onChange,
 }) {
   if (!value) {
-    value = "";
+    value = 0;
+    onChange(value);
   }
 
   return (

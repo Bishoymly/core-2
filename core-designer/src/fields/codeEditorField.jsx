@@ -5,6 +5,7 @@ import Editor from "@monaco-editor/react";
 export default function CodeEditorField({ prefix, value, property, onChange }) {
   if (!value) {
     value = "";
+    onChange(value);
   }
 
   return (

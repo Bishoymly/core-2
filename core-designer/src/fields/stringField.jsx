@@ -10,6 +10,7 @@ export default function StringField({
 }) {
   if (!value && property.default) {
     value = property.default;
+    onChange(value);
   }
 
   return (
@@ -18,7 +19,7 @@ export default function StringField({
         name={prefix + property.name}
         required={property.required}
         fullWidth
-        multiline
+        //multiline
         id={prefix + property.name}
         label={property.display ?? property.name}
         placeholder={property.example ?? ""}

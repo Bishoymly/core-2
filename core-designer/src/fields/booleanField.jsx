@@ -13,12 +13,13 @@ export default function BooleanField({
   error,
   onChange,
 }) {
-  if (!value) {
+  if (value === undefined || value === null) {
     if (property.default) {
       value = property.default;
     } else {
       value = false;
     }
+    onChange(value);
   }
 
   return (

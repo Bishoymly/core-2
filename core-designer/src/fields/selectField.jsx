@@ -18,14 +18,11 @@ export default function SelectField({
 }) {
   if (!value && property.default) {
     value = property.default;
+    onChange(value);
   }
 
   const [loading, setLoading] = useState(false);
   const [lookup, setLookup] = useState(null);
-
-  if (!value) {
-    value = "";
-  }
 
   useEffect(() => {
     async function fetchData() {
