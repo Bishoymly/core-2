@@ -5,14 +5,31 @@ class BaseService {
     this.types = types;
   }
 
-  async json(type, req, res, item) {
+  async result(type, req, res, item) {
     await this.autoCalculateFields(item, type);
     this.hideFields(item);
-    res.json(item);
+
+    const output = req.query.output;
+    switch (output) {
+      case "csv":
+        const csv = require("fast-csv");
+        res.setHeader("Content-Type", "text/csv");
+        res.setHeader(
+          "Content-Disposition",
+          'attachment; filename="' + type + '.csv"'
+        );
+        csv.write(item, { headers: true }).pipe(res);
+        return;
+
+      default:
+        // json
+        res.json(item);
+        return;
+    }
   }
 
   prepareToSave(type, item) {
-    if(typeSystem.hasMethod("idAs", type)){
+    if (typeSystem.hasMethod("idAs", type)) {
       item.id = type + "-" + typeSystem.id(item, type);
     }
   }
@@ -106,7 +123,7 @@ class BaseService {
 
   hideFields(item) {
     if (item) {
-      //delete item.type;
+      delete item.type;
       delete item._rid;
       delete item._self;
       delete item._etag;

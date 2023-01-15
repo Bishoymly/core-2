@@ -243,13 +243,13 @@ class CrudService extends BaseService {
     const { resources } = await this.container.items
       .query(querySpec)
       .fetchAll();
-    await this.json(type, req, res, resources);
+    await this.result(type, req, res, resources);
   }
 
   async get(type, req, res) {
     const itemId = req.params.id;
     const { resource } = await this.container.item(itemId, undefined).read();
-    await this.json(type, req, res, resource);
+    await this.result(type, req, res, resource);
   }
 
   async post(type, req, res) {
@@ -265,7 +265,7 @@ class CrudService extends BaseService {
         this.types.push(doc);
         typeSystem.init(this.types);
       }
-      await this.json(type, req, res, doc);
+      await this.result(type, req, res, doc);
     } else {
       res.status(400).json({ validationErrors: errors });
     }
@@ -289,7 +289,7 @@ class CrudService extends BaseService {
         typeSystem.init(this.types);
       }
 
-      await this.json(type, req, res, replaced);
+      await this.result(type, req, res, replaced);
     } else {
       res.status(400).json({ validationErrors: errors });
     }
@@ -299,7 +299,7 @@ class CrudService extends BaseService {
     const id = req.params.id;
     const { body } = await this.container.item(id).delete();
 
-    await this.json(type, req, res, body);
+    await this.result(type, req, res, body);
   }
 }
 
