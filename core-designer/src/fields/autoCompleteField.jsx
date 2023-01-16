@@ -1,5 +1,6 @@
 import { Autocomplete, Grid, TextField } from "@mui/material";
-import React from "react";
+import typeSystem from "core/type-system";
+import React, { useEffect, useState } from "react";
 
 export default function AutoCompleteField({
   prefix,
@@ -8,6 +9,39 @@ export default function AutoCompleteField({
   error,
   onChange,
 }) {
+  if (!value && property.default) {
+    value = property.default;
+    onChange(value);
+  }
+
+  const [loading, setLoading] = useState(false);
+  const [lookup, setLookup] = useState(null);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (property.lookupFromType) {
+        try {
+          setLoading(true);
+          console.log("getting lookup from " + property.lookupFromType);
+          const response = await fetch(
+            "http://localhost:3000/api/" + property.lookupFromType
+          );
+          if (!response.ok) {
+            throw Error(response.statusText);
+          }
+          const json = await response.json();
+          setLoading(false);
+          setLookup(json);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+    fetchData();
+  }, [property.lookupFromType]);
+
   return (
     <Grid item xs={12}>
       <Autocomplete
@@ -16,7 +50,10 @@ export default function AutoCompleteField({
         onChange={(e, newValue) => {
           onChange(newValue);
         }}
-        options={["- Select -", "California", "New York"]}
+        options={[
+          "- Select -",
+          ...lookup?.map((v) => typeSystem.display(v, property.lookupFromType)),
+        ]}
         renderInput={(params) => (
           <TextField
             fullWidth
