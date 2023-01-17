@@ -16,7 +16,8 @@
       "display": "Display",
       "helpText": "The label that will be displayed for that field",
       "type": "String",
-      "default": " "
+      "default": " ",
+      "hideFromGrid": true
     },
     {
       "name": "type",
@@ -52,18 +53,21 @@
       "type": "String",
       "uiControl": "Select",
       "required": true,
-      "lookupFromType": "type"
+      "lookupFromType": "type",
+      "hideFromGrid": true
     },
     {
       "name": "default",
       "display": "Default Value",
-      "type": "String"
+      "type": "String",
+      "hideFromGrid": true
     },
     {
       "name": "example",
       "display": "Example Value",
       "helpText": "Just an example value",
-      "type": "String"
+      "type": "String",
+      "hideFromGrid": true
     },
     {
       "name": "required",
@@ -74,29 +78,34 @@
     {
       "name": "hideFromGrid",
       "display": "Hide from Grid?",
-      "type": "Boolean"
+      "type": "Boolean",
+      "hideFromGrid": true
     },
     {
       "name": "hideFromForm",
       "display": "Hide from Form?",
-      "type": "Boolean"
+      "type": "Boolean",
+      "hideFromGrid": true
     },
     {
       "name": "backendOnly",
       "display": "For backend only?",
-      "type": "Boolean"
+      "type": "Boolean",
+      "hideFromGrid": true
     },
     {
       "name": "expression",
       "display": "Auto Calculate Expression",
       "example": "this.x + this.y",
-      "type": "String"
+      "type": "String",
+      "hideFromGrid": true
     },
     {
       "name": "isArray",
       "display": "Is Array?",
       "helpText": "Is it a list or accepts multiple values?",
-      "type": "Boolean"
+      "type": "Boolean",
+      "hideFromGrid": true
     }
   ],
   "methods": [
