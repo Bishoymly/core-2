@@ -1,0 +1,7 @@
+{
+    "inheritFrom": "Number",
+    "name": "money",
+    "display": "Money",
+    "displayAs": "new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD'}).format(this)",
+    "type": "type"
+}
