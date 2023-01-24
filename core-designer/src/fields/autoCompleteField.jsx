@@ -14,14 +14,12 @@ export default function AutoCompleteField({
     onChange(value);
   }
 
-  const [loading, setLoading] = useState(false);
   const [lookup, setLookup] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       if (property.lookupFromType) {
         try {
-          setLoading(true);
           console.log("getting lookup from " + property.lookupFromType);
           const response = await fetch(
             "http://localhost:3000/api/" + property.lookupFromType
@@ -30,12 +28,9 @@ export default function AutoCompleteField({
             throw Error(response.statusText);
           }
           const json = await response.json();
-          setLoading(false);
           setLookup(json);
         } catch (error) {
           console.log(error);
-        } finally {
-          setLoading(false);
         }
       }
     }

@@ -101,8 +101,8 @@ class TypeSystem {
     }
 
     // properties Expressions
-    if (type.properties) {
-      const props = type.properties.filter(
+    if (type.calculatedProperties) {
+      const props = type.calculatedProperties.filter(
         (p) =>
           p.expression !== undefined &&
           p.expression !== null &&
@@ -110,7 +110,7 @@ class TypeSystem {
       );
       for (const i in props) {
         const p = props[i];
-        calculatedMethods[p.name] = this.createMethod(
+        calculatedMethods[p.name + "Expression"] = this.createMethod(
           p.name + "Expression",
           p.expression,
           type,
@@ -174,6 +174,51 @@ class TypeSystem {
     }
 
     return false;
+  }
+
+  autoCalculateFields(item, typeName) {
+    if (Array.isArray(item)) {
+      for (const i in item) {
+        const record = item[i];
+        this.autoCalculateFields(record, typeName);
+      }
+    } else {
+      const type = this.types[typeName];
+      if (type && type.calculatedProperties) {
+        const props = type.calculatedProperties.filter(
+          (p) =>
+            p.expression !== undefined &&
+            p.expression !== null &&
+            p.expression !== ""
+        );
+
+        for (const i in props) {
+          const p = props[i];
+
+          try {
+            item[p.name] = this.callMethod(
+              item,
+              p.name + "Expression",
+              typeName
+            );
+          } catch (error) {
+            console.warn("Error calculating " + p.name + " in ");
+            console.warn(item);
+            console.warn(error);
+          }
+        }
+
+        const properties = type.calculatedProperties.filter(
+          (p) => p.isArray !== true
+        );
+        for (const i in properties) {
+          const p = properties[i];
+          if (item[p.name]) {
+            this.autoCalculateFields(item[p.name], p.type);
+          }
+        }
+      }
+    }
   }
 
   display(obj, typeName) {
