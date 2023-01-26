@@ -65,7 +65,9 @@ export default function SimpleGrid({
           return (
             <Column key={p.name} flexGrow={1} fullText>
               <HeaderCell>{p.display ?? p.name}</HeaderCell>
-              <Cell>{(row) => typeSystem.display(row[p.name], p.type)}</Cell>
+              <Cell align={typeSystem.align(p.type)}>
+                {(row) => typeSystem.display(row[p.name], p.type)}
+              </Cell>
             </Column>
           );
         })}

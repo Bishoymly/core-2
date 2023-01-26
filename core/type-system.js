@@ -96,8 +96,22 @@ class TypeSystem {
     let calculatedMethods = {};
 
     if (this.types[typeName]?.inheritFrom) {
+      const inheritFrom = this.types[typeName].inheritFrom;
+      const inheritFromType = this.types[inheritFrom];
+
       // inherit methods from parent then override them if they exist on the current type
-      calculatedMethods = this.getMethods(this.types[typeName].inheritFrom);
+      calculatedMethods = this.getMethods(inheritFrom);
+
+      // inherit defaults from parent type
+      for (const key in inheritFromType) {
+        if (
+          Object.hasOwnProperty.call(inheritFromType, key) &&
+          !Object.hasOwnProperty.call(type, key)
+        ) {
+          const element = inheritFromType[key];
+          type[key] = element;
+        }
+      }
     }
 
     // properties Expressions
@@ -230,6 +244,14 @@ class TypeSystem {
       } else {
         return obj.toString();
       }
+    }
+  }
+
+  align(typeName) {
+    if (this.types[typeName].align) {
+      return this.types[typeName].align;
+    } else {
+      return "left";
     }
   }
 

@@ -17,7 +17,8 @@
       "helpText": "The label that will be displayed for that field",
       "type": "String",
       "default": " ",
-      "hideFromGrid": true
+      "hideFromGrid": true,
+      "expression": "!name?display:(name.replace(/([A-Z])/g, ' $1').charAt(0).toUpperCase() + name.replace(/([A-Z])/g, ' $1').slice(1))"
     },
     {
       "name": "type",
@@ -31,7 +32,7 @@
     },
     {
       "name": "uiControl",
-      "display": "UI Control",
+      "display": "Show As",
       "helpText": "The UI Control that will be used to edit this field",
       "uiControl": "Select",
       "type": "String",
