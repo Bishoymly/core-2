@@ -1,10 +1,13 @@
 const CosmosClient = require("@azure/cosmos").CosmosClient;
-const debug = require("debug");
 const pluralize = require("pluralize");
 const BaseService = require("./base-service");
 const fs = require("fs");
 const path = require("path");
 const typeSystem = require("./type-system");
+const multer = require("multer");
+const upload = multer();
+const csv = require("fast-csv");
+const { BulkOperationType } = require("@azure/cosmos");
 
 class CrudService extends BaseService {
   constructor(cosmosClient, databaseId, containerId, app, types) {
@@ -92,6 +95,9 @@ class CrudService extends BaseService {
     );
     app.delete("/api/:type/:id", (req, res, next) =>
       this.delete(req.params.type, req, res).catch(next)
+    );
+    app.post("/api/:type/import", upload.single("file"), (req, res, next) =>
+      this.import(req.params.type, req, res).catch(next)
     );
   }
 
@@ -300,6 +306,35 @@ class CrudService extends BaseService {
     const { body } = await this.container.item(id).delete();
 
     await this.result(type, req, res, body);
+  }
+
+  async import(type, req, res) {
+    const Readable = require("stream").Readable;
+    let operations = [];
+    const container = this.container;
+    const self = this;
+    const bufferStream = new Readable();
+    bufferStream.push(req.file.buffer);
+    bufferStream.push(null);
+    bufferStream
+      .pipe(csv.parse({ headers: true }))
+      .on("data", function (data) {
+        self.prepareToSave(type, data);
+        operations.push({
+          operationType: BulkOperationType.Upsert,
+          id: data.id,
+          resourceBody: data,
+        });
+      })
+      .on("end", async function () {
+        await container.items.bulk(operations);
+        res.status(200).json({
+          message: `${operations.length} items imported successfully, `,
+        });
+      })
+      .on("error", function (error) {
+        res.status(500).send({ error });
+      });
   }
 }
 

@@ -32,6 +32,8 @@ class BaseService {
     if (typeSystem.hasMethod("idAs", type)) {
       item.id = type + "-" + typeSystem.id(item, type);
     }
+
+    item.type = type;
   }
 
   async validate(item, type, prefix) {
