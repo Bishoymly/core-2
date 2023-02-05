@@ -21,7 +21,8 @@
       "helpText": "The name that will be displayed for this type",
       "type": "String",
       "default": " ",
-      "tab": "Basic"
+      "tab": "Basic",
+      "expression": "!name?display:(name.replace(/([A-Z])/g, ' $1').charAt(0).toUpperCase() + name.replace(/([A-Z])/g, ' $1').slice(1))"
     },
     {
       "name": "inheritFrom",
@@ -71,12 +72,6 @@
       "helpText": "An expression for id of this object",
       "type": "String",
       "tab": "Customize"
-    }
-  ],
-  "methods": [
-    {
-      "name": "onChange",
-      "code": "if(this.name !== this.display){\r\n    if(!this.display || !this.name || this.display.toLowerCase().replace(/ /g, \"\") === this.name.toLowerCase().replace(/ /g, \"\") || this.display.toLowerCase().replace(/ /g, \"\") === this.name.toLowerCase().replace(/ /g, \"\").slice(0, -1)){\r\n        const words = this.name.replace(/([A-Z])/g, \" $1\");\r\n        const upperWords = words.charAt(0).toUpperCase() + words.slice(1);\r\n        this.display = upperWords;\r\n    }\r\n}"
     }
   ]
 }

@@ -5,7 +5,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, Stack } from "@mui/material";
 import typeSystem from "core/type-system";
-import { Link, useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -22,8 +22,13 @@ export async function loader({ params }) {
   }
 }
 
-export default function SimpleGrid({ backend, onEdit, onDelete, defaultData }) {
-  const type = typeSystem.types[useParams().type];
+export default function SimpleGrid({
+  type,
+  backend,
+  onEdit,
+  onDelete,
+  defaultData,
+}) {
   const data = useLoaderData().data ?? defaultData ?? [];
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -60,7 +65,9 @@ export default function SimpleGrid({ backend, onEdit, onDelete, defaultData }) {
           return (
             <Column key={p.name} flexGrow={1} fullText>
               <HeaderCell>{p.display ?? p.name}</HeaderCell>
-              <Cell>{(row) => typeSystem.display(row[p.name], p.type)}</Cell>
+              <Cell align={typeSystem.align(p.type)}>
+                {(row) => typeSystem.display(row[p.name], p.type)}
+              </Cell>
             </Column>
           );
         })}

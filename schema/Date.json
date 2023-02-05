@@ -1,3 +1,4 @@
 {
-	"name": "Date"
+	"name": "Date",
+	"displayAs": "new Date(this).toDateString()"
 }

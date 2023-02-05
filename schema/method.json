@@ -15,7 +15,8 @@
             "display": "Code",
             "type": "String",
             "uiControl": "CodeEditor",
-            "required": true
+            "required": true,
+            "hideFromGrid": false
         }
     ]
 }

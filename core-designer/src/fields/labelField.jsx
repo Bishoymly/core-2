@@ -1,4 +1,5 @@
 import { Grid, TextField } from "@mui/material";
+import typeSystem from "core/type-system";
 import React from "react";
 
 export default function LabelField({
@@ -19,7 +20,7 @@ export default function LabelField({
         label={property.display ?? property.name}
         placeholder={property.example ?? ""}
         helperText={error ? error : property.helpText}
-        value={value}
+        value={typeSystem.display(value, property.type)}
       />
     </Grid>
   );

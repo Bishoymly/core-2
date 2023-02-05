@@ -5,6 +5,7 @@ import { Stack } from "@mui/system";
 import InlineGrid from "./inlineGrid";
 import Components from "../fields/Components";
 import typeSystem from "core/type-system";
+import produce from "immer";
 
 export default function CoreFormContent({
   prefix,
@@ -17,14 +18,15 @@ export default function CoreFormContent({
   const [value, setValue] = useState(defaultValue ?? {});
 
   const handleValueChange = async (p, v) => {
-    let newValue = { ...value };
-    newValue[p] = v;
-    if (typeSystem.hasMethod("onChange", type.name)) {
-      await typeSystem.callMethod(newValue, "onChange", type.name);
-    }
+    const newValue = produce(value, (val) => {
+      val[p] = v;
+      typeSystem.autoCalculateFields(val, type.name);
+    });
 
-    setValue(newValue);
-    onChange(newValue);
+    if (newValue !== value) {
+      setValue(newValue);
+      onChange(newValue);
+    }
   };
 
   const renderProperty = (property) => {

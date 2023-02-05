@@ -55,8 +55,9 @@ export default function InlineGrid({
       {mode === "list" ? (
         <Button
           variant="outlined"
+          size="small"
           startIcon={<AddIcon />}
-          sx={{ mt: 2 }}
+          sx={{ mt: 2, mb: 4 }}
           onClick={() => {
             setMode("add");
             setValue({});
