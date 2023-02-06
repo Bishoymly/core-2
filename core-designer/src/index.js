@@ -12,14 +12,13 @@ import {
 import DashboardContent, { loader as dashboardLoader } from "./pages/dashboard";
 import Home from "./pages/home";
 import List from "./pages/list";
-import { loader as gridLoader } from "./components/simpleGrid";
 import CoreForm, { loader as formLoader } from "./pages/coreForm";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" loader={dashboardLoader} element={<DashboardContent />}>
       <Route index element={<Home />} />
-      <Route path=":type" loader={gridLoader} element={<List />}></Route>
+      <Route path=":type" element={<List />}></Route>
       <Route
         path=":type/add"
         loader={formLoader}

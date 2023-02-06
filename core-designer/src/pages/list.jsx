@@ -126,7 +126,7 @@ export default function List() {
         </Dialog>
       </Stack>
 
-      <SimpleGrid type={type} backend={true}></SimpleGrid>
+      <SimpleGrid key={type} type={type} backend={true}></SimpleGrid>
     </Box>
   );
 }

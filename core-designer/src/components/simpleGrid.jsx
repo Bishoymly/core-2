@@ -1,26 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "rsuite";
 import "rsuite/dist/rsuite.min.css";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton, Stack } from "@mui/material";
 import typeSystem from "core/type-system";
-import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const { Column, HeaderCell, Cell } = Table;
-
-export async function loader({ params }) {
-  try {
-    const response = await fetch("http://localhost:3000/api/" + params.type);
-    if (!response.ok) {
-      throw Error(response.statusText);
-    }
-    const data = await response.json();
-    return { data };
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 export default function SimpleGrid({
   type,
@@ -29,9 +16,35 @@ export default function SimpleGrid({
   onDelete,
   defaultData,
 }) {
-  const data = useLoaderData().data ?? defaultData ?? [];
+  //const data = useLoaderData().data ?? defaultData ?? [];
+  const [data, setData] = useState(defaultData ?? []);
   const [loading, setLoading] = useState(false);
+  const [sortColumn, setSortColumn] = useState();
+  const [sortType, setSortType] = useState();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoading(true);
+    const loadData = async () => {
+      try {
+        let url = `http://localhost:3000/api/${type.name}`;
+        if (sortColumn) {
+          url += `?sort=${sortColumn}&dir=${sortType}`;
+        }
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw Error(response.statusText);
+        }
+        setData(await response.json());
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [setSortColumn, setData, sortColumn, sortType, type.name]);
 
   const handleDelete = async (item) => {
     if (backend === true) {
@@ -57,15 +70,27 @@ export default function SimpleGrid({
     }
   };
 
+  const handleSortColumn = async (sortColumn, sortType) => {
+    setSortColumn(sortColumn);
+    setSortType(sortType);
+  };
+
   return (
-    <Table autoHeight={true} data={data} loading={loading}>
+    <Table
+      autoHeight={true}
+      data={data}
+      sortColumn={sortColumn}
+      sortType={sortType}
+      onSortColumn={handleSortColumn}
+      loading={loading}
+    >
       {type.calculatedProperties
         ?.filter((p) => p.hideFromGrid !== true)
         .map((p) => {
           return (
-            <Column key={p.name} flexGrow={1} fullText>
+            <Column key={p.name} flexGrow={1} fullText sortable>
               <HeaderCell>{typeSystem.labelFor(p)}</HeaderCell>
-              <Cell align={typeSystem.align(p.type)}>
+              <Cell dataKey={p.name} align={typeSystem.align(p.type)}>
                 {(row) => typeSystem.display(row[p.name], p.type)}
               </Cell>
             </Column>

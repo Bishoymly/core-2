@@ -236,8 +236,12 @@ class CrudService extends BaseService {
   }
 
   async getAll(type, req, res) {
+    let orderBy = "";
+    if (req.query.sort) {
+      orderBy = `ORDER BY r["${req.query.sort}"] ${req.query.dir ?? "ASC"}`;
+    }
     const querySpec = {
-      query: "SELECT * FROM root r WHERE r.type=@type",
+      query: `SELECT * FROM root r WHERE r.type=@type ${orderBy}`,
       parameters: [
         {
           name: "@type",
