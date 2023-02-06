@@ -257,7 +257,10 @@ class CrudService extends BaseService {
   }
 
   async get(type, req, res) {
-    const itemId = req.params.id;
+    let itemId = req.params.id;
+    if (typeSystem.hasMethod("idAs", type)) {
+      itemId = type + "-" + itemId;
+    }
     const { resource } = await this.container.item(itemId, undefined).read();
     await this.result(type, req, res, resource);
   }

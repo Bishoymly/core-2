@@ -88,6 +88,10 @@ class BaseService {
 
   hideFields(item) {
     if (item) {
+      if (item.type && typeSystem.hasMethod("idAs", item.type)) {
+        item.id = item.id.slice(item.type.length + 1);
+      }
+
       delete item.type;
       delete item._rid;
       delete item._self;
