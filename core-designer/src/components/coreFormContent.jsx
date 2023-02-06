@@ -40,7 +40,7 @@ export default function CoreFormContent({
           <Grid container item key={prefix + p.name}>
             <Stack width={"100%"}>
               <Typography component="h2" variant="h6" gutterBottom>
-                {p.display}
+                {typeSystem.labelFor(p)}
               </Typography>
               <FormHelperText>{p.helpText}</FormHelperText>
               {p.isArray ? (
