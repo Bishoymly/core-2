@@ -24,27 +24,29 @@ export default function SimpleGrid({
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLoading(true);
-    const loadData = async () => {
-      try {
-        let url = `http://localhost:3000/api/${type.name}`;
-        if (sortColumn) {
-          url += `?sort=${sortColumn}&dir=${sortType}`;
+    if (backend) {
+      setLoading(true);
+      const loadData = async () => {
+        try {
+          let url = `http://localhost:3000/api/${type.name}`;
+          if (sortColumn) {
+            url += `?sort=${sortColumn}&dir=${sortType}`;
+          }
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw Error(response.statusText);
+          }
+          setData(await response.json());
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
         }
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        setData(await response.json());
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
-    loadData();
-  }, [setSortColumn, setData, sortColumn, sortType, type.name]);
+      loadData();
+    }
+  }, [setSortColumn, setData, sortColumn, sortType, type.name, backend]);
 
   const handleDelete = async (item) => {
     if (backend === true) {

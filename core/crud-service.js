@@ -267,12 +267,10 @@ class CrudService extends BaseService {
 
   async post(type, req, res) {
     const item = req.body;
-    item.type = type;
 
     var errors = await this.validate(item, type);
     if (errors.length === 0) {
       this.prepareToSave(type, item);
-      console.log(item);
       const { resource: doc } = await this.container.items.create(item);
       if (type === "type") {
         this.types.push(doc);
@@ -286,14 +284,12 @@ class CrudService extends BaseService {
 
   async put(type, req, res) {
     const item = req.body;
-    const itemId = req.params.id;
-    item.id = itemId;
-    item.type = type;
 
     var errors = await this.validate(item, type);
     if (errors.length === 0) {
+      this.prepareToSave(type, item);
       const { resource: replaced } = await this.container
-        .item(itemId, undefined)
+        .item(item.id, undefined)
         .replace(item);
 
       if (type === "type") {
