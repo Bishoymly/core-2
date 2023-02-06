@@ -17,7 +17,7 @@ export default function LabelField({
         fullWidth
         disabled
         id={prefix + property.name}
-        label={property.display ?? property.name}
+        label={typeSystem.labelFor(property)}
         placeholder={property.example ?? ""}
         helperText={error ? error : property.helpText}
         value={typeSystem.display(value, property.type)}

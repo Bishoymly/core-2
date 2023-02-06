@@ -3,6 +3,7 @@ import React from "react";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import typeSystem from "core/type-system";
 
 export default function DateField({
   prefix,
@@ -16,7 +17,7 @@ export default function DateField({
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           id={prefix + property.name}
-          label={property.display ?? property.name}
+          label={typeSystem.labelFor(property)}
           placeholder={property.example ?? ""}
           value={value}
           onChange={(newValue) => {

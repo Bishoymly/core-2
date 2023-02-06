@@ -145,7 +145,7 @@ export default function DashboardContent() {
               .filter((t) => t.showInMenu === true)
               .map((t) => (
                 <ListItemButton key={t.name} component={Link} to={t.name}>
-                  <ListItemText primary={t.display ?? t.name} />
+                  <ListItemText primary={typeSystem.labelForType(t.name)} />
                 </ListItemButton>
               ))}
             <Divider sx={{ my: 1 }} />

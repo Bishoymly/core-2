@@ -1,4 +1,5 @@
 import { Grid, TextField } from "@mui/material";
+import typeSystem from "core/type-system";
 import React from "react";
 
 export default function StringField({
@@ -21,7 +22,7 @@ export default function StringField({
         fullWidth
         //multiline
         id={prefix + property.name}
-        label={property.display ?? property.name}
+        label={typeSystem.labelFor(property)}
         placeholder={property.example ?? ""}
         helperText={error ? error : property.helpText}
         error={error ? true : false}

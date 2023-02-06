@@ -53,7 +53,7 @@ export default function AutoCompleteField({
           <TextField
             fullWidth
             name={prefix + property.name}
-            label={property.display ?? property.name}
+            label={typeSystem.labelFor(property)}
             placeholder={property.example ?? ""}
             required={property.required}
             helperText={error ? error : property.helpText}

@@ -53,7 +53,7 @@ export default function SelectField({
     <Grid item xs={12}>
       <FormControl fullWidth error={error ? true : false}>
         <InputLabel id={prefix + property.name + "-label"}>
-          {property.display ?? property.name}
+          {typeSystem.labelFor(property)}
         </InputLabel>
         <Select
           labelId={prefix + property.name + "-label"}
@@ -62,7 +62,7 @@ export default function SelectField({
           onChange={(e) => {
             onChange(e.target.value);
           }}
-          label={property.display ?? property.name}
+          label={typeSystem.labelFor(property)}
           disabled={loading}
         >
           <MenuItem value="">

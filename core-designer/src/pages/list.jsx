@@ -47,7 +47,7 @@ export default function List() {
   return (
     <Box>
       <Typography component="h2" variant="h5" color="primary">
-        {type?.display ?? type?.name}
+        {typeSystem.labelForType(type.name)}
         <IconButton
           aria-label="Edit Type"
           component={Link}

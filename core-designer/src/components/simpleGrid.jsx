@@ -64,7 +64,7 @@ export default function SimpleGrid({
         .map((p) => {
           return (
             <Column key={p.name} flexGrow={1} fullText>
-              <HeaderCell>{p.display ?? p.name}</HeaderCell>
+              <HeaderCell>{typeSystem.labelFor(p)}</HeaderCell>
               <Cell align={typeSystem.align(p.type)}>
                 {(row) => typeSystem.display(row[p.name], p.type)}
               </Cell>

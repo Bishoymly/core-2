@@ -235,6 +235,23 @@ class TypeSystem {
     }
   }
 
+  labelForType(typeName) {
+    const display = this.types[typeName].display;
+    if (display && display.trim() != "") {
+      return display;
+    } else {
+      return this.types[typeName].name;
+    }
+  }
+
+  labelFor(property) {
+    if (property.display && property.display.trim() != "") {
+      return property.display;
+    } else {
+      return property.name;
+    }
+  }
+
   display(obj, typeName) {
     if (obj) {
       if (this.hasMethod("displayAs", typeName)) {

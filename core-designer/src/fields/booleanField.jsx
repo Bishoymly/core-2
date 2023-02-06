@@ -4,6 +4,7 @@ import {
   FormHelperText,
   Grid,
 } from "@mui/material";
+import typeSystem from "core/type-system";
 import React from "react";
 
 export default function BooleanField({
@@ -35,7 +36,7 @@ export default function BooleanField({
             }}
           />
         }
-        label={property.display ?? property.name}
+        label={typeSystem.labelFor(property)}
         required={property.required}
       ></FormControlLabel>
       <FormHelperText>{error ? error : property.helpText}</FormHelperText>

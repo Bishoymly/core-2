@@ -16,15 +16,6 @@
       "tab": "Basic"
     },
     {
-      "name": "display",
-      "display": "Display",
-      "helpText": "The name that will be displayed for this type",
-      "type": "String",
-      "default": " ",
-      "tab": "Basic",
-      "expression": "!name?display:(name.replace(/([A-Z])/g, ' $1').charAt(0).toUpperCase() + name.replace(/([A-Z])/g, ' $1').slice(1))"
-    },
-    {
       "name": "inheritFrom",
       "display": "Inherit from",
       "example": "Object",
@@ -58,6 +49,14 @@
       "type": "method",
       "isArray": true,
       "tab": "Customize"
+    },
+    {
+      "name": "display",
+      "display": "Display",
+      "helpText": "The name that will be displayed for this type",
+      "type": "String",
+      "default": " ",
+      "tab": "Basic"
     },
     {
       "name": "displayAs",
