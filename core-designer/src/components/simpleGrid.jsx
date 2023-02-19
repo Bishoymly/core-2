@@ -18,6 +18,12 @@ export default function SimpleGrid({
 }) {
   //const data = useLoaderData().data ?? defaultData ?? [];
   const [data, setData] = useState(defaultData ?? []);
+  if (!backend) {
+    if (defaultData !== data) {
+      setData(defaultData);
+    }
+  }
+
   const [loading, setLoading] = useState(false);
   const [sortColumn, setSortColumn] = useState();
   const [sortType, setSortType] = useState();

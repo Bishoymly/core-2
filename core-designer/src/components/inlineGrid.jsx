@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import SimpleGrid from "./simpleGrid";
 import CoreFormContent from "./coreFormContent";
+import produce from "immer";
 
 export default function InlineGrid({
   type,
@@ -16,13 +17,14 @@ export default function InlineGrid({
   const [index, setIndex] = useState(1);
 
   const handleSave = (event) => {
-    let newData;
-    if (mode === "add") {
-      newData = [...data, value];
-    } else {
-      data[index] = value;
-      newData = [...data];
-    }
+    const newData = produce(data, (val) => {
+      if (mode === "add") {
+        val.push(value);
+      } else {
+        val[index] = value;
+      }
+    });
+
     setData(newData);
     setMode("list");
     if (onChange) onChange(newData);

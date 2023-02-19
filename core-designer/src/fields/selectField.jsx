@@ -11,18 +11,15 @@ import React, { useEffect, useState } from "react";
 
 export default function SelectField({
   prefix,
-  value,
+  value: propsValue,
   property,
   error,
   onChange,
 }) {
-  if (!value && property.default) {
-    value = property.default;
-    onChange(value);
-  }
-
   const [loading, setLoading] = useState(false);
   const [lookup, setLookup] = useState(null);
+
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -39,15 +36,32 @@ export default function SelectField({
           const json = await response.json();
           setLoading(false);
           setLookup(json);
+          // Set the default value only after the lookup array is loaded
+          setValue(propsValue || property.default || "");
+          if (!propsValue && property.default) {
+            onChange(property.default);
+          }
         } catch (error) {
           console.log(error);
         } finally {
           setLoading(false);
         }
+      } else {
+        // Set the default value immediately if there's no lookup array to fetch
+        setValue(propsValue || property.default || "");
+        if (!propsValue && property.default) {
+          onChange(property.default);
+        }
       }
     }
     fetchData();
-  }, [property.lookupFromType]);
+  }, [property.lookupFromType, propsValue, property.default, onChange]);
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setValue(newValue);
+    onChange(newValue);
+  };
 
   return (
     <Grid item xs={12}>
@@ -59,9 +73,8 @@ export default function SelectField({
           labelId={prefix + property.name + "-label"}
           id={prefix + property.name}
           value={value}
-          onChange={(e) => {
-            onChange(e.target.value);
-          }}
+          defaultValue=""
+          onChange={handleChange}
           label={typeSystem.labelFor(property)}
           disabled={loading}
         >

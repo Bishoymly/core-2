@@ -5,23 +5,22 @@ import {
   Grid,
 } from "@mui/material";
 import typeSystem from "core/type-system";
-import React from "react";
+import React, { useState } from "react";
 
 export default function BooleanField({
   prefix,
-  value,
+  value: propsValue,
   property,
   error,
   onChange,
 }) {
-  if (value === undefined || value === null) {
-    if (property.default) {
-      value = property.default;
-    } else {
-      value = false;
-    }
-    onChange(value);
-  }
+  const [value, setValue] = useState(propsValue || property.default || false);
+
+  const handleChange = (event) => {
+    const newValue = event.target.checked;
+    setValue(newValue);
+    onChange(newValue);
+  };
 
   return (
     <Grid item xs={12}>
@@ -31,9 +30,7 @@ export default function BooleanField({
             name={prefix + property.name}
             id={prefix + property.name}
             checked={value}
-            onChange={(e) => {
-              onChange(e.target.checked);
-            }}
+            onChange={handleChange}
           />
         }
         label={typeSystem.labelFor(property)}

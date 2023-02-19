@@ -1,18 +1,21 @@
 import { Grid, TextField } from "@mui/material";
 import typeSystem from "core/type-system";
-import React from "react";
+import React, { useState } from "react";
 
 export default function StringField({
   prefix,
   property,
   error,
-  value,
+  value: propsValue,
   onChange,
 }) {
-  if (!value && property.default) {
-    value = property.default;
-    onChange(value);
-  }
+  const [value, setValue] = useState(propsValue || property.default || "");
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    setValue(newValue);
+    onChange(newValue);
+  };
 
   return (
     <Grid item xs={12}>
@@ -27,7 +30,7 @@ export default function StringField({
         helperText={error ? error : property.helpText}
         error={error ? true : false}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleChange}
       />
     </Grid>
   );
