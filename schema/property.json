@@ -48,7 +48,8 @@
       "uiControl": "Select",
       "required": true,
       "lookupFromType": "type",
-      "hideFromGrid": true
+      "hideFromGrid": true,
+      "groupWithPreviousField": true
     },
     {
       "name": "default",
@@ -71,10 +72,19 @@
       "type": "Boolean"
     },
     {
+      "name": "isArray",
+      "display": "Is Array?",
+      "helpText": "Is it a list or accepts multiple values?",
+      "type": "Boolean",
+      "hideFromGrid": true,
+      "groupWithPreviousField": true
+    },
+    {
       "name": "groupWithPreviousField",
       "display": "Group with previous field",
       "helpText": "Show on the same line",
       "type": "Boolean",
+      "hideFromGrid": true,
       "groupWithPreviousField": true
     },
     {
@@ -110,13 +120,6 @@
       "display": "Auto Calculate Expression",
       "example": "this.x + this.y",
       "type": "String",
-      "hideFromGrid": true
-    },
-    {
-      "name": "isArray",
-      "display": "Is Array?",
-      "helpText": "Is it a list or accepts multiple values?",
-      "type": "Boolean",
       "hideFromGrid": true
     }
   ],
