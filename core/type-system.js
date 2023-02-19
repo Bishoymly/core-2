@@ -13,6 +13,7 @@ class TypeSystem {
     for (var i = 0; i < types.length; i++) {
       const type = types[i];
       type.calculatedProperties = this.getProperties(type.name);
+      this.calculateUILayout(type.calculatedProperties);
     }
 
     for (var i = 0; i < types.length; i++) {
@@ -87,6 +88,39 @@ class TypeSystem {
         return this.types[typeName].properties;
       } else {
         return [];
+      }
+    }
+  }
+
+  calculateUILayout(properties) {
+    let startIndex = -1;
+    for (let i = 0; i < properties.length; i++) {
+      const property = properties[i];
+      property.layoutWidth = 12;
+      if (!property.groupWithPreviousField) {
+        if (startIndex >= 0 && i != startIndex) {
+          this.setLayoutWidth(properties, startIndex, i - startIndex);
+        }
+        startIndex = i;
+      }
+    }
+
+    if (startIndex >= 0 && startIndex != properties.length) {
+      this.setLayoutWidth(
+        properties,
+        startIndex,
+        properties.length - startIndex
+      );
+    }
+  }
+
+  setLayoutWidth(properties, startIndex, count) {
+    if (count > 1) {
+      console.log(properties);
+      console.log(`start at ${startIndex} for count ${count}`);
+      let layoutWidth = Math.floor(12 / count);
+      for (let i = startIndex; i < startIndex + count; i++) {
+        properties[i].layoutWidth = layoutWidth;
       }
     }
   }

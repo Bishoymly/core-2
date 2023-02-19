@@ -9,7 +9,7 @@ export default function CodeEditorField({ prefix, value, property, onChange }) {
   }
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} sm={property.layoutWidth}>
       <Typography component="h2" variant="h6" gutterBottom>
         {property.display ?? property.name}
       </Typography>

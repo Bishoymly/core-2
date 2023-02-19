@@ -10,7 +10,7 @@ export default function LabelField({
   onChange,
 }) {
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} sm={property.layoutWidth}>
       <TextField
         name={prefix + property.name}
         required={property.required}

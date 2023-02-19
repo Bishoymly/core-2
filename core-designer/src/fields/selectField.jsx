@@ -64,7 +64,7 @@ export default function SelectField({
   };
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} sm={property.layoutWidth}>
       <FormControl fullWidth error={error ? true : false}>
         <InputLabel id={prefix + property.name + "-label"}>
           {typeSystem.labelFor(property)}

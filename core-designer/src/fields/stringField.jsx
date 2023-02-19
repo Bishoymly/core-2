@@ -18,7 +18,7 @@ export default function StringField({
   };
 
   return (
-    <Grid item xs={12}>
+    <Grid item sx={12} sm={property.layoutWidth}>
       <TextField
         name={prefix + property.name}
         required={property.required}

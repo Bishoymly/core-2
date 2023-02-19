@@ -1,49 +1,51 @@
 {
-	"name": "address",
-	"display": "Address",
-	"inheritFrom": "Object",
-	"api": "CRUD",
-	"showInMenu": true,
-	"properties": [
-		{
-			"name": "street",
-			"display": "Street Line 1",
-			"type": "String",
-			"default": "",
-			"example": "123 Main Street",
-			"required": true
-		},
-		{
-			"name": "street2",
-			"display": "Street Line 2",
-			"type": "String"
-		},
-		{
-			"name": "city",
-			"display": "City",
-			"type": "String",
-			"default": "",
-			"example": "New York",
-			"required": true
-		},
-		{
-			"name": "state",
-			"display": "State",
-			"type": "String",
-			"uiControl": "Select",
-			"default": "",
-			"example": "NY",
-			"required": true,
-			"lookupFromType": "state"
-		},
-		{
-			"name": "zipCode",
-			"display": "Zip Code",
-			"type": "Number",
-			"default": "",
-			"example": "10030",
-			"required": true
-		}
-	],
-	"displayAs": "street + ' ' + (street2??'') + ', ' + city + ', '+state+' '+zipCode"
+  "name": "address",
+  "display": "Address",
+  "inheritFrom": "Object",
+  "api": "CRUD",
+  "showInMenu": true,
+  "properties": [
+    {
+      "name": "street",
+      "display": "Street Line 1",
+      "type": "String",
+      "default": "",
+      "example": "123 Main Street",
+      "required": true
+    },
+    {
+      "name": "street2",
+      "display": "Street Line 2",
+      "type": "String"
+    },
+    {
+      "name": "city",
+      "display": "City",
+      "type": "String",
+      "default": "",
+      "example": "New York",
+      "required": true
+    },
+    {
+      "name": "state",
+      "display": "State",
+      "type": "String",
+      "uiControl": "Select",
+      "default": "",
+      "example": "NY",
+      "required": true,
+      "lookupFromType": "state",
+      "groupWithPreviousField": true
+    },
+    {
+      "name": "zipCode",
+      "display": "Zip Code",
+      "type": "Number",
+      "default": "",
+      "example": "10030",
+      "required": true,
+      "groupWithPreviousField": true
+    }
+  ],
+  "displayAs": "street + ' ' + (street2??'') + ', ' + city + ', '+state+' '+zipCode"
 }

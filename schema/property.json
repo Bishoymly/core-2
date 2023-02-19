@@ -19,7 +19,8 @@
       "default": "String",
       "uiControl": "Select",
       "required": true,
-      "lookupFromType": "type"
+      "lookupFromType": "type",
+      "groupWithPreviousField": true
     },
     {
       "name": "uiControl",
@@ -27,6 +28,7 @@
       "helpText": "The UI Control that will be used to edit this field",
       "uiControl": "Select",
       "type": "String",
+      "groupWithPreviousField": true,
       "values": [
         "Text",
         "Number",
@@ -59,13 +61,21 @@
       "display": "Example Value",
       "helpText": "Just an example value",
       "type": "String",
-      "hideFromGrid": true
+      "hideFromGrid": true,
+      "groupWithPreviousField": true
     },
     {
       "name": "required",
       "display": "Required?",
       "helpText": "Is it required?",
       "type": "Boolean"
+    },
+    {
+      "name": "groupWithPreviousField",
+      "display": "Group with previous field",
+      "helpText": "Show on the same line",
+      "type": "Boolean",
+      "groupWithPreviousField": true
     },
     {
       "name": "hideFromGrid",
@@ -77,13 +87,15 @@
       "name": "hideFromForm",
       "display": "Hide from Form?",
       "type": "Boolean",
-      "hideFromGrid": true
+      "hideFromGrid": true,
+      "groupWithPreviousField": true
     },
     {
       "name": "backendOnly",
       "display": "For backend only?",
       "type": "Boolean",
-      "hideFromGrid": true
+      "hideFromGrid": true,
+      "groupWithPreviousField": true
     },
     {
       "name": "display",

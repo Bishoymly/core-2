@@ -38,7 +38,7 @@ export default function AutoCompleteField({
   }, [property.lookupFromType]);
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} sm={property.layoutWidth}>
       <Autocomplete
         id={prefix + property.name}
         value={value}
