@@ -1,9 +1,10 @@
 {
-	"name": "phone",
-	"display": "Phone",
-	"inheritFrom": "String",
-	"mask": "(###) ###-####",
-	"example": "(858) 123-1234",
-	"regex": "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$",
-	"regexMessage": "Please provide a valid phone number"
+  "name": "phone",
+  "display": "Phone",
+  "inheritFrom": "String",
+  "mask": "(###) ###-####",
+  "example": "(858) 123-1234",
+  "regex": "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$",
+  "regexMessage": "Please provide a valid phone number",
+  "displayAs": "('' + this).replace(/\\D/g, '').match(/^(1|)?(\\d{3})(\\d{3})(\\d{4})$/) ? ((match) => [(match[1] ? '+1 ' : ''), '(', match[2], ') ', match[3], '-', match[4]].join(''))(this.replace(/\\D/g, '').match(/^(1|)?(\\d{3})(\\d{3})(\\d{4})$/)) : null"
 }
