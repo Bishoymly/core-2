@@ -308,7 +308,7 @@ class CrudService extends BaseService {
     const id = req.params.id;
     const { body } = await this.container.item(id).delete();
 
-    await this.result(type, req, res, body);
+    res.status(200).json({});
   }
 
   async import(type, req, res) {

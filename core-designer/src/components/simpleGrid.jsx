@@ -71,7 +71,7 @@ export default function SimpleGrid({
         setLoading(false);
       }
 
-      navigate("/" + type.name, { replace: true });
+      navigate(0);
     } else {
       const i = data.indexOf(item);
       onDelete(i);

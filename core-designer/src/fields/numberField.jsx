@@ -9,8 +9,8 @@ export default function NumberField({
   error,
   onChange,
 }) {
-  if (!value) {
-    value = 0;
+  if (!value && property.default) {
+    value = property.default;
   }
 
   return (

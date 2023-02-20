@@ -116,8 +116,6 @@ class TypeSystem {
 
   setLayoutWidth(properties, startIndex, count) {
     if (count > 1) {
-      console.log(properties);
-      console.log(`start at ${startIndex} for count ${count}`);
       let layoutWidth = Math.floor(12 / count);
       for (let i = startIndex; i < startIndex + count; i++) {
         properties[i].layoutWidth = layoutWidth;

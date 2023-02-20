@@ -4,17 +4,13 @@ import React, { useEffect, useState } from "react";
 
 export default function AutoCompleteField({
   prefix,
-  value,
+  value: propsValue,
   property,
   error,
   onChange,
 }) {
-  if (!value && property.default) {
-    value = property.default;
-    onChange(value);
-  }
-
   const [lookup, setLookup] = useState(null);
+  const [value, setValue] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,25 +25,41 @@ export default function AutoCompleteField({
           }
           const json = await response.json();
           setLookup(json);
+
+          // Set the default value only after the lookup array is loaded
+          setValue(propsValue || property.default || null);
+          if (!propsValue && property.default) {
+            onChange(property.default);
+          }
         } catch (error) {
           console.log(error);
         }
       }
     }
     fetchData();
-  }, [property.lookupFromType]);
+  }, [property.lookupFromType, onChange, property.default, propsValue]);
+
+  const handleChange = (event) => {
+    const newValue = event.target.value;
+    console.log(newValue);
+    setValue(newValue);
+    onChange(newValue);
+  };
 
   return (
     <Grid item xs={12} sm={property.layoutWidth}>
       <Autocomplete
         id={prefix + property.name}
         value={value}
-        onChange={(e, newValue) => {
-          onChange(newValue);
-        }}
+        defaultValue=""
+        onChange={handleChange}
         options={[
-          "- Select -",
-          ...lookup?.map((v) => typeSystem.display(v, property.lookupFromType)),
+          ...(Array.isArray(lookup)
+            ? lookup.map((v) => ({
+                label: typeSystem.display(v, property.lookupFromType),
+                value: v.id,
+              }))
+            : []),
         ]}
         renderInput={(params) => (
           <TextField
