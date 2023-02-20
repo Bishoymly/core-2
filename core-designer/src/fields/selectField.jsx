@@ -18,7 +18,6 @@ export default function SelectField({
 }) {
   const [loading, setLoading] = useState(false);
   const [lookup, setLookup] = useState(null);
-
   const [value, setValue] = useState("");
 
   useEffect(() => {
