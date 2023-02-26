@@ -39,11 +39,13 @@ export default function AutoCompleteField({
     fetchData();
   }, [property.lookupFromType, onChange, property.default, propsValue]);
 
-  const handleChange = (event) => {
-    const newValue = event.target.value;
-    console.log(newValue);
-    setValue(newValue);
-    onChange(newValue);
+  const handleChange = (event, newValue) => {
+    setValue(newValue.value);
+    onChange(newValue.value);
+  };
+
+  const customIsOptionEqualToValue = (option, value) => {
+    return option.value === value;
   };
 
   return (
@@ -52,6 +54,7 @@ export default function AutoCompleteField({
         id={prefix + property.name}
         value={value}
         defaultValue=""
+        isOptionEqualToValue={customIsOptionEqualToValue}
         onChange={handleChange}
         options={[
           ...(Array.isArray(lookup)
